@@ -417,7 +417,11 @@ body {
 .owner-card .section-subheading,
 .dir-card .section-subheading,
 .dir-card .sh-subheading {
-  font-size: 0.92em; font-weight: 600;
+  font-size: 1em; font-weight: 700;
+}
+.owner-card .question-label,
+.dir-card .question-label {
+  font-size: 0.95em; font-weight: 600;
 }
 .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); color: #333; }
 .info-box.blue strong { color: var(--blue); }
@@ -575,6 +579,7 @@ body {
 .success-screen .step-label {
   font-size: 0.8em; font-weight: 600; color: #888;
   text-transform: uppercase; letter-spacing: 0.3px; margin: 0 0 8px 0;
+  text-align: left;
 }
 /* Not-submitted warning */
 .success-screen .not-submitted-warning {
@@ -592,7 +597,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 .not-submitted-warning .warn-text { flex: 1; }
-.not-submitted-warning .warn-main { font-size: 0.95em; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
+.not-submitted-warning .warn-main { font-size: 15px; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
 .not-submitted-warning .warn-sub { font-size: 0.82em; color: #555; line-height: 1.4; }
 .not-submitted-warning .warn-bilingual { font-size: 0.8em; color: #8a6d00; font-style: italic; margin-top: 4px; }
 /* Save section card */
@@ -633,9 +638,9 @@ body {
   display: block; text-align: center;
   width: 100%; padding: 14px 24px; background: var(--blue); color: #fff;
   border: 2px solid var(--blue); border-radius: 4px;
-  font-size: 1.19em; font-weight: 700; cursor: pointer;
+  font-size: 1.05em; font-weight: 700; cursor: pointer;
   font-family: inherit; text-decoration: none;
-  margin-left: auto; margin-right: auto;
+  margin: 16px auto 0;
 }
 .success-screen .btn-registry:hover { background: #003d99; border-color: #003d99; }
 .success-screen .btn-registry:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -4359,13 +4364,12 @@ function startWizard(taskId) {
               <div class="warn-icon" aria-hidden="true">!</div>
               <div class="warn-text">
                 <div class="warn-main">Your form is not submitted yet</div>
-                <div class="warn-sub">After saving, upload this file to your Online Business Registry account.</div>
                 <div class="warn-bilingual" id="warningBilingual"></div>
               </div>
             </div>
             <ol id="guideSteps"></ol>
-            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
           </div>
+          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
 
           <!-- Start new form (guarded) -->
           <div class="link-new-form">
@@ -6925,6 +6929,13 @@ async function generatePDF() {
 // START PAGE DATA
 // ============================================================
 // [START-PAGE-INFO] — Content shown on the start page before each form
+const backLinks = {
+  'reregister-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&ctk=CompanyHowTo#reregister-company' },
+  'register-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RegisterBusinessName&ctk=CompanyHowTo#register-company' },
+  'update-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-company' },
+  'restore-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreBusinessName&ctk=CompanyHowTo#restore-company' },
+};
+
 const FORM_START_INFO = {
   co0: {
     heading: 'Re-register your company',
