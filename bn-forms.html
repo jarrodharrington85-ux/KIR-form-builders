@@ -4934,14 +4934,14 @@ function guardedBackToLanding() {
 // with guard if wizard has unsaved data
 // [HEADER-BACK] URL parameter mapping for back button
 const BACK_LINKS = {
-  'reregister-business': { text: 'How To', url: 'howto-reregister.html#reregister-business' },
-  'reregister-company': { text: 'How To', url: 'howto-reregister.html#reregister-company' },
-  'register-business': { text: 'How To', url: 'howto-register.html#register-business' },
-  'register-company': { text: 'How To', url: 'howto-register.html#register-company' },
-  'update-business': { text: 'How To', url: 'howto-update.html' },
-  'update-company': { text: 'How To', url: 'howto-update.html' },
-  'restore-business': { text: 'How To', url: 'howto-restore.html#restore-business' },
-  'restore-company': { text: 'How To', url: 'howto-restore.html#restore-company' },
+  'reregister-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&ctk=CompanyHowTo#reregister-business' },
+  'reregister-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&ctk=CompanyHowTo#reregister-company' },
+  'register-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RegisterBusinessName&ctk=CompanyHowTo#register-business' },
+  'register-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RegisterCompany&ctk=CompanyHowTo#register-company' },
+  'update-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-business' },
+  'update-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-company' },
+  'restore-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreBusinessName&ctk=CompanyHowTo#restore-business' },
+  'restore-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreCompany&ctk=CompanyHowTo#restore-company' },
 };
 
 function initHeaderFromUrl() {
@@ -5001,13 +5001,6 @@ function siteHeaderBack(e) {
 
 // [START-PAGE-INFO] — Content shown on the start page before each form
 // Safe to edit: headings, 'needs' list items, notes
-const backLinks = {
-  'reregister-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&ctk=CompanyHowTo#reregister-business' },
-  'register-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RegisterBusinessName&ctk=CompanyHowTo#register-business' },
-  'update-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-business' },
-  'restore-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreBusinessName&ctk=CompanyHowTo#restore-business' },
-};
-
 const FORM_START_INFO = {
   bn0: {
     heading: 'Re-register your business name',
