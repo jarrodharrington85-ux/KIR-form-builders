@@ -456,6 +456,9 @@ body {
 .step-desc + .sh-subheading {
   border-top: none; margin-top: 0; padding-top: 0;
 }
+.owner-card .section-subheading {
+  font-size: 0.92em; font-weight: 600;
+}
 .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); color: #333; }
 .info-box.blue strong { color: var(--blue); }
 .info-box.amber { background: #fff8e6; border-left: 4px solid #d4a017; color: #333; }
@@ -639,17 +642,16 @@ body {
 /* Success / confirmation screen */
 .success-screen { padding: 0; margin: 0; }
 .success-screen .confirmation-panel {
-  background: #1a8a6e; color: #fff;
+  background: #fff3e0; color: #7a5a00;
   padding: 32px 20px 28px; text-align: center;
 }
 .success-screen .confirmation-panel .icon {
   width: 52px; height: 52px; border-radius: 50%;
-  border: 3px solid #fff; color: #fff;
-  font-size: 26px; font-weight: bold;
+  background: #e68a00; color: #fff;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
-.bn-form-container .success-screen h3 { color: #fff; margin-bottom: 0; font-size: 1.55em; }
+.bn-form-container .success-screen h3 { color: #7a5a00; margin-bottom: 0; font-size: 1.55em; }
 .success-screen .confirmation-body { padding: 20px 20px 24px; text-align: center; max-width: 520px; margin: 0 auto; }
 .bn-form-container .success-screen .confirmation-body h4 { font-size: 1.15em; color: var(--text); margin-bottom: 12px; }
 .bn-form-container .success-screen p { color: var(--text-mid); margin-bottom: 12px; font-size: 0.95em; line-height: 1.55; }
@@ -725,10 +727,17 @@ body {
 }
 
 /* ── Redesigned success screen ── */
+.success-screen .step-label {
+  font-size: 0.8em; font-weight: 600; color: #888;
+  text-transform: uppercase; letter-spacing: 0.3px; margin: 0 0 8px 0;
+}
 .success-screen .not-submitted-warning {
   background: #fff8e6; border: 2px solid #d4a017; border-radius: 6px;
   padding: 14px 16px; margin: 0 0 18px; text-align: left;
   display: flex; align-items: flex-start; gap: 12px;
+}
+.success-screen .registry-guide .not-submitted-warning {
+  background: none; border: none; padding: 0; margin: 0 0 12px 0;
 }
 .not-submitted-warning .warn-icon {
   width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #fff;
@@ -772,25 +781,22 @@ body {
 .success-screen .btn-save-pdf:hover { background: #0d4a3e; border-color: #0d4a3e; }
 
 .success-screen .registry-guide {
-  text-align: left; font-size: 0.88em; line-height: 1.6; color: #333;
-  padding: 16px; margin: 0 0 4px;
-  background: #f9fafb; border: 1.5px solid #ddd; border-radius: 8px;
-}
-.registry-guide .guide-heading {
-  font-weight: 700; color: var(--text); font-size: 1em; margin-bottom: 10px;
-  padding-bottom: 6px; border-bottom: 1px solid #e0e0e0;
+  text-align: left; font-size: 0.88em; line-height: 1.6; color: #7a5a00;
+  padding: 14px; margin: 0 0 4px;
+  background: #fff3e0; border: 1px solid #f0c000; border-radius: 8px;
 }
 .registry-guide ol { padding-left: 20px; margin: 0 0 16px; }
 .registry-guide li { margin-bottom: 5px; }
 .registry-guide strong { color: #222; }
 
 .success-screen .btn-registry {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  display: block; text-align: center;
   width: 100%;
   padding: 14px 24px; background: var(--blue); color: #fff;
   border: 2px solid var(--blue); border-radius: 4px;
   font-size: 1.19em; font-weight: 700; cursor: pointer;
   font-family: inherit; text-decoration: none;
+  margin-left: auto; margin-right: auto;
 }
 .success-screen .btn-registry:hover { background: #003d99; border-color: #003d99; }
 .success-screen .btn-registry:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -873,7 +879,7 @@ body {
   <!-- Desktop header -->
   <div class="header-inner">
     <a href="#" class="header-brand" onclick="return false;">
-      <img src="mtcic-logo-exported.png" alt="business.gov.ki logo" class="header-logo"
+      <img src="mtcic-logo.png" alt="business.gov.ki logo" class="header-logo"
            onerror="this.style.display='none'">
       <div>
         <div class="header-title">business.gov.ki</div>
@@ -1446,8 +1452,9 @@ function buildSignatureFields(prefix, hasAttachments) {
     : 'I certify that the information provided on this form is true and correct.';
   return `
     <div class="info-box blue">${declText}</div>
-    <div class="field"><label for="${prefix}_sigName">Full legal name (as signature)</label>
+    <div class="field"><label for="${prefix}_sigName">Full legal name</label>
       <div class="error-text">Enter your full legal name</div><input type="text" id="${prefix}_sigName" required maxlength="200"></div>
+    <p style="font-size:0.85em;color:#555;margin:-4px 0 8px;">By typing your name here, you are signing this form.</p>
     <div class="field"><label id="${prefix}_capLbl">Signing authority</label>
       <div class="error-text">Select your signing authority</div>
       <div class="radio-group" role="group" aria-labelledby="${prefix}_capLbl">
@@ -1476,15 +1483,15 @@ function buildOwnerFields(prefix, index, opts) {
       <div class="field">
         <div class="error-text">Select an owner type</div>
         <div class="radio-group">
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="person" required onchange="toggleOwnerType('${p}')"><div><strong>Natural person</strong></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="person" required onchange="toggleOwnerType('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="ki_company" required onchange="toggleOwnerType('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" required onchange="toggleOwnerType('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">All legal entities that are not registered companies in Kiribati. Examples include cooperatives, foreign companies with no operations in Kiribati, foreign limited liability partnerships, and foreign incorporated associations.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" required onchange="toggleOwnerType('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
         </div>
       </div>
       <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this owner.</div>
       <div id="${p}_otherEntityWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this owner.</div>
       <div id="${p}_personFields" class="bn-hidden">
-        <h3 class="section-subheading">Natural person details</h3>
+        <h3 class="section-subheading">Individual person details</h3>
         <div class="field-row cols-3">
           <div class="field"><label for="${p}_first">First name</label><div class="error-text">Enter the first name</div><input type="text" id="${p}_first" required oninput="updateCardHeader('${p}')" maxlength="100"></div>
           <div class="field"><label for="${p}_middle">Middle name <span class="optional">(optional)</span></label><input type="text" id="${p}_middle" maxlength="100"></div>
@@ -1520,7 +1527,7 @@ function buildOwnerFields(prefix, index, opts) {
         <h3 class="section-subheading">Entity details</h3>
         <div class="field"><label for="${p}_oeName">Entity name</label><div class="error-text">Enter the entity name</div><input type="text" id="${p}_oeName" required oninput="updateCardHeader('${p}')" maxlength="200"></div>
         <div class="field-row">
-          <div class="field"><label for="${p}_oeType">Entity type</label><div class="error-text">Enter the entity type</div><input type="text" id="${p}_oeType" required maxlength="200"></div>
+          <div class="field"><label for="${p}_oeType">Entity type</label><div class="error-text">Enter the entity type</div><input type="text" id="${p}_oeType" required placeholder="e.g. cooperative, foreign company" maxlength="200"></div>
           <div class="field"><label for="${p}_oeRegNo">Registration number <span class="optional">(optional)</span></label><input type="text" id="${p}_oeRegNo" maxlength="50"></div>
         </div>
         <div class="field"><label for="${p}_oeJurisdiction">Home jurisdiction</label><div class="error-text">Select the home jurisdiction</div><select id="${p}_oeJurisdiction" required>${countryOptions()}</select></div>
@@ -1551,6 +1558,7 @@ function buildOwnerFields(prefix, index, opts) {
 function buildForeignInvestmentField(prefix, skipLabel) {
   return `
     <div class="field">${skipLabel ? '' : '<label class="question-label">Are any of the owners foreign investors?</label>'}
+      <p style="font-weight:600;margin:8px 0;">If any owner is not a Kiribati citizen, select Yes.</p>
       <details class="name-rules" style="margin: 8px 0 12px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -1591,6 +1599,7 @@ function buildNomineeField(prefix, skipLabel, isChange, opts) {
   if (opts) boOpts[prefix] = opts;
   return `
     <div class="field">${skipLabel ? '' : '<label class="question-label">Are any of the owners nominees or trustees for someone else?</label>'}
+      <p style="font-weight:600;margin:8px 0;">If you own the business on somebody else's behalf, select Yes.</p>
       <details class="name-rules" style="margin: 8px 0 12px;">
         <summary>What is a nominee or trustee owner? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -1717,7 +1726,7 @@ function buildBusinessActivityField(prefix, skipLabel) {
 function buildBusinessAddressFields(prefix) {
   const uid = prefix + 'Biz';
   return `
-    <div class="field"><label for="${uid}_addr1">Village, PO Box, or street address</label>
+    <div class="field"><label for="${uid}_addr1">Village (or street number and street name)</label>
       <div class="error-text">Enter the address</div><input type="text" id="${uid}_addr1" required maxlength="200"></div>
     <div class="field"><label for="${uid}_addr2">Second line <span class="optional">(optional)</span></label>
       <input type="text" id="${uid}_addr2" maxlength="200"></div>
@@ -1738,9 +1747,9 @@ function buildDateField(prefix, label, yearStart, yearEnd) {
     <div class="field">${label ? `<label>${label}</label>` : ''}
       <div class="error-text">Select the ${label ? label.toLowerCase() : 'date'}</div>
       <div class="date-row">
-        <div class="field"><label for="${prefix}_dd" class="optional" style="font-weight:400">Day</label><select id="${prefix}_dd" required>${dayOptions()}</select></div>
-        <div class="field"><label for="${prefix}_mm" class="optional" style="font-weight:400">Month</label><select id="${prefix}_mm" required>${monthOptions()}</select></div>
-        <div class="field"><label for="${prefix}_yyyy" class="optional" style="font-weight:400">Year</label><select id="${prefix}_yyyy" required>${yearOptions(yearStart, yearEnd)}</select></div>
+        <div class="field"><label for="${prefix}_dd" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Day</label><select id="${prefix}_dd" required>${dayOptions()}</select></div>
+        <div class="field"><label for="${prefix}_mm" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Month</label><select id="${prefix}_mm" required>${monthOptions()}</select></div>
+        <div class="field"><label for="${prefix}_yyyy" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Year</label><select id="${prefix}_yyyy" required>${yearOptions(yearStart, yearEnd)}</select></div>
       </div>
     </div>
   `;
@@ -1875,12 +1884,12 @@ function buildOwnerRemovalCard(prefix, index) {
       <h3 class="section-subheading">Date of removal</h3>
       ${buildDateField(p + '_date', '')}
       <h3 class="section-subheading">Owner being removed</h3>
-      <div class="field"><label>Owner type</label>
+      <div class="field">
         <div class="error-text">Select an owner type</div>
         <div class="radio-group">
-          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="person" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Natural person</strong></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="person" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="ki_company" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="other_entity" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">All legal entities that are not registered companies in Kiribati. Examples include cooperatives, foreign companies with no operations in Kiribati, foreign limited liability partnerships, and foreign incorporated associations.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="other_entity" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
         </div>
       </div>
       <div id="${p}_rmPersonFields" class="bn-hidden">
@@ -1999,7 +2008,7 @@ function updateManifestCount(prefix) {
         <div class="field"><label>Owner type</label>
           <div class="error-text">Select an owner type</div>
           <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="${p}_type" value="person" required onchange="updateManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><span>Natural person</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_type" value="person" required onchange="updateManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><span>Individual person</span></label>
             <label class="radio-option"><input type="radio" name="${p}_type" value="other_entity" required onchange="updateManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><span>Other registered entity</span></label>
           </div>
         </div>
@@ -2079,8 +2088,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
 
       ${isPerson ? `
       <h3 class="section-subheading">What change are you making?</h3>
-      <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-        <div class="radio-group">
+      <div class="field">        <div class="radio-group">
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="name" onchange="ownerUpdFieldsChange('${p}')"><span>Name</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="nationality" onchange="ownerUpdFieldsChange('${p}')"><span>Nationality or nationalities</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="gender" onchange="ownerUpdFieldsChange('${p}')"><span>Gender</span></label>
@@ -2132,8 +2140,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       ${buildAddressFields(p, true)}
       ` : `
       <h3 class="section-subheading">What change are you making?</h3>
-      <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-        <div class="radio-group">
+      <div class="field">        <div class="radio-group">
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="entity_name" onchange="ownerUpdFieldsChange('${p}')"><span>Entity name</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="entity_type" onchange="ownerUpdFieldsChange('${p}')"><span>Entity type</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="reg_number" onchange="ownerUpdFieldsChange('${p}')"><span>Registration number</span></label>
@@ -2157,7 +2164,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       <div id="${p}_entityRegWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this owner.</div>
       <div class="field"><label>Entity name <span id="${p}_badge_oeName" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the entity name</div><input type="text" id="${p}_oeName" required oninput="updateCardHeader('${p}')" maxlength="200"></div>
       <div class="field-row">
-        <div class="field"><label>Entity type <span id="${p}_badge_oeType" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the entity type</div><input type="text" id="${p}_oeType" required maxlength="200"></div>
+        <div class="field"><label>Entity type <span id="${p}_badge_oeType" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the entity type</div><input type="text" id="${p}_oeType" required placeholder="e.g. cooperative, foreign company" maxlength="200"></div>
         <div class="field"><label>Registration number <span class="optional">(optional)</span> <span id="${p}_badge_oeReg" class="badge-changing">UPDATING</span></label><input type="text" id="${p}_oeRegNo" maxlength="50"></div>
       </div>
       <div class="field"><label>Home jurisdiction <span id="${p}_badge_oeJuris" class="badge-changing">UPDATING</span></label><div class="error-text">Select the home jurisdiction</div><select id="${p}_oeJurisdiction" required>${countryOptions()}</select></div>
@@ -2389,7 +2396,7 @@ function buildBN2Form(taskDef) {
     {
       title: 'What month do you want your annual return to be due?',
       desc: '',
-      html: `<div class="info-box amber">The requested new annual return month cannot result in an annual return not being submitted in a calendar year.</div>
+      html: `<div class="info-box amber">You must file one annual return every year. The new month you choose must not create a gap where no return is filed in a calendar year.</div>
       <div class="field">
         <div class="error-text">Select a month</div>
         <select id="${p}_returnMonth" required>${monthOptions()}</select>
@@ -2443,9 +2450,9 @@ function buildBN3Form(taskDef) {
       sectionKey: 'foreign_date'
     },
     {
-      title: 'Foreign investment',
+      title: 'After this change, are any of the owners foreign investors?',
       desc: '',
-      html: buildForeignInvestmentField(p),
+      html: buildForeignInvestmentField(p, true),
       conditional: () => getChecked('bn3_sections').includes('foreign'),
       sectionKey: 'foreign'
     },
@@ -2511,9 +2518,9 @@ function buildBN3Form(taskDef) {
       sectionKey: 'nominee_date'
     },
     {
-      title: 'Nominee or trustee owners',
+      title: 'After this change, are any of the owners nominees or trustees?',
       desc: '',
-      html: buildNomineeField(p, false, true),
+      html: buildNomineeField(p, true, true),
       conditional: () => getChecked('bn3_sections').includes('nominee'),
       sectionKey: 'nominee'
     },
@@ -2525,7 +2532,7 @@ function buildBN3Form(taskDef) {
       sectionKey: 'address_date'
     },
     {
-      title: 'Where is the main place the business operates from?',
+      title: 'What is the new main place the business operates from?',
       desc: '',
       html: buildBusinessAddressFields(p),
       conditional: () => getChecked('bn3_sections').includes('address'),
@@ -2539,7 +2546,7 @@ function buildBN3Form(taskDef) {
       sectionKey: 'activities_date'
     },
     {
-      title: 'What are your business activities?',
+      title: 'What are your new business activities?',
       desc: '',
       html: '<div class="info-box amber">Select <strong>all business activities</strong> that the business does after the change. Not just those that have changed.</div>' +
             buildBusinessActivityField(p, true),
@@ -2821,21 +2828,15 @@ function startWizard(taskId) {
     <div class="step" id="step_success" style="display:none">
       <div class="success-screen">
         <div class="confirmation-panel">
-          <div class="icon" aria-hidden="true">✓</div>
-          <h3>Your form is ready</h3>
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block;margin:auto;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Save and upload to finish</h3>
         </div>
         <div class="confirmation-body">
-          <!-- NOT SUBMITTED warning -->
-          <div class="not-submitted-warning" role="alert">
-            <div class="warn-icon" aria-hidden="true">!</div>
-            <div class="warn-text">
-              <div class="warn-main">Not submitted yet</div>
-              <div class="warn-sub">Save this file, then upload it to your registry account.</div>
-              <div class="warn-bilingual" id="warningBilingual"></div>
-            </div>
-          </div>
 
-          <!-- Save section: file info + save button in one card -->
+          <!-- Step 1: Save -->
+          <div class="step-label">Step 1 — Save</div>
           <div class="save-section" id="saveSection">
             <div class="save-file-row">
               <div class="save-file-icon" aria-hidden="true">PDF</div>
@@ -2844,14 +2845,21 @@ function startWizard(taskId) {
                 <div class="save-file-size" id="successFileSize"></div>
               </div>
             </div>
-            <!-- iOS save hint (shown inside card on iOS) -->
             <div class="ios-hint" id="iosHint" style="display:none"></div>
             <button class="btn-save-pdf" id="btnSavePdf">Save to your device</button>
           </div>
 
-          <!-- Registry upload guide (populated dynamically in finalizePdf based on form type) -->
+          <!-- Step 2: Upload -->
+          <div class="step-label">Step 2 — Upload</div>
           <div class="registry-guide">
-            <div class="guide-heading">Next: Upload to the Online Business Registry</div>
+            <div class="not-submitted-warning" role="alert">
+              <div class="warn-icon" aria-hidden="true">!</div>
+              <div class="warn-text">
+                <div class="warn-main">Your form is not submitted yet</div>
+                <div class="warn-sub">After saving, upload this file to your Online Business Registry account.</div>
+                <div class="warn-bilingual" id="warningBilingual"></div>
+              </div>
+            </div>
             <ol id="guideSteps"></ol>
             <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
           </div>
@@ -3104,7 +3112,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !entityNamePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Name contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Name contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3115,7 +3123,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !prosePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3125,7 +3133,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !prosePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3141,7 +3149,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !addressPattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });

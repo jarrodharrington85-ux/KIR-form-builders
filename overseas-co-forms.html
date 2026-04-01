@@ -68,8 +68,8 @@ legend { padding: 0; }
 ::placeholder { color: #767676; opacity: 1; }
 
 /* Heading resets for semantic elements */
-h2.step-title { font-size: 1.15em; }
-h3.section-subheading, h3.sh-subheading { font-size: 1.2em; }
+h2.step-title { font-size: 1.3em; }
+h3.section-subheading, h3.sh-subheading { font-size: 1.05em; }
 
 /* Step title focus (set programmatically) */
 .step-title:focus { outline: none; }
@@ -415,6 +415,11 @@ body {
 .step-desc + .sh-subheading {
   border-top: none; margin-top: 0; padding-top: 0;
 }
+.owner-card .section-subheading,
+.dir-card .section-subheading,
+.dir-card .sh-subheading {
+  font-size: 0.92em; font-weight: 600;
+}
 .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); color: #333; }
 .info-box.blue strong { color: var(--blue); }
 .info-box.amber { background: #fff8e6; border-left: 4px solid #d4a017; color: #333; }
@@ -553,26 +558,33 @@ body {
 /* Success / PDF download */
 .success-screen { padding: 0; margin: 0; }
 .success-screen .confirmation-panel {
-  background: #1a8a6e; color: #fff;
+  background: #fff3e0; color: #7a5a00;
   padding: 32px 20px 28px; text-align: center;
 }
 .success-screen .confirmation-panel .icon {
   width: 52px; height: 52px; border-radius: 50%;
-  border: 3px solid #fff; color: #fff;
-  font-size: 26px; font-weight: bold;
+  background: #e68a00; color: #fff;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
-.co-form-container .success-screen h3 { color: #fff; margin-bottom: 0; font-size: 1.55em; }
+.co-form-container .success-screen h3 { color: #7a5a00; margin-bottom: 0; font-size: 1.55em; }
 .success-screen .confirmation-body { padding: 20px 20px 24px; text-align: center; max-width: 520px; margin: 0 auto; }
 .co-form-container .success-screen .confirmation-body h4 { font-size: 1.15em; color: var(--text); margin-bottom: 12px; }
 .co-form-container .success-screen p { color: var(--text-mid); margin-bottom: 12px; font-size: 0.95em; line-height: 1.55; }
 .co-form-container .success-screen p:last-of-type { margin-bottom: 28px; }
+/* Step labels */
+.success-screen .step-label {
+  font-size: 0.8em; font-weight: 600; color: #888;
+  text-transform: uppercase; letter-spacing: 0.3px; margin: 0 0 8px 0;
+}
 /* Not-submitted warning */
 .success-screen .not-submitted-warning {
   background: #fff8e6; border: 2px solid #d4a017; border-radius: 6px;
   padding: 14px 16px; margin: 0 0 18px; text-align: left;
   display: flex; align-items: flex-start; gap: 12px;
+}
+.success-screen .registry-guide .not-submitted-warning {
+  background: none; border: none; padding: 0; margin: 0 0 12px 0;
 }
 .not-submitted-warning .warn-icon {
   width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #fff;
@@ -611,23 +623,20 @@ body {
 .success-screen .btn-save-pdf:hover { background: #0d4a3e; border-color: #0d4a3e; }
 /* Registry guide */
 .success-screen .registry-guide {
-  text-align: left; font-size: 0.88em; line-height: 1.6; color: #333;
-  padding: 16px; margin: 0 0 4px;
-  background: #f9fafb; border: 1.5px solid #ddd; border-radius: 8px;
-}
-.registry-guide .guide-heading {
-  font-weight: 700; color: var(--text); font-size: 1em; margin-bottom: 10px;
-  padding-bottom: 6px; border-bottom: 1px solid #e0e0e0;
+  text-align: left; font-size: 0.88em; line-height: 1.6; color: #7a5a00;
+  padding: 14px; margin: 0 0 4px;
+  background: #fff3e0; border: 1px solid #f0c000; border-radius: 8px;
 }
 .registry-guide ol { padding-left: 20px; margin: 0 0 16px; }
 .registry-guide li { margin-bottom: 5px; }
 .registry-guide strong { color: #222; }
 .success-screen .btn-registry {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  display: block; text-align: center;
   width: 100%; padding: 14px 24px; background: var(--blue); color: #fff;
   border: 2px solid var(--blue); border-radius: 4px;
   font-size: 1.19em; font-weight: 700; cursor: pointer;
   font-family: inherit; text-decoration: none;
+  margin-left: auto; margin-right: auto;
 }
 .success-screen .btn-registry:hover { background: #003d99; border-color: #003d99; }
 .success-screen .btn-registry:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -798,16 +807,20 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 .site-footer .footer-inner {
-  display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;
   max-width: 1200px; margin: 0 auto;
 }
-.site-footer .footer-left { flex: 1; margin-bottom: 25px; }
+.site-footer .footer-text-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 14px;
+}
+.site-footer .footer-logos-row {
+  display: flex; justify-content: flex-end; margin-bottom: 25px;
+}
 .site-footer .footer-ministry {
   font-weight: 700; font-size: 18px; margin: 0 0 10px;
   color: #fff; display: flex; align-items: center; gap: 14px; line-height: 1.3;
 }
 .site-footer .footer-ministry img { height: 60px; width: 60px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-.site-footer .footer-right { text-align: right; margin-bottom: 25px; }
 .site-footer .footer-support-label { font-weight: 600; font-size: 16px; color: #E0E0E0; display: block; margin-bottom: 10px; }
 .site-footer .footer-logos { background: #fff; padding: 12px 15px; display: inline-block; border-radius: 4px; }
 .site-footer .footer-logos img { max-height: 55px; width: auto; display: block; }
@@ -821,8 +834,8 @@ body {
   box-sizing: border-box; display: none; }
   .site-header .header-mobile { display: block; }
   .site-header { border-bottom-width: 3px; }
-  .site-footer .footer-inner { flex-direction: column; }
-  .site-footer .footer-right { text-align: left; margin-top: 10px; }
+  .site-footer .footer-text-row { flex-direction: column; gap: 4px; }
+  .site-footer .footer-logos-row { justify-content: flex-start; }
 }
 @media (max-width: 600px) {
   .site-header .header-mobile a { padding: 12px 12px; min-height: 44px; }
@@ -889,7 +902,7 @@ body {
 <div class="site-header" id="siteHeader" role="banner">
   <div class="header-inner">
     <a href="#" class="header-brand" onclick="return false;">
-      <img src="/Images/Site/KI/mtcic-logo.png" alt="business.gov.ki logo" class="header-logo"
+      <img src="mtcic-logo.png" alt="business.gov.ki logo" class="header-logo"
            onerror="this.style.display='none'">
       <div>
         <div class="header-title">business.gov.ki</div>
@@ -941,15 +954,15 @@ body {
 
 <div class="site-footer" id="siteFooter" role="contentinfo">
   <div class="footer-inner">
-    <div class="footer-left">
+    <div class="footer-text-row">
       <div class="footer-ministry">
         Ministry of Tourism, Commerce, Industry and Cooperatives
       </div>
-    </div>
-    <div class="footer-right">
       <span class="footer-support-label">Proudly supported by</span>
+    </div>
+    <div class="footer-logos-row">
       <div class="footer-logos">
-        <img src="/Images/Site/KI/footer_logo.jpg" alt="Supported by ADB, Australian Aid, and New Zealand Aid"
+        <img src="footer-logo.jpg" alt="Supported by ADB, Australian Aid, and New Zealand Aid"
              onerror="this.parentElement.innerHTML='ADB &middot; Australian Aid &middot; NZ Aid'">
       </div>
     </div>
@@ -1400,8 +1413,9 @@ function buildSignatureFields(prefix, hasAttachments, skipCapacity) {
     : 'I certify that the information provided on this form is true and correct.';
   return `
     <div class="info-box blue">${declText}</div>
-    <div class="field"><label for="${prefix}_sigName">Full legal name (as signature)</label>
+    <div class="field"><label for="${prefix}_sigName">Full legal name</label>
       <div class="error-text">Enter the full legal name of the person signing</div><input type="text" id="${prefix}_sigName" required maxlength="200"></div>
+    <p style="font-size:0.85em;color:#555;margin:-4px 0 8px;">By typing your name here, you are signing this form.</p>
     ${skipCapacity ? '' : `<div class="field"><label id="${prefix}_capLbl">Signing authority</label>
       <div class="radio-group" role="group" aria-labelledby="${prefix}_capLbl">
         <label class="radio-option"><input type="radio" name="${prefix}_sigCapacity" value="Director" required><span>Director</span></label>
@@ -1420,9 +1434,9 @@ function buildDateField(prefix, label, yearStart, yearEnd) {
     <div class="field">${label ? `<label>${label}</label>` : ''}
       <div class="error-text">Select the ${label ? label.toLowerCase() : 'date'}</div>
       <div class="date-row">
-        <div class="field"><label for="${prefix}_dd" class="optional" style="font-weight:400">Day</label><select id="${prefix}_dd" required>${dayOptions()}</select></div>
-        <div class="field"><label for="${prefix}_mm" class="optional" style="font-weight:400">Month</label><select id="${prefix}_mm" required>${monthOptions()}</select></div>
-        <div class="field"><label for="${prefix}_yyyy" class="optional" style="font-weight:400">Year</label><select id="${prefix}_yyyy" required>${yearOptions(yearStart, yearEnd)}</select></div>
+        <div class="field"><label for="${prefix}_dd" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Day</label><select id="${prefix}_dd" required>${dayOptions()}</select></div>
+        <div class="field"><label for="${prefix}_mm" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Month</label><select id="${prefix}_mm" required>${monthOptions()}</select></div>
+        <div class="field"><label for="${prefix}_yyyy" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Year</label><select id="${prefix}_yyyy" required>${yearOptions(yearStart, yearEnd)}</select></div>
       </div>
     </div>
   `;
@@ -1700,7 +1714,7 @@ function updateShManifestCount(prefix) {
         <div class="field"><label>Shareholder type</label>
           <div class="error-text">Select a shareholder type</div>
           <div class="radio-group">
-            <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" required onchange="updateShManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><div><strong>Natural person</strong></div></label>
+            <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" required onchange="updateShManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><div><strong>Individual person</strong></div></label>
             <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="updateShManifestType('${prefix}', ${i}); updateCardHeader('${p}')"><div><strong>Other registered entity</strong></div></label>
           </div>
         </div>
@@ -1770,8 +1784,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
       <!-- Checkboxes: natural person -->
       ${isPerson ? `<div id="${p}_chkNatural">
         <h3 class="section-subheading">What change are you making?</h3>
-        <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-          <div class="radio-group">
+        <div class="field">          <div class="radio-group">
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="name" onchange="shChngFieldsChange('${p}', 'natural')"><span>Name</span></label>
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="nationality" onchange="shChngFieldsChange('${p}', 'natural')"><span>Nationality or nationalities</span></label>
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="gender" onchange="shChngFieldsChange('${p}', 'natural')"><span>Gender</span></label>
@@ -1784,8 +1797,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
       <!-- Checkboxes: other entity -->
       ${isEntity ? `<div id="${p}_chkOther">
         <h3 class="section-subheading">What change are you making?</h3>
-        <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-          <div class="radio-group">
+        <div class="field">          <div class="radio-group">
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="entity_name" onchange="shChngFieldsChange('${p}', 'other_entity')"><span>Entity name</span></label>
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="entity_type" onchange="shChngFieldsChange('${p}', 'other_entity')"><span>Entity type</span></label>
             <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="reg_number" onchange="shChngFieldsChange('${p}', 'other_entity')"><span>Registration number</span></label>
@@ -2046,7 +2058,7 @@ function buildAuthorisedPersonFields(prefix) {
   return `
     <div class="field"><label class="question-label">The authorised person is a:</label>
       <div class="radio-group">
-        <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="person" required onchange="authTypeChange('${p}')"><div><strong>Natural person</strong></div></label>
+        <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="person" required onchange="authTypeChange('${p}')"><div><strong>Individual person</strong></div></label>
         <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="company" required onchange="authTypeChange('${p}')"><div><strong>Registered company in Kiribati</strong></div></label>
       </div>
       <div class="error-text">Select an option</div>
@@ -2241,9 +2253,9 @@ function buildOcShCard(formPrefix, idx) {
       <h3 class="sh-subheading">Shareholder type</h3>
       <div class="field">
         <div class="radio-group">
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" ${req} onchange="shTypeChange('${p}')"><div><strong>Natural person</strong></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" ${req} onchange="shTypeChange('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="kiribati_co" onchange="shTypeChange('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">All legal entities that are not registered companies in Kiribati. Examples include cooperatives, foreign companies with no operations in Kiribati, foreign limited liability partnerships, and foreign incorporated associations.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
         </div>
         <div class="error-text">Select a shareholder type</div>
       </div>
@@ -2286,7 +2298,7 @@ function buildOcShCard(formPrefix, idx) {
 
       <div id="${p}_kiribati_co" class="co-hidden">
         <h3 class="sh-subheading">Shareholder details</h3>
-        <div class="field"><label>Entity name</label><div class="error-text">Enter the entity name</div><input type="text" id="${p}_entityName" data-req maxlength="200" oninput="updateCardHeader('${p}')"></div>
+        <div class="field"><label>Company name</label><div class="error-text">Enter the company name</div><input type="text" id="${p}_entityName" data-req maxlength="200" oninput="updateCardHeader('${p}')"></div>
         <div class="field"><label>Registration number</label><div class="error-text">Enter the registration number</div><input type="text" id="${p}_entityReg" data-req maxlength="50"></div>
       </div>
 
@@ -2404,6 +2416,12 @@ function buildCO0aForm(taskDef) {
     {
       title: 'Is there more than one class of shares?',
       html: `
+        <details class="name-rules" style="margin: 0 0 12px;">
+          <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
+          <div class="name-rules-content">
+            <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
+          </div>
+        </details>
         <div class="field">
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
@@ -2549,6 +2567,12 @@ function buildCO20Form(taskDef) {
     {
       title: 'Is there more than one class of shares?',
       html: `
+        <details class="name-rules" style="margin: 0 0 12px;">
+          <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
+          <div class="name-rules-content">
+            <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
+          </div>
+        </details>
         <div class="field">
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
@@ -2730,7 +2754,7 @@ function buildCO22Form(taskDef) {
         <div id="${p}_waiverFields" class="co-hidden">
           <div class="field"><label for="${p}_waiverReason">Explain why</label>
             <div class="error-text">Enter the basis for your request</div>
-            <textarea id="${p}_waiverReason" rows="4" required maxlength="1000" placeholder="Explain the basis for your waiver request"></textarea></div>
+            <textarea id="${p}_waiverReason" rows="4" required maxlength="1000" placeholder="Why are you asking the Registrar to not require an additional annual return?"></textarea></div>
         </div>
         <div class="info-box blue">There is no guarantee this request will be granted.<br><br>Requests are more likely to succeed where you are not a director or shareholder of the company.</div>`
     },
@@ -2835,8 +2859,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
 
       ${isChanged ? `<div class="info-box blue">You must provide full details of the director, including details that have not changed.</div>
       <h3 class="section-subheading">What change are you making?</h3>
-      <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-        <div class="radio-group">
+      <div class="field">        <div class="radio-group">
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="name" onchange="dirChngFieldsChange('${p}')"><span>Name of director</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="nationality" onchange="dirChngFieldsChange('${p}')"><span>Nationality or nationalities</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="gender" onchange="dirChngFieldsChange('${p}')"><span>Gender</span></label>
@@ -2991,8 +3014,7 @@ function buildOcDirChangeCard(prefix, idx, manifest) {
 
       <div class="info-box blue">You must provide full details of the director, including details that have not changed.</div>
       <h3 class="section-subheading">What change are you making?</h3>
-      <div class="field"><label class="question-label">Indicate all the details you want to change</label>
-        <div class="radio-group">
+      <div class="field">        <div class="radio-group">
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="name" onchange="dirChngFieldsChange('${p}')"><span>Name of director</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="nationality" onchange="dirChngFieldsChange('${p}')"><span>Nationality or nationalities</span></label>
           <label class="checkbox-option"><input type="checkbox" name="${p}_chngFields" value="gender" onchange="dirChngFieldsChange('${p}')"><span>Gender</span></label>
@@ -3263,7 +3285,7 @@ function buildCO25Form(taskDef) {
     },
     {
       title: 'What do you want to change?',
-      html: `<div class="field">
+      html: `<div class="info-box blue" style="margin-bottom:12px;"><strong>Registered office address:</strong> the official address where legal documents are sent.<br><strong>Postal address:</strong> where you receive mail.<br><strong>Principal place of business:</strong> the main location where your company operates.</div><div class="field">
           <div class="checkbox-group" id="${p}_sectionSelect">
             <label class="checkbox-option"><input type="checkbox" name="${p}_sections" value="registered" onchange="co25ToggleSections()"><span>Registered office address</span></label>
             <label class="checkbox-option"><input type="checkbox" name="${p}_sections" value="postal" onchange="co25ToggleSections()"><span>Postal address</span></label>
@@ -3274,27 +3296,32 @@ function buildCO25Form(taskDef) {
         </div>`
     },
     {
-      title: 'Registered office address',
+      title: 'When did the registered office address change?',
+      desc: '',
       conditional: () => getChecked('co25_sections').includes('registered'),
-      sectionKey: 'registered',
-      html: `<h3 class="section-subheading">Date of change</h3>` +
-        buildDateField(p + '_regDate', '', 2026, 0) +
-        `<h3 class="section-subheading">Effective date for the change</h3>` +
-        buildDateField(p + '_regEffDate', '', 2026, 0) +
-        `<div class="info-box amber">This notice must be filed within 14 days of the change in the registered office address. The effective date for the change of registered office address will be 7 days from the date the notice is processed by the Registry.</div>` +
-        buildKiribatiAddressFields(p + '_regAddr', 'New registered office address')
+      sectionKey: 'registered_date',
+      html: buildDateField(p + '_regDate', '', 2026, 0) +
+        `<div class="info-box amber">This notice must be filed within 14 days of the change in the registered office address. The effective date for the change of registered office address will be 7 days from the date the notice is processed by the Registry.</div>`
     },
     {
-      title: 'Postal address',
+      title: 'What is the company\'s new registered office address?',
+      conditional: () => getChecked('co25_sections').includes('registered'),
+      sectionKey: 'registered',
+      html: buildKiribatiAddressFields(p + '_regAddr', '')
+    },
+    {
+      title: 'When did the postal address change?',
+      desc: '',
+      conditional: () => getChecked('co25_sections').includes('postal'),
+      sectionKey: 'postal_date',
+      html: buildDateField(p + '_postalDate', '', 2026, 0) +
+        `<div class="info-box amber">This notice must be filed within 14 days of the change in the postal address. The effective date for the change of postal address will be 7 days from the date the notice is processed by the Registry.</div>`
+    },
+    {
+      title: 'What is the company\'s new postal address?',
       conditional: () => getChecked('co25_sections').includes('postal'),
       sectionKey: 'postal',
-      html: `<h3 class="section-subheading">Date of change</h3>` +
-        buildDateField(p + '_postalDate', '', 2026, 0) +
-        `<h3 class="section-subheading">Effective date for the change</h3>` +
-        buildDateField(p + '_postalEffDate', '', 2026, 0) +
-        `<div class="info-box amber">This notice must be filed within 14 days of the change in the postal address. The effective date for the change of postal address will be 7 days from the date the notice is processed by the Registry.</div>` +
-        `<h3 class="section-subheading">New postal address</h3>
-        <div class="field"><label for="${p}_postalAddr_addr1">P.O. Box / Postal Office / Street number and street name</label>
+      html: `<div class="field"><label for="${p}_postalAddr_addr1">P.O. Box / Postal Office / Street number and street name</label>
           <div class="error-text">Enter the address</div><input type="text" id="${p}_postalAddr_addr1" required maxlength="200"></div>
         <div class="field"><label for="${p}_postalAddr_addr2">Second line <span class="optional">(optional)</span></label>
           <input type="text" id="${p}_postalAddr_addr2" maxlength="200"></div>
@@ -3302,24 +3329,32 @@ function buildCO25Form(taskDef) {
           <div class="error-text">Select the island</div><select id="${p}_postalAddr_island" required>${islandOptions()}</select></div>`
     },
     {
-      title: 'Principal place of business',
+      title: 'When did the principal place of business address change?',
+      desc: '',
       conditional: () => getChecked('co25_sections').includes('principal'),
-      sectionKey: 'principal',
-      html: `<h3 class="section-subheading">Date of change</h3>` +
-        buildDateField(p + '_bizDate', '', 2026, 0) +
-        `<h3 class="section-subheading">Effective date for the change</h3>` +
-        buildDateField(p + '_bizEffDate', '', 2026, 0) +
-        `<div class="info-box amber">This notice must be filed within 14 days of the change in the principal place of business address. The effective date for the change of the principal place of business address will be 7 days from the date the notice is processed by the Registry.</div>` +
-        buildKiribatiAddressFields(p + '_bizAddr', 'New principal place of business address')
+      sectionKey: 'principal_date',
+      html: buildDateField(p + '_bizDate', '', 2026, 0) +
+        `<div class="info-box amber">This notice must be filed within 14 days of the change in the principal place of business address. The effective date for the change of the principal place of business address will be 7 days from the date the notice is processed by the Registry.</div>`
     },
     {
-      title: 'Authorised person in Kiribati',
+      title: 'What is the company\'s new principal place of business address?',
+      conditional: () => getChecked('co25_sections').includes('principal'),
+      sectionKey: 'principal',
+      html: buildKiribatiAddressFields(p + '_bizAddr', '')
+    },
+    {
+      title: 'When did the authorised person change?',
+      desc: '',
+      conditional: () => getChecked('co25_sections').includes('authperson'),
+      sectionKey: 'authperson_date',
+      html: buildDateField(p + '_authDate', '', 2026, 0) +
+        `<div class="info-box amber">This notice must be filed within 14 days of the change in the authorised person.</div>`
+    },
+    {
+      title: 'Who is the company\'s new authorised person in Kiribati?',
       conditional: () => getChecked('co25_sections').includes('authperson'),
       sectionKey: 'authperson',
-      html: `<h3 class="section-subheading">Date of change</h3>` +
-        buildDateField(p + '_authDate', '', 2026, 0) +
-        `<div class="info-box amber">This notice must be filed within 14 days of the change in the authorised person.</div>` +
-        `<div class="info-box blue">Every overseas company must have an authorised person in Kiribati who can accept service of documents on behalf of the company.</div>` +
+      html: `<div class="info-box blue">Every overseas company must have an authorised person in Kiribati who can accept service of documents on behalf of the company.</div>` +
         buildAuthorisedPersonFields(p)
     },
     {
@@ -3372,7 +3407,7 @@ function buildCO27Form(taskDef) {
       html: buildDateField(p + '_changeDate', '', 2026, 0)
     },
     {
-      title: 'What business activities does your company do?',
+      title: 'What are your company\'s new business activities?',
       html: `<div class="info-box blue"><strong>Important:</strong> You must confirm <strong>all</strong> business activities the company does, not just the information that has changed.</div>` +
         buildBusinessActivityField(p, true)
     },
@@ -3463,21 +3498,15 @@ function startWizard(taskId) {
     <div class="step" id="step_success" style="display:none">
       <div class="success-screen">
         <div class="confirmation-panel">
-          <div class="icon" aria-hidden="true">✓</div>
-          <h3>Your form is ready</h3>
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block;margin:auto;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Save and upload to finish</h3>
         </div>
         <div class="confirmation-body">
-          <!-- NOT SUBMITTED warning -->
-          <div class="not-submitted-warning" role="alert">
-            <div class="warn-icon" aria-hidden="true">!</div>
-            <div class="warn-text">
-              <div class="warn-main">Not submitted yet</div>
-              <div class="warn-sub">Save this file, then upload it to your registry account.</div>
-              <div class="warn-bilingual" id="warningBilingual"></div>
-            </div>
-          </div>
 
-          <!-- Save section: file info + save button -->
+          <!-- Step 1: Save -->
+          <div class="step-label">Step 1 — Save</div>
           <div class="save-section" id="saveSection">
             <div class="save-file-row">
               <div class="save-file-icon" aria-hidden="true">PDF</div>
@@ -3490,9 +3519,17 @@ function startWizard(taskId) {
             <button class="btn-save-pdf" id="btnSavePdf">Save to your device</button>
           </div>
 
-          <!-- Registry upload guide -->
+          <!-- Step 2: Upload -->
+          <div class="step-label">Step 2 — Upload</div>
           <div class="registry-guide">
-            <div class="guide-heading">Next: Upload to the Online Business Registry</div>
+            <div class="not-submitted-warning" role="alert">
+              <div class="warn-icon" aria-hidden="true">!</div>
+              <div class="warn-text">
+                <div class="warn-main">Your form is not submitted yet</div>
+                <div class="warn-sub">After saving, upload this file to your Online Business Registry account.</div>
+                <div class="warn-bilingual" id="warningBilingual"></div>
+              </div>
+            </div>
             <ol id="guideSteps"></ol>
             <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
           </div>
@@ -3823,7 +3860,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !entityNamePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Name contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Name contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3834,7 +3871,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !prosePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3844,7 +3881,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !prosePattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -3860,7 +3897,7 @@ function validateCurrentStep() {
     const v = inp.value.trim();
     if (v && !addressPattern.test(v)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'This field contains characters that are not allowed. Use only letters, numbers, and basic punctuation'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -4382,17 +4419,14 @@ function collectFormData() {
       d.sections = getChecked('co25_sections');
       if (d.sections.includes('registered')) {
         d.regDate = collectDate('co25_regDate');
-        d.regEffDate = collectDate('co25_regEffDate');
         d.regAddr = collectKiribatiAddress('co25_regAddr');
       }
       if (d.sections.includes('postal')) {
         d.postalDate = collectDate('co25_postalDate');
-        d.postalEffDate = collectDate('co25_postalEffDate');
         d.postalAddr = { addr1: getVal('co25_postalAddr_addr1'), addr2: getVal('co25_postalAddr_addr2'), island: getVal('co25_postalAddr_island') };
       }
       if (d.sections.includes('principal')) {
         d.bizDate = collectDate('co25_bizDate');
-        d.bizEffDate = collectDate('co25_bizEffDate');
         d.bizAddr = collectKiribatiAddress('co25_bizAddr');
       }
       if (d.sections.includes('authperson')) {
@@ -4566,21 +4600,18 @@ function buildReviewContent() {
     if (d.sections.includes('registered')) {
       html += reviewSection('Registered office address', [
         ['Date of change', d.regDate],
-        ['Effective date', d.regEffDate],
         ['Address', fmtKi(d.regAddr)]
       ]);
     }
     if (d.sections.includes('postal')) {
       html += reviewSection('Postal address', [
         ['Date of change', d.postalDate],
-        ['Effective date', d.postalEffDate],
         ['Address', fmtKi(d.postalAddr)]
       ]);
     }
     if (d.sections.includes('principal')) {
       html += reviewSection('Principal place of business', [
         ['Date of change', d.bizDate],
-        ['Effective date', d.bizEffDate],
         ['Address', fmtKi(d.bizAddr)]
       ]);
     }
@@ -5140,7 +5171,6 @@ async function generatePDF() {
     if ((data.sections||[]).includes('registered')) {
       heading(nextSec + '.  Registered office address');
       row('Date of change', data.regDate);
-      row('Effective date', data.regEffDate);
       row('Address', fmtKiPdf25(data.regAddr));
       y += 2;
       nextSec++;
@@ -5148,7 +5178,6 @@ async function generatePDF() {
     if ((data.sections||[]).includes('postal')) {
       heading(nextSec + '.  Postal address');
       row('Date of change', data.postalDate);
-      row('Effective date', data.postalEffDate);
       row('Address', fmtKiPdf25(data.postalAddr));
       y += 2;
       nextSec++;
@@ -5156,7 +5185,6 @@ async function generatePDF() {
     if ((data.sections||[]).includes('principal')) {
       heading(nextSec + '.  Principal place of business');
       row('Date of change', data.bizDate);
-      row('Effective date', data.bizEffDate);
       row('Address', fmtKiPdf25(data.bizAddr));
       y += 2;
       nextSec++;
