@@ -589,6 +589,7 @@ body {
 }
 .success-screen .registry-guide .not-submitted-warning {
   background: none; border: none; padding: 0; margin: 0 0 12px 0;
+  align-items: center;
 }
 .not-submitted-warning .warn-icon {
   width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #fff;
@@ -597,7 +598,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 .not-submitted-warning .warn-text { flex: 1; }
-.not-submitted-warning .warn-main { font-size: 15px; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
+.not-submitted-warning .warn-main { font-size: 1.05em; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
 .not-submitted-warning .warn-sub { font-size: 0.82em; color: #555; line-height: 1.4; }
 .not-submitted-warning .warn-bilingual { font-size: 0.8em; color: #8a6d00; font-style: italic; margin-top: 4px; }
 /* Save section card */
@@ -617,6 +618,7 @@ body {
 .save-section .ios-hint strong { color: #333; }
 .save-section.saved { background: var(--green-light); border-color: var(--green-dark); }
 .save-section.saved .save-file-size { color: var(--green-dark); font-weight: 700; font-size: 0.88em; }
+.save-section.saved .save-file-row { margin-bottom: 0; }
 /* Save PDF button */
 .success-screen .btn-save-pdf {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -928,7 +930,7 @@ body {
 <!-- Offline detection banner -->
 <div class="offline-banner" id="offlineBanner" role="alert">
   You are currently offline
-  <div class="offline-sub">You can still fill in this form &#8212; it works without internet.</div>
+  <div class="offline-sub">You can keep typing &#8212; your answers are automatically saved to this device.</div>
 </div>
 
 <div class="co-form-container" id="app">
@@ -972,7 +974,7 @@ body {
     </div>
   </div>
   <div class="footer-copyright">
-    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives 2026
+    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives <script>document.write(new Date().getFullYear())</script>
   </div>
 </div>
 
@@ -1363,7 +1365,7 @@ function buildCompanyDetailsFields(prefix) {
       <div class="field" style="flex:1">
         <label for="${prefix}_regNumber">Registration number</label>
         <div class="error-text">Enter the registration number</div>
-        <input type="text" id="${prefix}_regNumber" required maxlength="50">
+        <input type="text" id="${prefix}_regNumber" required maxlength="50" placeholder="e.g. CO-12345">
       </div>
     </div>
   `;
@@ -1383,7 +1385,7 @@ function buildFilerFields(prefix) {
     ${buildAddressFields(prefix + '_filer', true)}
     <div class="field-row">
       <div class="field"><label for="${prefix}_filerPhone">Phone number / mobile</label>
-        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30"></div>
+        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30" placeholder="e.g. 73000000"></div>
       <div class="field"><label for="${prefix}_filerEmail">Email address</label>
         <div class="error-text">Enter a valid email address</div><input type="email" id="${prefix}_filerEmail" required autocomplete="email" maxlength="128"></div>
     </div>
@@ -1583,7 +1585,7 @@ function buildShareholderBlock(prefix, idx) {
       <div class="radio-group">
         <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" ${req} onchange="shTypeChange('${p}')"><div><strong>Individual person</strong></div></label>
         <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="kiribati_co" onchange="shTypeChange('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-        <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
+        <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
       </div>
       <div class="error-text">Select a shareholder type</div>
     </div>
@@ -1874,7 +1876,7 @@ function buildDirChangeCard(prefix, idx, manifest) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this director.</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -1885,10 +1887,10 @@ function buildDirChangeCard(prefix, idx, manifest) {
       </div>
 
       <h3 class="section-subheading">Date of change</h3>
-      ${buildDateField(p + '_date', '', 2026, 0)}
+      ${buildDateField(p + '_date', '', 0, 0)}
 
       <h3 class="section-subheading">Date company became aware of change</h3>
-      ${buildDateField(p + '_awareDate', '', 2026, 0)}
+      ${buildDateField(p + '_awareDate', '', 0, 0)}
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -1950,7 +1952,7 @@ function buildDirectorCard(prefix, idx, actionType) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeDirector('${prefix}', ${idx}, '${actionType}')" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      ${isAppointed ? '<div class="info-box amber">You must upload a Government-issued photo ID for this director.</div>' : ''}
+      ${isAppointed ? '<div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>' : ''}
 
       ${isCessation ? `<h3 class="section-subheading">Reason for cessation</h3>
       <div class="field"><label class="question-label">The director has:</label>
@@ -1974,7 +1976,7 @@ function buildDirectorCard(prefix, idx, actionType) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a Government-issued photo ID for this director.</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -1985,15 +1987,15 @@ function buildDirectorCard(prefix, idx, actionType) {
       </div>` : ''}
 
       <h3 class="section-subheading">${dateLabel}</h3>
-      ${buildDateField(p + '_date', '', isAppointed ? 0 : 2026, isAppointed ? 1950 : 0)}
+      ${buildDateField(p + '_date', '', 0, isAppointed ? 1950 : 0)}
 
       ${isCessation ? `<div id="${p}_deathAwareBlock" class="co-hidden">
         <h3 class="section-subheading">Date company became aware of death</h3>
-        ${buildDateField(p + '_deathAware', '', 2026, 0)}
+        ${buildDateField(p + '_deathAware', '', 0, 0)}
       </div>` : ''}
 
       ${isChanged ? `<h3 class="section-subheading">Date company became aware of change</h3>
-      ${buildDateField(p + '_awareDate', '', 2026, 0)}` : ''}
+      ${buildDateField(p + '_awareDate', '', 0, 0)}` : ''}
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -2240,7 +2242,7 @@ function buildCO3Form(taskDef) {
     {
       title: 'When was the change made?',
       desc: '',
-      html: buildDateField(p + '_changeDate', '', 2026, 0)
+      html: buildDateField(p + '_changeDate', '', 0, 0)
     },
     {
       title: 'What constitution does your company now have?',
@@ -2342,7 +2344,7 @@ function buildCO9Form(taskDef) {
       desc: '',
       html: `<div class="info-box amber">You must upload a copy of the court order.</div>` +
         `<div class="info-box amber">You must upload a copy of the constitution as altered or added to.</div>` +
-        buildDateField(p + '_courtDate', '', 2026, 0)
+        buildDateField(p + '_courtDate', '', 0, 0)
     },
     {
       title: 'Declaration and signature',
@@ -2383,7 +2385,7 @@ function buildCO10Form(taskDef) {
     {
       title: 'When did the registered office address change?',
       desc: '',
-      html: buildDateField(p + '_regDate', '', 2026, 0) +
+      html: buildDateField(p + '_regDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the registered office address. The effective date for the change of registered office address will be 7 days from the date the notice is processed by the Registry.</div>`,
       conditional: () => getChecked('co10_sections').includes('registered'),
       sectionKey: 'registered_date'
@@ -2398,7 +2400,7 @@ function buildCO10Form(taskDef) {
     {
       title: 'When did the postal address change?',
       desc: '',
-      html: buildDateField(p + '_postalDate', '', 2026, 0) +
+      html: buildDateField(p + '_postalDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the postal address. The effective date for the change of postal address will be 7 days from the date the notice is processed by the Registry.</div>`,
       conditional: () => getChecked('co10_sections').includes('postal'),
       sectionKey: 'postal_date'
@@ -2418,7 +2420,7 @@ function buildCO10Form(taskDef) {
     {
       title: 'When did the main place of business address change?',
       desc: '',
-      html: buildDateField(p + '_bizDate', '', 2026, 0) +
+      html: buildDateField(p + '_bizDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the main (principal) place of business address. The effective date for the change of the main (principal) place of business address will be 7 days from the date the notice is processed by the Registry.</div>`,
       conditional: () => getChecked('co10_sections').includes('principal'),
       sectionKey: 'principal_date'
@@ -2517,7 +2519,7 @@ function buildCO11Form(taskDef) {
     {
       title: 'When did the records location change?',
       desc: '',
-      html: buildDateField(p + '_effectDate', '', 2026, 0)
+      html: buildDateField(p + '_effectDate', '', 0, 0)
     },
     {
       title: 'Where are the company\'s records kept?',
@@ -2552,7 +2554,7 @@ function buildCO12Form(taskDef) {
     {
       title: 'When did the Registrar-appointed auditor resign or get removed?',
       desc: '',
-      html: buildDateField(p + '_eventDate', '', 2026, 0)
+      html: buildDateField(p + '_eventDate', '', 0, 0)
     },
     {
       title: 'Declaration and signature',
@@ -2582,7 +2584,7 @@ function buildCO15Form(taskDef) {
       title: 'When was the court order made?',
       desc: '',
       html: `<div class="info-box amber">You must upload a copy of the court order.</div>` +
-        buildDateField(p + '_courtDate', '', 2026, 0)
+        buildDateField(p + '_courtDate', '', 0, 0)
     },
     {
       title: 'Declaration and signature',
@@ -2611,7 +2613,7 @@ function buildCO13Form(taskDef) {
     {
       title: 'When was the decision to dissolve the company made?',
       desc: '',
-      html: buildDateField(p + '_dissDate', '', 2026, 0)
+      html: buildDateField(p + '_dissDate', '', 0, 0)
     },
     {
       title: 'Has public notice been published and sent to creditors?',
@@ -2727,7 +2729,7 @@ function buildCO16Form(taskDef) {
     {
       title: 'What date was the company removed from the register?',
       desc: '',
-      html: buildDateField(p + '_removeDate', '', 2026, 2020) +
+      html: buildDateField(p + '_removeDate', '', 0, 2020) +
         `<div id="${p}_dateBlock" class="info-box red" role="alert" style="display:none"><strong>This date is more than 2 years ago. It is not possible to re-register this company.</strong><br><br>Contact MTCIC for more information.</div>`
     },
     {
@@ -2802,7 +2804,7 @@ function buildCO0DirCard(idx) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeCO0Dir(${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a Government-issued photo ID for this director.</div>
+      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
 
       <h3 class="section-subheading">Date of appointment</h3>
       ${buildDateField(p + '_date', '', 0, 1979)}
@@ -2895,7 +2897,7 @@ function buildShCard(formPrefix, idx) {
         <div class="radio-group">
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" ${req} onchange="shTypeChange('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="kiribati_co" onchange="shTypeChange('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
         </div>
         <div class="error-text">Select a shareholder type</div>
       </div>
@@ -3168,7 +3170,7 @@ function buildCO1DirCard(idx) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeCO1Dir(${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a Government-issued photo ID for this director.</div>
+      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -3444,7 +3446,7 @@ function buildCO18Form(taskDef) {
     {
       title: 'When did the business activity change?',
       desc: '',
-      html: buildDateField(p + '_changeDate', '', 2026, 0)
+      html: buildDateField(p + '_changeDate', '', 0, 0)
     },
     {
       title: 'What are your company\'s new business activities?',
@@ -3608,7 +3610,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
         </div>
       </div>` : ''}
 
-      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this shareholder.</div>` : ''}
+      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>` : ''}
 
       ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this entity.</div>` : ''}
 
@@ -3628,7 +3630,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
       </div>
 
       <h3 class="section-subheading">Date of change</h3>
-      ${buildDateField(p + '_date', '', 2026, 0)}
+      ${buildDateField(p + '_date', '', 0, 0)}
 
       <!-- Natural person details -->
       ${isPerson ? `<div id="${p}_natural">
@@ -3859,7 +3861,7 @@ function buildCO17Form(taskDef) {
       conditional: () => getChecked('co17_changes').includes('ceased'),
       html: `
         <h3 class="section-subheading">Date of cessation</h3>
-        ${buildDateField(p + '_cessDate', '', 2026, 0)}
+        ${buildDateField(p + '_cessDate', '', 0, 0)}
 
         <h3 class="sh-subheading">Auditor details</h3>
         <div class="field-row cols-3">
@@ -3895,7 +3897,7 @@ function buildCO17Form(taskDef) {
         </div>
 
         <h3 class="section-subheading">Date of change</h3>
-        ${buildDateField(p + '_chngDate', '', 2026, 0)}
+        ${buildDateField(p + '_chngDate', '', 0, 0)}
 
         <h3 class="sh-subheading">Auditor details</h3>
         <div class="field-row cols-3">
@@ -3978,7 +3980,7 @@ function buildCO4Form(taskDef) {
     `},
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this notice.</div>' + buildFilerFields(p) },
     { title: 'What date were the new shares issued?', html: `
-      ${buildDateField(p + '_issue', '', 2026, 0)}
+      ${buildDateField(p + '_issue', '', 0, 0)}
     `},
     { title: 'Share issue details', html: `
       <div class="field"><label class="question-label">How many shares did the company have before this issue?</label>
@@ -4060,7 +4062,7 @@ function buildCO5Form(taskDef) {
     `},
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this notice.</div>' + buildFilerFields(p) },
     { title: 'What date were the shares acquired?', html: `
-      ${buildDateField(p + '_acq', '', 2026, 0)}
+      ${buildDateField(p + '_acq', '', 0, 0)}
     `},
     { title: 'Share acquisition details', html: `
       <div class="field"><label class="question-label">How many shares did the company have before this acquisition?</label>
@@ -4128,7 +4130,7 @@ function buildCO6Form(taskDef) {
     `},
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this notice.</div>' + buildFilerFields(p) },
     { title: 'What date were the shares redeemed?', html: `
-      ${buildDateField(p + '_red', '', 2026, 0)}
+      ${buildDateField(p + '_red', '', 0, 0)}
     `},
     { title: 'Share redemption details', html: `
       <div class="field"><label class="question-label">How many shares did the company have before this redemption?</label>
@@ -4196,7 +4198,7 @@ function buildCO7Form(taskDef) {
     `},
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this notice.</div>' + buildFilerFields(p) },
     { title: 'What date were the shares transferred?', html: `
-      ${buildDateField(p + '_transfer', '', 2026, 0)}
+      ${buildDateField(p + '_transfer', '', 0, 0)}
     `},
     { title: 'Share transfer details', html: `
       <div class="field"><label class="question-label">How many shares does the company have?</label>
@@ -4703,7 +4705,7 @@ function validateCurrentStep() {
   const namePattern = /^[A-Za-z '\-]+$/;
   const entityNamePattern = /^[A-Za-z0-9 '\-&().,\/]+$/;
   const addressPattern = /^[A-Za-z0-9 '\-.,\/:()#]+$/;
-  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]]+$/;
+  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]\r\n\$]+$/;
   const nameIdPattern = /_(first|middle|last|filerFirst|filerMiddle|filerLast|formerFirst|formerMiddle|formerLast|rpFirst|rpMiddle|rpLast|sigName)$/;
   const entityIdPattern = /_(businessName|companyName|entityName|oeName|newName\d*|rmEntityName|rmCompanyName|newName|kiribatiName|homeJurisName)$/;
   const proseIdPattern = /_(noNoticeText|waiverReason|statement|relationship)$/;
@@ -4967,8 +4969,8 @@ function validateCurrentStep() {
     const countryId = inp.id.replace('_postcode', '_country');
     const countrySel = document.getElementById(countryId);
     const isKiribati = countrySel && countrySel.value === 'Kiribati';
-    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9]{0,10}$/;
-    const maxLen = isKiribati ? 6 : 10;
+    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9\s\-]{0,12}$/;
+    const maxLen = isKiribati ? 6 : 12;
     if (val.length > maxLen || !pattern.test(val)) {
       const field = inp.closest('.field');
       if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = isKiribati ? 'Enter a valid postcode (e.g. KI0101)' : 'Enter a valid postcode'; activateFieldError(field); }
@@ -5003,7 +5005,7 @@ function validateCurrentStep() {
       }
     } else {
       const cutoff = new Date(); cutoff.setHours(0, 0, 0, 0);
-      if (enteredDate >= cutoff) {
+      if (enteredDate > cutoff) {
         const field = dr.closest('.field');
         if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Date cannot be in the future'; activateFieldError(field); }
         valid = false;
@@ -5043,15 +5045,22 @@ function validateCurrentStep() {
       const yyyy = getVal('co16_removeDate_yyyy');
       if (dd && mm && yyyy) {
         const removeDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
-        const twoYearsAgo = new Date();
-        twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
-        if (removeDate < twoYearsAgo) {
+        const today = new Date(); today.setHours(23, 59, 59, 999);
+        if (removeDate > today) {
           const dateBlock = document.getElementById('co16_dateBlock');
-          if (dateBlock) dateBlock.style.display = '';
+          if (dateBlock) { dateBlock.textContent = 'Date cannot be in the future'; dateBlock.style.display = ''; }
           valid = false;
         } else {
-          const dateBlock = document.getElementById('co16_dateBlock');
-          if (dateBlock) dateBlock.style.display = 'none';
+          const twoYearsAgo = new Date();
+          twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+          if (removeDate < twoYearsAgo) {
+            const dateBlock = document.getElementById('co16_dateBlock');
+            if (dateBlock) dateBlock.style.display = '';
+            valid = false;
+          } else {
+            const dateBlock = document.getElementById('co16_dateBlock');
+            if (dateBlock) dateBlock.style.display = 'none';
+          }
         }
       }
     }
@@ -5575,7 +5584,7 @@ function buildReviewContent() {
   const docs = buildSupportingDocs(t, d);
   if (docs.length > 0) {
     html += '<div style="margin-top:8px;font-weight:600;font-size:0.88em;color:var(--green-dark)">Supporting documents required:</div><ul class="docs-list">';
-    docs.forEach(doc => html += `<li>${doc}</li>`);
+    docs.forEach(doc => html += `<li>${escHtml(doc)}</li>`);
     html += '</ul>';
   }
   html += '</div>';
@@ -5870,14 +5879,14 @@ function buildSupportingDocs(t, d) {
     if (d.constitution === 'own') docs.push('Company constitution');
     if (d.foreign === 'Yes') docs.push('Foreign Investment Registration Certificate');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Government-issued photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co1') {
     if (d.constitution === 'own') docs.push('Company constitution');
     if (d.foreign === 'Yes') docs.push('Foreign Investment Registration Certificate');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Government-issued photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co3') {
@@ -5901,12 +5910,12 @@ function buildSupportingDocs(t, d) {
       if (!dir) return;
       const name = dir.displayName || 'Director ' + (i+1);
       if (dir.action === 'appointed') {
-        docs.push('Government-issued photo ID for ' + name + ' (new director)');
+        docs.push('Valid photo ID for' + name + ' (new director)');
       } else if (dir.action === 'changed' && dir.chngFields) {
         const reasons = [];
         if (dir.chngFields.includes('name')) reasons.push('name');
         if (dir.chngFields.includes('gender')) reasons.push('gender');
-        if (reasons.length) docs.push('Government-issued photo ID for ' + name + ' (' + reasons.join(' and ') + ' change)');
+        if (reasons.length) docs.push('Valid photo ID for' + name + ' (' + reasons.join(' and ') + ' change)');
       }
     });
   }
@@ -5926,7 +5935,7 @@ function buildSupportingDocs(t, d) {
         const reasons = [];
         if (cf.includes('name')) reasons.push('name');
         if (cf.includes('gender')) reasons.push('gender');
-        docs.push('Government-issued photo ID for ' + name + ' (' + reasons.join(' and ') + ' change)');
+        docs.push('Valid photo ID for' + name + ' (' + reasons.join(' and ') + ' change)');
       }
       if (sh.type === 'other_entity') {
         const entityDetailFields = ['entity_name', 'entity_type', 'reg_number', 'jurisdiction'];
@@ -7281,6 +7290,8 @@ const BACK_LINKS = {
   'update-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-company' },
   'restore-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreCompany&ctk=CompanyHowTo#restore-company' },
 };
+const TASK_BACK_MAP = { co0: 'reregister-company', co1: 'register-company', co16: 'restore-company' };
+const TASK_BACK_DEFAULT = 'update-company';
 
 function initHeaderFromUrl() {
   const params = new URLSearchParams(location.search);
@@ -7420,7 +7431,7 @@ startWizard = function(taskId) {
     area.innerHTML = `
       <div class="autosave-prompt">
         <div class="prompt-title">Continue where you left off?</div>
-        <div class="prompt-detail">You have an unfinished <strong>${taskDef ? taskDef.form : taskId}</strong> form for <strong>${saved.companyName}</strong>.</div>
+        <div class="prompt-detail">You have an unfinished <strong>${taskDef ? taskDef.form : taskId}</strong> form for <strong>${escHtml(saved.companyName)}</strong>.</div>
         <div class="prompt-privacy">Your answers were saved on this device. No data was sent online.</div>
         <div class="prompt-btns">
           <button class="prompt-btn prompt-btn-yes" onclick="restoreAutoSave('${taskId}')">Continue</button>
@@ -7477,6 +7488,14 @@ function siteHeaderBack(e) {
   if (from && typeof BACK_LINKS !== 'undefined' && BACK_LINKS[from]) {
     location.href = BACK_LINKS[from].url;
     return;
+  }
+  // Infer back link from current task if no ?from= parameter
+  if (currentWizard && currentWizard.taskDef) {
+    const inferred = TASK_BACK_MAP[currentWizard.taskDef.id] || TASK_BACK_DEFAULT;
+    if (BACK_LINKS[inferred]) {
+      location.href = BACK_LINKS[inferred].url;
+      return;
+    }
   }
   const referrer = document.referrer;
   if (referrer && referrer.includes(location.hostname)) {

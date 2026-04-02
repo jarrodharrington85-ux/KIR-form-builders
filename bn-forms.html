@@ -742,6 +742,7 @@ body {
 }
 .success-screen .registry-guide .not-submitted-warning {
   background: none; border: none; padding: 0; margin: 0 0 12px 0;
+  align-items: center;
 }
 .not-submitted-warning .warn-icon {
   width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #fff;
@@ -751,7 +752,7 @@ body {
 }
 .not-submitted-warning .warn-text { flex: 1; }
 .not-submitted-warning .warn-main {
-  font-size: 15px; font-weight: 700; color: #6d5200; margin-bottom: 2px;
+  font-size: 1.05em; font-weight: 700; color: #6d5200; margin-bottom: 2px;
 }
 .not-submitted-warning .warn-sub { font-size: 0.82em; color: #555; line-height: 1.4; }
 .not-submitted-warning .warn-bilingual { font-size: 0.8em; color: #8a6d00; font-style: italic; margin-top: 4px; }
@@ -774,6 +775,7 @@ body {
 .save-section .ios-hint strong { color: #333; }
 .save-section.saved { background: var(--green-light); border-color: var(--green-dark); }
 .save-section.saved .save-file-size { color: var(--green-dark); font-weight: 700; font-size: 0.88em; }
+.save-section.saved .save-file-row { margin-bottom: 0; }
 
 .success-screen .btn-save-pdf {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -906,7 +908,7 @@ body {
 <!-- Offline detection banner -->
 <div class="offline-banner" id="offlineBanner" role="alert">
   You are currently offline
-  <div class="offline-sub">You can still fill in this form &#8212; it works without internet.</div>
+  <div class="offline-sub">You can keep typing &#8212; your answers are automatically saved to this device.</div>
 </div>
 <div class="bn-form-container" id="app">
 <h1 class="visually-hidden" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">Business Name Forms — business.gov.ki</h1>
@@ -1365,7 +1367,7 @@ function buildBusinessNameFields(prefix) {
       <div class="field" style="flex:1">
         <label for="${prefix}_regNumber">Registration number</label>
         <div class="error-text">Enter the registration number</div>
-        <input type="text" id="${prefix}_regNumber" required maxlength="50">
+        <input type="text" id="${prefix}_regNumber" required maxlength="50" placeholder="e.g. BN-12345">
       </div>
     </div>
   `;
@@ -1414,7 +1416,7 @@ function buildFilerFields(prefix) {
     ${buildAddressFields(prefix + '_filer', true)}
     <div class="field-row">
       <div class="field"><label for="${prefix}_filerPhone">Phone / mobile</label>
-        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30"></div>
+        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30" placeholder="e.g. 73000000"></div>
       <div class="field"><label for="${prefix}_filerEmail">Email address</label>
         <div class="error-text">Enter a valid email address</div><input type="email" id="${prefix}_filerEmail" required autocomplete="email" maxlength="128"></div>
     </div>
@@ -1489,10 +1491,10 @@ function buildOwnerFields(prefix, index, opts) {
         <div class="radio-group">
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="person" required onchange="toggleOwnerType('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="ki_company" required onchange="toggleOwnerType('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" required onchange="toggleOwnerType('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" required onchange="toggleOwnerType('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
         </div>
       </div>
-      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this owner.</div>
+      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div id="${p}_otherEntityWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this owner.</div>
       <div id="${p}_personFields" class="bn-hidden">
         <h3 class="section-subheading">Individual person details</h3>
@@ -1546,7 +1548,7 @@ function buildOwnerFields(prefix, index, opts) {
         </div>
         ${buildAddressFields(p + 'rp', true)}
         <div class="field-row">
-          <div class="field"><label for="${p}_rpPhone">Phone / mobile</label><div class="error-text">Enter a valid phone number</div><input type="tel" id="${p}_rpPhone" required maxlength="30"></div>
+          <div class="field"><label for="${p}_rpPhone">Phone / mobile</label><div class="error-text">Enter a valid phone number</div><input type="tel" id="${p}_rpPhone" required maxlength="30" placeholder="e.g. 73000000"></div>
           <div class="field"><label for="${p}_rpEmail">Email address</label><div class="error-text">Enter a valid email address</div><input type="email" id="${p}_rpEmail" required maxlength="128"></div>
         </div>
       </div>
@@ -1893,7 +1895,7 @@ function buildOwnerRemovalCard(prefix, index) {
         <div class="radio-group">
           <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="person" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="ki_company" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="other_entity" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_rmType" value="other_entity" required onchange="toggleRemovalType('${p}'); updateCardHeader('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
         </div>
       </div>
       <div id="${p}_rmPersonFields" class="bn-hidden">
@@ -2114,7 +2116,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       ${buildDateField(p + '_date', '')}
 
       <h3 class="section-subheading">Owner details</h3>
-      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this owner.</div>
+      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div class="field-row cols-3">
         <div class="field"><label>First name <span id="${p}_badge_first" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the first name</div><input type="text" id="${p}_first" required oninput="updateCardHeader('${p}')" maxlength="100"></div>
         <div class="field"><label>Middle name <span class="optional">(optional)</span></label><input type="text" id="${p}_middle" maxlength="100"></div>
@@ -2184,7 +2186,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       <h3 class="section-subheading">Responsible person address <span id="${p}_badge_rpAddr" class="badge-changing">UPDATING</span></h3>
       ${buildAddressFields(p + 'rp', true)}
       <div class="field-row">
-        <div class="field"><label>Phone / mobile</label><div class="error-text">Enter a valid phone number</div><input type="tel" id="${p}_rpPhone" required maxlength="30"></div>
+        <div class="field"><label>Phone / mobile</label><div class="error-text">Enter a valid phone number</div><input type="tel" id="${p}_rpPhone" required maxlength="30" placeholder="e.g. 73000000"></div>
         <div class="field"><label>Email address</label><div class="error-text">Enter a valid email address</div><input type="email" id="${p}_rpEmail" required maxlength="128"></div>
       </div>
       `}
@@ -2655,7 +2657,7 @@ function buildBN6Form(taskDef) {
     {
       title: 'What date was your business name removed from the register?',
       desc: '',
-      html: buildDateField(p + '_removeDate', '', 2026, 2020) +
+      html: buildDateField(p + '_removeDate', '', 0, 2020) +
         `<div id="${p}_dateBlock" class="info-box red" role="alert" style="display:none"><strong>This date is more than 6 months ago. It is not possible to restore this business name.</strong><br><br>Contact MTCIC for more information.</div>`
     },
     {
@@ -3091,9 +3093,9 @@ function validateCurrentStep() {
   const namePattern = /^[A-Za-z '\-]+$/;
   const entityNamePattern = /^[A-Za-z0-9 '\-&().,\/]+$/;
   const addressPattern = /^[A-Za-z0-9 '\-.,\/:()#]+$/;
-  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]]+$/;
+  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]\r\n\$]+$/;
   const nameIdPattern = /_(first|middle|last|filerFirst|filerMiddle|filerLast|formerFirst|formerMiddle|formerLast|rpFirst|rpMiddle|rpLast|sigName)$/;
-  const entityIdPattern = /_(businessName|companyName|entityName|oeName|newName\d*|rmEntityName|rmCompanyName|newName|kiribatiName|homeJurisName)$/;
+  const entityIdPattern = /_(businessName|companyName|entityName|oeName|newName\d*|name\d*|rmEntityName|rmCompanyName|newName|kiribatiName|homeJurisName)$/;
   const proseIdPattern = /_(noNoticeText|waiverReason|statement|relationship)$/;
 
   // Rule 1: Person name fields — strict
@@ -3276,15 +3278,22 @@ function validateCurrentStep() {
       const yyyy = getVal('bn6_removeDate_yyyy');
       if (dd && mm && yyyy) {
         const removeDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-        if (removeDate < sixMonthsAgo) {
+        const today = new Date(); today.setHours(23, 59, 59, 999);
+        if (removeDate > today) {
           const dateBlock = document.getElementById('bn6_dateBlock');
-          if (dateBlock) dateBlock.style.display = '';
+          if (dateBlock) { dateBlock.textContent = 'Date cannot be in the future'; dateBlock.style.display = ''; }
           valid = false;
         } else {
-          const dateBlock = document.getElementById('bn6_dateBlock');
-          if (dateBlock) dateBlock.style.display = 'none';
+          const sixMonthsAgo = new Date();
+          sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+          if (removeDate < sixMonthsAgo) {
+            const dateBlock = document.getElementById('bn6_dateBlock');
+            if (dateBlock) dateBlock.style.display = '';
+            valid = false;
+          } else {
+            const dateBlock = document.getElementById('bn6_dateBlock');
+            if (dateBlock) dateBlock.style.display = 'none';
+          }
         }
       }
     }
@@ -3370,8 +3379,8 @@ function validateCurrentStep() {
     const countryId = inp.id.replace('_postcode', '_country');
     const countrySel = document.getElementById(countryId);
     const isKiribati = countrySel && countrySel.value === 'Kiribati';
-    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9]{0,10}$/;
-    const maxLen = isKiribati ? 6 : 10;
+    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9\s\-]{0,12}$/;
+    const maxLen = isKiribati ? 6 : 12;
     if (val.length > maxLen || !pattern.test(val)) {
       const field = inp.closest('.field');
       if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = isKiribati ? 'Enter a valid postcode (e.g. KI0101)' : 'Enter a valid postcode'; activateFieldError(field); }
@@ -3407,7 +3416,7 @@ function validateCurrentStep() {
       }
     } else {
       const cutoff = new Date(); cutoff.setHours(0, 0, 0, 0);
-      if (enteredDate >= cutoff) {
+      if (enteredDate > cutoff) {
         const field = dateRow.closest('.field');
         if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Date cannot be in the future'; activateFieldError(field); }
         valid = false;
@@ -3709,7 +3718,7 @@ function buildSupportingDocs(taskDef, formData) {
     const owners = d.owners || [];
     // Per-person photo ID
     owners.filter(o => o.type === 'person').forEach(o => {
-      docs.push(`Government-issued photo ID for ${ownerName(o)}`);
+      docs.push(`Valid photo ID for${ownerName(o)}`);
     });
     // Per-entity evidence of registration (other_entity only, not ki_company)
     owners.filter(o => o.type === 'other_entity').forEach(o => {
@@ -3736,12 +3745,12 @@ function buildSupportingDocs(taskDef, formData) {
       owners.forEach(o => {
         if (o.type !== 'person') return;
         if (o.action === 'adding') {
-          docs.push(`Government-issued photo ID for ${ownerName(o)} (new owner)`);
+          docs.push(`Valid photo ID for${ownerName(o)} (new owner)`);
         } else if (o.action === 'updating' && o.chngFields && (o.chngFields.includes('name') || o.chngFields.includes('gender'))) {
           const reasons = [];
           if (o.chngFields.includes('name')) reasons.push('name');
           if (o.chngFields.includes('gender')) reasons.push('gender');
-          docs.push(`Government-issued photo ID for ${ownerName(o)} (${reasons.join(' and ')} change)`);
+          docs.push(`Valid photo ID for${ownerName(o)} (${reasons.join(' and ')} change)`);
         }
       });
       // Per-entity evidence: adding (always), updating with entity detail changes
@@ -3807,7 +3816,7 @@ function buildReviewContent() {
   const docs = buildSupportingDocs(t, d);
   if (docs.length > 0) {
     html += '<div style="margin-top:8px;font-weight:600;font-size:0.88em;color:var(--green-dark)">Supporting documents required:</div><ul class="docs-list">';
-    docs.forEach(doc => html += `<li>${doc}</li>`);
+    docs.forEach(doc => html += `<li>${escHtml(doc)}</li>`);
     html += '</ul>';
   }
   // Late filing check
@@ -4943,6 +4952,8 @@ const BACK_LINKS = {
   'restore-business': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreBusinessName&ctk=CompanyHowTo#restore-business' },
   'restore-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreCompany&ctk=CompanyHowTo#restore-company' },
 };
+const TASK_BACK_MAP = { bn0: 'reregister-business', bn1: 'register-business', bn6: 'restore-business' };
+const TASK_BACK_DEFAULT = 'update-business';
 
 function initHeaderFromUrl() {
   const params = new URLSearchParams(location.search);
@@ -4985,6 +4996,14 @@ function siteHeaderBack(e) {
   if (from && BACK_LINKS[from]) {
     location.href = BACK_LINKS[from].url;
     return;
+  }
+  // Infer back link from current task if no ?from= parameter
+  if (currentWizard && currentWizard.taskDef) {
+    const inferred = TASK_BACK_MAP[currentWizard.taskDef.id] || TASK_BACK_DEFAULT;
+    if (BACK_LINKS[inferred]) {
+      location.href = BACK_LINKS[inferred].url;
+      return;
+    }
   }
   const referrer = document.referrer;
   if (referrer) {
@@ -5294,7 +5313,7 @@ startWizard = function(taskId) {
     area.innerHTML = `
       <div class="autosave-prompt">
         <div class="prompt-title">Continue where you left off?</div>
-        <div class="prompt-detail">You have an unfinished <strong>${TASKS.find(t=>t.id===taskId).form}</strong> form for <strong>${saved.businessName}</strong>.</div>
+        <div class="prompt-detail">You have an unfinished <strong>${TASKS.find(t=>t.id===taskId).form}</strong> form for <strong>${escHtml(saved.businessName)}</strong>.</div>
         <div class="prompt-privacy">Your answers were saved on this device. No data was sent online.</div>
         <div class="prompt-btns">
           <button class="prompt-btn prompt-btn-yes" onclick="restoreAutoSave('${taskId}')">Continue</button>
@@ -5795,7 +5814,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
     </div>
   </div>
   <div class="footer-copyright">
-    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives 2026
+    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives <script>document.write(new Date().getFullYear())</script>
   </div>
 </div>
 

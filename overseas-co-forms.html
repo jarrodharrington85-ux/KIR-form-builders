@@ -590,6 +590,7 @@ body {
 }
 .success-screen .registry-guide .not-submitted-warning {
   background: none; border: none; padding: 0; margin: 0 0 12px 0;
+  align-items: center;
 }
 .not-submitted-warning .warn-icon {
   width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #fff;
@@ -598,7 +599,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 .not-submitted-warning .warn-text { flex: 1; }
-.not-submitted-warning .warn-main { font-size: 15px; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
+.not-submitted-warning .warn-main { font-size: 1.05em; font-weight: 700; color: #6d5200; margin-bottom: 2px; }
 .not-submitted-warning .warn-sub { font-size: 0.82em; color: #555; line-height: 1.4; }
 .not-submitted-warning .warn-bilingual { font-size: 0.8em; color: #8a6d00; font-style: italic; margin-top: 4px; }
 /* Save section card */
@@ -618,6 +619,7 @@ body {
 .save-section .ios-hint strong { color: #333; }
 .save-section.saved { background: var(--green-light); border-color: var(--green-dark); }
 .save-section.saved .save-file-size { color: var(--green-dark); font-weight: 700; font-size: 0.88em; }
+.save-section.saved .save-file-row { margin-bottom: 0; }
 /* Save PDF button */
 .success-screen .btn-save-pdf {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -929,7 +931,7 @@ body {
 <!-- Offline detection banner -->
 <div class="offline-banner" id="offlineBanner" role="alert">
   You are currently offline
-  <div class="offline-sub">You can still fill in this form &#8212; it works without internet.</div>
+  <div class="offline-sub">You can keep typing &#8212; your answers are automatically saved to this device.</div>
 </div>
 
 <div class="co-form-container" id="app">
@@ -973,7 +975,7 @@ body {
     </div>
   </div>
   <div class="footer-copyright">
-    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives 2026
+    Copyright &copy; Ministry of Tourism, Commerce, Industry, and Cooperatives <script>document.write(new Date().getFullYear())</script>
   </div>
 </div>
 
@@ -1343,7 +1345,7 @@ function buildCompanyDetailsFields(prefix) {
       <div class="field" style="flex:1">
         <label for="${prefix}_regNumber">Registration number in Kiribati</label>
         <div class="error-text">Enter the registration number</div>
-        <input type="text" id="${prefix}_regNumber" required maxlength="50">
+        <input type="text" id="${prefix}_regNumber" required maxlength="50" placeholder="e.g. CO-12345">
       </div>
     </div>
   `;
@@ -1363,7 +1365,7 @@ function buildFilerFields(prefix) {
     ${buildAddressFields(prefix + '_filer', true)}
     <div class="field-row">
       <div class="field"><label for="${prefix}_filerPhone">Phone number / mobile</label>
-        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30"></div>
+        <div class="error-text">Enter a valid phone number</div><input type="tel" id="${prefix}_filerPhone" required autocomplete="tel" maxlength="30" placeholder="e.g. 73000000"></div>
       <div class="field"><label for="${prefix}_filerEmail">Email address</label>
         <div class="error-text">Enter a valid email address</div><input type="email" id="${prefix}_filerEmail" required autocomplete="email" maxlength="128"></div>
     </div>
@@ -1813,7 +1815,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
         </div>
       </div>` : ''}
 
-      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this shareholder.</div>` : ''}
+      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>` : ''}
 
       ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this entity.</div>` : ''}
 
@@ -1833,7 +1835,7 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
       </div>
 
       <h3 class="section-subheading">Date of change</h3>
-      ${buildDateField(p + '_date', '', 2026, 0)}
+      ${buildDateField(p + '_date', '', 0, 0)}
 
       <!-- Natural person details -->
       ${isPerson ? `<div id="${p}_natural">
@@ -2177,7 +2179,7 @@ function buildOcDirCard(formPrefix, idx, showDate) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeOcDir('${formPrefix}', ${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a Government-issued photo ID for this director.</div>
+      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
 
       ${showDate ? `<h3 class="section-subheading">Date of appointment</h3>
       ${buildDateField(p + '_date', '', 0, 1979)}` : ''}
@@ -2260,7 +2262,7 @@ function buildOcShCard(formPrefix, idx) {
         <div class="radio-group">
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="natural" ${req} onchange="shTypeChange('${p}')"><div><strong>Individual person</strong></div></label>
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="kiribati_co" onchange="shTypeChange('${p}')"><div><strong>Registered company in Kiribati</strong><div class="radio-desc">Includes Kiribati local companies and registered overseas companies.</div></div></label>
-          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Any registered organisation that is not a company registered in Kiribati — for example, a cooperative or a foreign company.</div></div></label>
+          <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" onchange="shTypeChange('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
         </div>
         <div class="error-text">Select a shareholder type</div>
       </div>
@@ -2393,7 +2395,7 @@ function buildCO0aForm(taskDef) {
             <input type="text" id="${p}_companyName" required maxlength="200"></div>
           <div class="field" style="flex:1"><label for="${p}_regNumber">Registration number in Kiribati</label>
             <div class="error-text">Enter the registration number</div>
-            <input type="text" id="${p}_regNumber" required maxlength="50"></div>
+            <input type="text" id="${p}_regNumber" required maxlength="50" placeholder="e.g. CO-12345"></div>
         </div>
         <div class="field"><label for="${p}_companyEmail">Company email address <span class="optional">(optional)</span></label>
           <input type="email" id="${p}_companyEmail" maxlength="128" placeholder="e.g. info@company.com"></div>
@@ -2726,7 +2728,7 @@ function buildCO22Form(taskDef) {
     },
     {
       title: 'What date was the company removed from the register?',
-      html: buildDateField(p + '_removeDate', '', 2026, 2020) +
+      html: buildDateField(p + '_removeDate', '', 0, 2020) +
         `<div id="${p}_dateBlock" class="info-box red" role="alert" style="display:none"><strong>This date is more than 2 years ago. It is not possible to restore this company.</strong><br><br>Contact MTCIC for more information.</div>`
     },
     {
@@ -2827,7 +2829,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeOcDirector('${prefix}', ${idx}, '${actionType}')" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      ${isAppointed ? '<div class="info-box amber">You must upload a Government-issued photo ID for this director.</div>' : ''}
+      ${isAppointed ? '<div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>' : ''}
 
       ${isCessation ? `<h3 class="section-subheading">Reason for cessation</h3>
       <div class="field"><label class="question-label">The director has:</label>
@@ -2851,7 +2853,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a Government-issued photo ID for this director.</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -2862,15 +2864,15 @@ function buildOcDirectorCard(prefix, idx, actionType) {
       </div>` : ''}
 
       <h3 class="section-subheading">${dateLabel}</h3>
-      ${buildDateField(p + '_date', '', isAppointed ? 0 : 2026, isAppointed ? 1979 : 0)}
+      ${buildDateField(p + '_date', '', 0, isAppointed ? 1979 : 0)}
 
       ${isCessation ? `<div id="${p}_deathAwareBlock" class="co-hidden">
         <h3 class="section-subheading">Date company became aware of death</h3>
-        ${buildDateField(p + '_deathAware', '', 2026, 0)}
+        ${buildDateField(p + '_deathAware', '', 0, 0)}
       </div>` : ''}
 
       ${isChanged ? `<h3 class="section-subheading">Date company became aware of change</h3>
-      ${buildDateField(p + '_awareDate', '', 2026, 0)}` : ''}
+      ${buildDateField(p + '_awareDate', '', 0, 0)}` : ''}
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -3006,7 +3008,7 @@ function buildOcDirChangeCard(prefix, idx, manifest) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a government-issued photo ID for this director.</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -3017,10 +3019,10 @@ function buildOcDirChangeCard(prefix, idx, manifest) {
       </div>
 
       <h3 class="section-subheading">Date of change</h3>
-      ${buildDateField(p + '_date', '', 2026, 0)}
+      ${buildDateField(p + '_date', '', 0, 0)}
 
       <h3 class="section-subheading">Date company became aware of change</h3>
-      ${buildDateField(p + '_awareDate', '', 2026, 0)}
+      ${buildDateField(p + '_awareDate', '', 0, 0)}
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -3282,7 +3284,7 @@ function buildCO25Form(taskDef) {
       desc: '',
       conditional: () => getChecked('co25_sections').includes('registered'),
       sectionKey: 'registered_date',
-      html: buildDateField(p + '_regDate', '', 2026, 0) +
+      html: buildDateField(p + '_regDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the registered office address. The effective date for the change of registered office address will be 7 days from the date the notice is processed by the Registry.</div>`
     },
     {
@@ -3296,7 +3298,7 @@ function buildCO25Form(taskDef) {
       desc: '',
       conditional: () => getChecked('co25_sections').includes('postal'),
       sectionKey: 'postal_date',
-      html: buildDateField(p + '_postalDate', '', 2026, 0) +
+      html: buildDateField(p + '_postalDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the postal address. The effective date for the change of postal address will be 7 days from the date the notice is processed by the Registry.</div>`
     },
     {
@@ -3315,7 +3317,7 @@ function buildCO25Form(taskDef) {
       desc: '',
       conditional: () => getChecked('co25_sections').includes('principal'),
       sectionKey: 'principal_date',
-      html: buildDateField(p + '_bizDate', '', 2026, 0) +
+      html: buildDateField(p + '_bizDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the principal place of business address. The effective date for the change of the principal place of business address will be 7 days from the date the notice is processed by the Registry.</div>`
     },
     {
@@ -3329,7 +3331,7 @@ function buildCO25Form(taskDef) {
       desc: '',
       conditional: () => getChecked('co25_sections').includes('authperson'),
       sectionKey: 'authperson_date',
-      html: buildDateField(p + '_authDate', '', 2026, 0) +
+      html: buildDateField(p + '_authDate', '', 0, 0) +
         `<div class="info-box amber">This notice must be filed within 14 days of the change in the authorised person.</div>`
     },
     {
@@ -3386,7 +3388,7 @@ function buildCO27Form(taskDef) {
     },
     {
       title: 'When did the business activity change?',
-      html: buildDateField(p + '_changeDate', '', 2026, 0)
+      html: buildDateField(p + '_changeDate', '', 0, 0)
     },
     {
       title: 'What are your company\'s new business activities?',
@@ -3817,7 +3819,7 @@ function validateCurrentStep() {
   const namePattern = /^[A-Za-z '\-]+$/;
   const entityNamePattern = /^[A-Za-z0-9 '\-&().,\/]+$/;
   const addressPattern = /^[A-Za-z0-9 '\-.,\/:()#]+$/;
-  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]]+$/;
+  const prosePattern = /^[A-Za-z0-9 !\?\.:;,'"()\-\/&#@%\+=\*\[\]\r\n\$]+$/;
   const nameIdPattern = /_(first|middle|last|filerFirst|filerMiddle|filerLast|formerFirst|formerMiddle|formerLast|rpFirst|rpMiddle|rpLast|sigName)$/;
   const entityIdPattern = /_(businessName|companyName|entityName|oeName|newName\d*|rmEntityName|rmCompanyName|newName|kiribatiName|homeJurisName)$/;
   const proseIdPattern = /_(noNoticeText|waiverReason|statement|relationship)$/;
@@ -3947,13 +3949,15 @@ function validateCurrentStep() {
     }
   });
 
-  // Company name validation — must end in Limited or Ltd (any step with company name)
+  // Company name validation — must end in Limited or Ltd (only for Kiribati registration name)
   const tid = currentWizard.taskDef.id;
   const p = currentWizard.taskDef.id;
-  const coNameEl = stepEl.querySelector(`#${p}_companyName`);
-  if (coNameEl && coNameEl.value.trim() && !/(Limited|Ltd)\.?$/i.test(coNameEl.value.trim())) {
-    showError(p + '_companyName', 'Company name must end in "Limited" or "Ltd"');
-    valid = false;
+  if (tid === 'co0a' || tid === 'co20') {
+    const coNameEl = stepEl.querySelector(`#${p}_companyName`);
+    if (coNameEl && coNameEl.value.trim() && !/(Limited|Ltd)\.?$/i.test(coNameEl.value.trim())) {
+      showError(p + '_companyName', 'Company name must end in "Limited" or "Ltd"');
+      valid = false;
+    }
   }
 
   // Required checkboxes (e.g. CO-0 director affirmation)
@@ -4028,8 +4032,8 @@ function validateCurrentStep() {
     const countryId = inp.id.replace('_postcode', '_country');
     const countrySel = document.getElementById(countryId);
     const isKiribati = countrySel && countrySel.value === 'Kiribati';
-    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9]{0,10}$/;
-    const maxLen = isKiribati ? 6 : 10;
+    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9\s\-]{0,12}$/;
+    const maxLen = isKiribati ? 6 : 12;
     if (val.length > maxLen || !pattern.test(val)) {
       const field = inp.closest('.field');
       if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = isKiribati ? 'Enter a valid postcode (e.g. KI0101)' : 'Enter a valid postcode'; activateFieldError(field); }
@@ -4067,7 +4071,7 @@ function validateCurrentStep() {
       }
     } else {
       const cutoff = new Date(); cutoff.setHours(0, 0, 0, 0);
-      if (enteredDate >= cutoff) {
+      if (enteredDate > cutoff) {
         const field = dr.closest('.field');
         if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Date cannot be in the future'; activateFieldError(field); }
         valid = false;
@@ -4127,15 +4131,22 @@ function validateCurrentStep() {
       const yyyy = getVal('co22_removeDate_yyyy');
       if (dd && mm && yyyy) {
         const removeDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
-        const twoYearsAgo = new Date();
-        twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
-        if (removeDate < twoYearsAgo) {
+        const today = new Date(); today.setHours(23, 59, 59, 999);
+        if (removeDate > today) {
           const dateBlock = document.getElementById('co22_dateBlock');
-          if (dateBlock) dateBlock.style.display = '';
+          if (dateBlock) { dateBlock.textContent = 'Date cannot be in the future'; dateBlock.style.display = ''; }
           valid = false;
         } else {
-          const dateBlock = document.getElementById('co22_dateBlock');
-          if (dateBlock) dateBlock.style.display = 'none';
+          const twoYearsAgo = new Date();
+          twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+          if (removeDate < twoYearsAgo) {
+            const dateBlock = document.getElementById('co22_dateBlock');
+            if (dateBlock) dateBlock.style.display = '';
+            valid = false;
+          } else {
+            const dateBlock = document.getElementById('co22_dateBlock');
+            if (dateBlock) dateBlock.style.display = 'none';
+          }
         }
       }
     }
@@ -4467,7 +4478,7 @@ function buildReviewContent() {
   const docs = buildSupportingDocs(t, d);
   if (docs.length > 0) {
     html += '<div style="margin-top:8px;font-weight:600;font-size:0.88em;color:var(--green-dark)">Supporting documents required:</div><ul class="docs-list">';
-    docs.forEach(doc => html += `<li>${doc}</li>`);
+    docs.forEach(doc => html += `<li>${escHtml(doc)}</li>`);
     html += '</ul>';
   }
   html += '</div>';
@@ -4634,7 +4645,7 @@ function buildSupportingDocs(t, d) {
     docs.push('Evidence of overseas incorporation');
     docs.push('Certified translation (if evidence not in English)');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Government-issued photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co23') {
@@ -4642,11 +4653,11 @@ function buildSupportingDocs(t, d) {
       if (!dir) return;
       const name = dir.displayName || 'Director ' + (i+1);
       if (dir.action === 'appointed') {
-        docs.push('Government-issued photo ID for ' + name);
+        docs.push('Valid photo ID for' + name);
       }
       if (dir.action === 'changed' && dir.chngFields) {
         if (dir.chngFields.includes('name') || dir.chngFields.includes('gender')) {
-          docs.push('Government-issued photo ID for ' + name);
+          docs.push('Valid photo ID for' + name);
         }
       }
     });
@@ -5660,6 +5671,8 @@ const BACK_LINKS = {
   'update-overseas': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-overseas' },
   'restore-overseas': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreCompany&ctk=CompanyHowTo#restore-overseas' },
 };
+const TASK_BACK_MAP = { co0a: 'reregister-overseas', co20: 'register-overseas', co22: 'restore-overseas' };
+const TASK_BACK_DEFAULT = 'update-overseas';
 
 function initHeaderFromUrl() {
   const params = new URLSearchParams(location.search);
@@ -5799,7 +5812,7 @@ startWizard = function(taskId) {
     area.innerHTML = `
       <div class="autosave-prompt">
         <div class="prompt-title">Continue where you left off?</div>
-        <div class="prompt-detail">You have an unfinished <strong>${taskDef ? taskDef.form : taskId}</strong> form for <strong>${saved.companyName}</strong>.</div>
+        <div class="prompt-detail">You have an unfinished <strong>${taskDef ? taskDef.form : taskId}</strong> form for <strong>${escHtml(saved.companyName)}</strong>.</div>
         <div class="prompt-privacy">Your answers were saved on this device. No data was sent online.</div>
         <div class="prompt-btns">
           <button class="prompt-btn prompt-btn-yes" onclick="restoreAutoSave('${taskId}')">Continue</button>
@@ -5856,6 +5869,14 @@ function siteHeaderBack(e) {
   if (from && typeof BACK_LINKS !== 'undefined' && BACK_LINKS[from]) {
     location.href = BACK_LINKS[from].url;
     return;
+  }
+  // Infer back link from current task if no ?from= parameter
+  if (currentWizard && currentWizard.taskDef) {
+    const inferred = TASK_BACK_MAP[currentWizard.taskDef.id] || TASK_BACK_DEFAULT;
+    if (BACK_LINKS[inferred]) {
+      location.href = BACK_LINKS[inferred].url;
+      return;
+    }
   }
   const referrer = document.referrer;
   if (referrer && referrer.includes(location.hostname)) {
