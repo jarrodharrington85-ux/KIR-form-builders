@@ -248,7 +248,7 @@ body {
   color: var(--text); margin-bottom: 4px;
 }
 .field label.question-label {
-  font-size: 1.1em; font-weight: 700; margin-bottom: 12px;
+  font-size: 0.95em; font-weight: 700; margin-bottom: 12px;
 }
 .field .optional { font-weight: 400; color: #767676; font-size: 0.9em; }
 .field input[type="text"],
@@ -5879,14 +5879,14 @@ function buildSupportingDocs(t, d) {
     if (d.constitution === 'own') docs.push('Company constitution');
     if (d.foreign === 'Yes') docs.push('Foreign Investment Registration Certificate');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co1') {
     if (d.constitution === 'own') docs.push('Company constitution');
     if (d.foreign === 'Yes') docs.push('Foreign Investment Registration Certificate');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co3') {
@@ -5910,12 +5910,12 @@ function buildSupportingDocs(t, d) {
       if (!dir) return;
       const name = dir.displayName || 'Director ' + (i+1);
       if (dir.action === 'appointed') {
-        docs.push('Valid photo ID for' + name + ' (new director)');
+        docs.push('Valid photo ID for ' + name + ' (new director)');
       } else if (dir.action === 'changed' && dir.chngFields) {
         const reasons = [];
         if (dir.chngFields.includes('name')) reasons.push('name');
         if (dir.chngFields.includes('gender')) reasons.push('gender');
-        if (reasons.length) docs.push('Valid photo ID for' + name + ' (' + reasons.join(' and ') + ' change)');
+        if (reasons.length) docs.push('Valid photo ID for ' + name + ' (' + reasons.join(' and ') + ' change)');
       }
     });
   }
@@ -5935,7 +5935,7 @@ function buildSupportingDocs(t, d) {
         const reasons = [];
         if (cf.includes('name')) reasons.push('name');
         if (cf.includes('gender')) reasons.push('gender');
-        docs.push('Valid photo ID for' + name + ' (' + reasons.join(' and ') + ' change)');
+        docs.push('Valid photo ID for ' + name + ' (' + reasons.join(' and ') + ' change)');
       }
       if (sh.type === 'other_entity') {
         const entityDetailFields = ['entity_name', 'entity_type', 'reg_number', 'jurisdiction'];

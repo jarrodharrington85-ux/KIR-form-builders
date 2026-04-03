@@ -249,7 +249,7 @@ body {
   color: var(--text); margin-bottom: 4px;
 }
 .field label.question-label {
-  font-size: 1.1em; font-weight: 700; margin-bottom: 12px;
+  font-size: 0.95em; font-weight: 700; margin-bottom: 12px;
 }
 .field .optional { font-weight: 400; color: #767676; font-size: 0.9em; }
 .field input[type="text"],
@@ -4645,7 +4645,7 @@ function buildSupportingDocs(t, d) {
     docs.push('Evidence of overseas incorporation');
     docs.push('Certified translation (if evidence not in English)');
     (d.directors||[]).forEach((dir, i) => {
-      docs.push('Valid photo ID for' + (dir.displayName || 'Director ' + (i+1)));
+      docs.push('Valid photo ID for ' + (dir.displayName || 'Director ' + (i+1)));
     });
   }
   if (p === 'co23') {
@@ -4653,11 +4653,11 @@ function buildSupportingDocs(t, d) {
       if (!dir) return;
       const name = dir.displayName || 'Director ' + (i+1);
       if (dir.action === 'appointed') {
-        docs.push('Valid photo ID for' + name);
+        docs.push('Valid photo ID for ' + name);
       }
       if (dir.action === 'changed' && dir.chngFields) {
         if (dir.chngFields.includes('name') || dir.chngFields.includes('gender')) {
-          docs.push('Valid photo ID for' + name);
+          docs.push('Valid photo ID for ' + name);
         }
       }
     });

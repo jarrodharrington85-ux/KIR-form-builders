@@ -336,7 +336,7 @@ body {
   color: var(--text); margin-bottom: 4px;
 }
 .field label.question-label {
-  font-size: 1.1em; font-weight: 700; margin-bottom: 12px;
+  font-size: 0.95em; font-weight: 700; margin-bottom: 12px;
 }
 .field .optional { font-weight: 400; color: #767676; font-size: 0.9em; }
 .field input[type="text"],
@@ -3718,7 +3718,7 @@ function buildSupportingDocs(taskDef, formData) {
     const owners = d.owners || [];
     // Per-person photo ID
     owners.filter(o => o.type === 'person').forEach(o => {
-      docs.push(`Valid photo ID for${ownerName(o)}`);
+      docs.push(`Valid photo ID for ${ownerName(o)}`);
     });
     // Per-entity evidence of registration (other_entity only, not ki_company)
     owners.filter(o => o.type === 'other_entity').forEach(o => {
@@ -3745,12 +3745,12 @@ function buildSupportingDocs(taskDef, formData) {
       owners.forEach(o => {
         if (o.type !== 'person') return;
         if (o.action === 'adding') {
-          docs.push(`Valid photo ID for${ownerName(o)} (new owner)`);
+          docs.push(`Valid photo ID for ${ownerName(o)} (new owner)`);
         } else if (o.action === 'updating' && o.chngFields && (o.chngFields.includes('name') || o.chngFields.includes('gender'))) {
           const reasons = [];
           if (o.chngFields.includes('name')) reasons.push('name');
           if (o.chngFields.includes('gender')) reasons.push('gender');
-          docs.push(`Valid photo ID for${ownerName(o)} (${reasons.join(' and ')} change)`);
+          docs.push(`Valid photo ID for ${ownerName(o)} (${reasons.join(' and ')} change)`);
         }
       });
       // Per-entity evidence: adding (always), updating with entity detail changes
