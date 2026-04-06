@@ -1427,7 +1427,7 @@ function buildFilerFields(prefix) {
 function buildAddressFields(prefix, defaultKiribati) {
   const uid = prefix.replace(/[^a-zA-Z0-9]/g, '');
   return `
-    <div class="field"><label for="${uid}_addr1">Village, PO Box, or street address</label>
+    <div class="field"><label for="${uid}_addr1">Village or street address</label>
       <div class="error-text">Enter the address</div><input type="text" id="${uid}_addr1" required maxlength="200"></div>
     <div class="field"><label for="${uid}_addr2">Second line <span class="optional">(optional)</span></label>
       <input type="text" id="${uid}_addr2" maxlength="200"></div>
@@ -1565,22 +1565,22 @@ function buildForeignInvestmentField(prefix, skipLabel) {
   return `
     <div class="field">${skipLabel ? '' : '<label class="question-label">Are any of the owners foreign investors?</label>'}
       <p style="font-weight:600;margin:8px 0;">If any owner is not a Kiribati citizen, select Yes.</p>
-      <details class="name-rules" style="margin: 8px 0 12px;">
-        <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
-        <div class="name-rules-content">
-          <p style="margin-bottom:6px;color:#555;">Under the Foreign Investment Act 2018:</p>
-          <ul>
-            <li><b>Foreign investor</b> — a natural person who is not a citizen of Kiribati that has made or is seeking to make an investment into Kiribati, or a company not directly or indirectly owned or controlled by a citizen of Kiribati.</li>
-            <li><b>Investment</b> — the purchase, acquisition or establishment of an interest in or right over property or in a business, or undertaking a new business activity or expanding the scope of an existing business activity in Kiribati.</li>
-          </ul>
-        </div>
-      </details>
       <div class="error-text">Select Yes or No</div>
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="${prefix}_foreignInv" value="Yes" required onchange="toggleForeignInvWarning('${prefix}')"><span>Yes</span></label>
         <label class="radio-option"><input type="radio" name="${prefix}_foreignInv" value="No" required onchange="toggleForeignInvWarning('${prefix}')"><span>No</span></label>
       </div>
     </div>
+    <details class="name-rules" style="margin: 8px 0 12px;">
+      <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
+      <div class="name-rules-content">
+        <p style="margin-bottom:6px;color:#555;">Under the Foreign Investment Act 2018:</p>
+        <ul>
+          <li><b>Foreign investor</b> — a natural person who is not a citizen of Kiribati that has made or is seeking to make an investment into Kiribati, or a company not directly or indirectly owned or controlled by a citizen of Kiribati.</li>
+          <li><b>Investment</b> — the purchase, acquisition or establishment of an interest in or right over property or in a business, or undertaking a new business activity or expanding the scope of an existing business activity in Kiribati.</li>
+        </ul>
+      </div>
+    </details>
     <div id="${prefix}_foreignInvWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a Foreign Investment Registration Certificate.</div>
   `;
 }
@@ -1606,19 +1606,19 @@ function buildNomineeField(prefix, skipLabel, isChange, opts) {
   return `
     <div class="field">${skipLabel ? '' : '<label class="question-label">Are any of the owners nominees or trustees for someone else?</label>'}
       <p style="font-weight:600;margin:8px 0;">If you own the business on somebody else's behalf, select Yes.</p>
-      <details class="name-rules" style="margin: 8px 0 12px;">
-        <summary>What is a nominee or trustee owner? <span class="toggle-label">Show</span></summary>
-        <div class="name-rules-content">
-          <p>A nominee or trustee owner is someone who legally owns the business but actually does so on behalf of another person. For example, you may officially own the business as a trustee for someone else.</p>
-          <p>We need to know this so the registry records who actually controls the business.</p>
-        </div>
-      </details>
       <div class="error-text">Select Yes or No</div>
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="${prefix}_nominee" value="Yes" required onchange="toggleNomineeSection('${prefix}')"><span>Yes</span></label>
         <label class="radio-option"><input type="radio" name="${prefix}_nominee" value="No" required onchange="toggleNomineeSection('${prefix}')"><span>No</span></label>
       </div>
     </div>
+    <details class="name-rules" style="margin: 8px 0 12px;">
+      <summary>What is a nominee or trustee owner? <span class="toggle-label">Show</span></summary>
+      <div class="name-rules-content">
+        <p>A nominee or trustee owner is someone who legally owns the business but actually does so on behalf of another person. For example, you may officially own the business as a trustee for someone else.</p>
+        <p>We need to know this so the registry records who actually controls the business.</p>
+      </div>
+    </details>
     <div id="${prefix}_boSection" class="bn-hidden">
       <div class="info-box amber" style="margin-bottom:16px;">${boInfoText}</div>
       <div id="${prefix}_boContainer">${buildBeneficialOwnerCard(prefix, 1, opts)}</div>
@@ -1690,9 +1690,9 @@ function toggleNomineeSection(prefix) {
 }
 
 function bn6ReasonChange() {
-  const otherChecked = document.querySelector('input[name="bn6_removedReason"][value="other"]')?.checked;
+  const val = document.querySelector('input[name="bn6_removedReason"]:checked')?.value;
   const block = document.getElementById('bn6_reasonBlock');
-  if (block) block.style.display = otherChecked ? '' : 'none';
+  if (block) block.style.display = val === 'other' ? '' : 'none';
 }
 
 function toggleBn6Bn3Warning() {
@@ -2587,10 +2587,10 @@ function buildBN4Form(taskDef) {
       desc: '',
       html: `
         <div class="info-box amber">Please provide up to 3 proposed business names, in order of preference.</div>
-        ${buildNameRulesAccordion()}
         <div class="field"><label for="${p}_name1">First option (preferred)</label><div class="error-text">Enter at least one proposed name</div><input type="text" id="${p}_name1" required maxlength="200"></div>
         <div class="field"><label for="${p}_name2">Second option <span class="optional">(optional)</span></label><input type="text" id="${p}_name2" maxlength="200"></div>
         <div class="field"><label for="${p}_name3">Third option <span class="optional">(optional)</span></label><input type="text" id="${p}_name3" maxlength="200"></div>
+        ${buildNameRulesAccordion()}
       `
     },
     { title: 'Declaration and signature', desc: '', html: buildSignatureFields(p, false) }
@@ -2646,11 +2646,11 @@ function buildBN6Form(taskDef) {
       desc: '',
       html: `<div class="field">
           <div class="radio-group">
-            <label class="checkbox-option"><input type="checkbox" name="${p}_removedReason" value="annual_return"><span>Failed to file an annual return</span></label>
-            <label class="checkbox-option"><input type="checkbox" name="${p}_removedReason" value="change_info"><span>Failed to submit change of business information</span></label>
-            <label class="checkbox-option"><input type="checkbox" name="${p}_removedReason" value="other" onchange="bn6ReasonChange()"><span>Other reason</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_removedReason" value="annual_return" required onchange="bn6ReasonChange()"><span>Failure to file annual return</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_removedReason" value="change_info" onchange="bn6ReasonChange()"><span>Failure to change business information on time</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_removedReason" value="other" onchange="bn6ReasonChange()"><span>Other reason</span></label>
           </div>
-          <div class="error-text">Select at least one</div>
+          <div class="error-text">Select an option</div>
         </div>
         <div id="${p}_reasonBlock" class="info-box red" role="alert" style="display:none"><strong>Restoration using this form is only possible if the business name was removed for failing to file an annual return or a change of business information on time.</strong><br><br>Contact MTCIC for more information.</div>`
     },
@@ -3254,17 +3254,12 @@ function validateCurrentStep() {
     }
   });
 
-  // BN-6: Block if "other" reason selected or no reason selected
+  // BN-6: Block if "other" reason selected
   if (currentWizard.taskDef.id === 'bn6') {
-    const reasonCheckboxes = stepEl.querySelectorAll('input[name="bn6_removedReason"]');
-    if (reasonCheckboxes.length > 0) {
-      const reasons = Array.from(reasonCheckboxes).filter(c => c.checked).map(c => c.value);
-      if (reasons.length === 0) {
-        const field = reasonCheckboxes[0].closest('.field');
-        if (field) activateFieldError(field);
-        valid = false;
-      }
-      if (reasons.includes('other')) {
+    const reasonRadios = stepEl.querySelectorAll('input[name="bn6_removedReason"]');
+    if (reasonRadios.length > 0) {
+      const reason = document.querySelector('input[name="bn6_removedReason"]:checked')?.value;
+      if (reason === 'other') {
         const block = document.getElementById('bn6_reasonBlock');
         if (block) block.style.display = '';
         valid = false;
@@ -3570,7 +3565,7 @@ function collectFormData() {
       data.cessationDate = `${getVal(p+'_cessDate_dd')}/${getVal(p+'_cessDate_mm')}/${getVal(p+'_cessDate_yyyy')}`;
       break;
     case 'bn6':
-      data.removedReasons = Array.from(document.querySelectorAll('input[name="' + p + '_removedReason"]:checked')).map(c => c.value);
+      data.removedReason = getRadio(p + '_removedReason');
       data.removeDate = `${getVal(p+'_removeDate_dd')}/${getVal(p+'_removeDate_mm')}/${getVal(p+'_removeDate_yyyy')}`;
       data.filingBn3 = getRadio(p + '_filingBn3');
       break;
@@ -3947,8 +3942,9 @@ function buildReviewContent() {
   }
 
   if (p === 'bn6') {
+    const bn6ReasonLabels = { annual_return: 'Failure to file annual return', change_info: 'Failure to change business information on time', other: 'Other reason' };
     html += reviewSection('Eligibility', [
-      ['Reason for removal', (d.removedReasons || []).map(r => ({ annual_return: 'Failed to file annual return', change_info: 'Failed to submit change of business information', other: 'Other reason' }[r] || r)).join(', ')],
+      ['Reason for removal', bn6ReasonLabels[d.removedReason] || d.removedReason],
       ['Date of removal from register', d.removeDate]
     ]);
     html += reviewSection('Updating business name information', [['Filing BN-3 with this application?', d.filingBn3]]);
@@ -4686,8 +4682,8 @@ async function generatePDF() {
 
   if (pid === 'bn6') {
     heading('3.  Eligibility');
-    const reasonLabels = { annual_return: 'Failed to file annual return', change_info: 'Failed to submit change of business information', other: 'Other reason' };
-    row('Reason for removal', (data.removedReasons || []).map(r => reasonLabels[r] || r).join(', '));
+    const reasonLabels = { annual_return: 'Failure to file annual return', change_info: 'Failure to change business information on time', other: 'Other reason' };
+    row('Reason for removal', reasonLabels[data.removedReason] || data.removedReason);
     row('Date of removal from register', data.removeDate);
     y += 2;
     heading('4.  Updating business name information');
@@ -4866,6 +4862,15 @@ function finalizePdf(doc, data) {
       `On the entity record, ${verb.toLowerCase()} the green <strong>RE-REGISTER</strong> button`,
       `Upload your saved PDF and any supporting documents`,
       `${verb} <strong>SUBMIT</strong>, then ${verb.toLowerCase()} <strong>CHECKOUT</strong>. Re-registration is free.`,
+    ];
+  } else if (formId === 'bn6') {
+    // BN-6: Restoration — My Entities, CHANGE FILINGS button, restore wording
+    steps = [
+      `Go to the <strong>Online Business Registry</strong>`,
+      `${verb} <strong>My Entities</strong>, then the business name you want to restore`,
+      `On the entity record, ${verb.toLowerCase()} the blue <strong>CHANGE FILINGS</strong> button`,
+      `Upload your saved PDF and BN-3 information update, if applicable`,
+      `${verb} <strong>SUBMIT</strong>, then choose how to pay and ${verb.toLowerCase()} <strong>PAY NOW</strong>`,
     ];
   } else {
     // BN-2 to BN-8: Changes — My Entities, CHANGE FILINGS button, has payment

@@ -1396,7 +1396,7 @@ function buildFilerFields(prefix) {
 function buildAddressFields(prefix, defaultKiribati) {
   const uid = prefix.replace(/[^a-zA-Z0-9]/g, '');
   return `
-    <div class="field"><label for="${uid}_addr1">Village, PO Box, or street address</label>
+    <div class="field"><label for="${uid}_addr1">Village or street address</label>
       <div class="error-text">Enter the address</div><input type="text" id="${uid}_addr1" required maxlength="200"></div>
     <div class="field"><label for="${uid}_addr2">Second line <span class="optional">(optional)</span></label>
       <input type="text" id="${uid}_addr2" maxlength="200"></div>
@@ -1574,6 +1574,7 @@ function addShareFormSh(formPrefix) {
   const div = document.createElement('div');
   div.innerHTML = buildShCard(formPrefix, shareFormShCounts[formPrefix]);
   container.appendChild(div.firstElementChild);
+  toggleShareClassFields(formPrefix);
 }
 
 function buildShareholderBlock(prefix, idx) {
@@ -1595,7 +1596,7 @@ function buildShareholderBlock(prefix, idx) {
       <div class="field"><label>Number of shares</label>
         <div class="error-text">Enter the number of shares</div>
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_shares" data-numeric data-min="1" ${req}></div>
-      <div class="field"><label>Class of shares <span class="optional">(if applicable)</span></label>
+      <div class="field share-class-wrap"><label>Class of shares <span class="optional">(if applicable)</span></label>
         <input type="text" id="${p}_shareClass" placeholder="Leave blank if only one class" maxlength="50"></div>
     </div>
 
@@ -1679,7 +1680,7 @@ function shTypeChange(prefix) {
   if (addr1Label) {
     addr1Label.textContent = type === 'other_entity'
       ? 'P.O. Box / Postal Office / Street number and street name'
-      : 'Village, PO Box, or street address';
+      : 'Village or street address';
   }
   updateCardHeader(prefix);
 }
@@ -2247,14 +2248,14 @@ function buildCO3Form(taskDef) {
     {
       title: 'What constitution does your company now have?',
       desc: '',
-      html: `${buildConstitutionExplainer()}
-      <div class="field">
+      html: `<div class="field">
         <div class="radio-group">
           <label class="radio-option"><input type="radio" name="${p}_constType" value="default" required onchange="co3ConstChange()"><span>Default constitution under the Companies Act 2021</span></label>
           <label class="radio-option"><input type="radio" name="${p}_constType" value="own" onchange="co3ConstChange()"><span>Own constitution or modified default constitution</span></label>
         </div>
         <div class="error-text">Select an option</div>
       </div>
+      ${buildConstitutionExplainer()}
       <div id="co3_constInfo" class="info-box amber" style="display:none"></div>`
     },
     {
@@ -2445,6 +2446,7 @@ function co4ClassChange() {
   const val = document.querySelector('input[name="co4_multiClass"]:checked')?.value;
   const el = document.getElementById('co4_classInfo');
   if (el) el.style.display = val === 'Yes' ? '' : 'none';
+  toggleShareClassFields('co4');
 }
 function co4RightsChange() {
   const val = document.querySelector('input[name="co4_rights"]:checked')?.value;
@@ -2455,6 +2457,19 @@ function toggleInfo(elId) {
   const radio = event.target;
   const el = document.getElementById(elId);
   if (el) el.style.display = radio.value === 'Yes' ? '' : 'none';
+}
+
+function toggleShareClassFields(formPrefix) {
+  const isMulti = document.querySelector(`input[name="${formPrefix}_multiClass"]:checked`)?.value === 'Yes';
+  const container = document.getElementById(formPrefix + '_shContainer') || document.getElementById(formPrefix + '_shCardContainer');
+  if (!container) return;
+  container.querySelectorAll('.share-class-wrap').forEach(el => {
+    el.classList.toggle('co-hidden', !isMulti);
+    if (!isMulti) {
+      const inp = el.querySelector('input');
+      if (inp) inp.value = '';
+    }
+  });
 }
 
 function co3ConstChange() {
@@ -2907,7 +2922,7 @@ function buildShCard(formPrefix, idx) {
         <div class="field"><label>Number of shares</label>
           <div class="error-text">Enter the number of shares</div>
           <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_shares" data-numeric data-min="1" ${req}></div>
-        <div class="field"><label>Class of shares <span class="optional">(if applicable)</span></label>
+        <div class="field share-class-wrap"><label>Class of shares <span class="optional">(if applicable)</span></label>
           <input type="text" id="${p}_shareClass" placeholder="Leave blank if only one class" maxlength="50"></div>
       </div>
 
@@ -2970,6 +2985,7 @@ function addCO0Sh() {
   const div = document.createElement('div');
   div.innerHTML = buildShCard('co0', co0ShCounts.sh);
   container.appendChild(div.firstElementChild);
+  toggleShareClassFields('co0');
 }
 
 function removeCO0Sh(idx) {
@@ -3036,16 +3052,21 @@ function buildCO0Form(taskDef) {
     { title: 'Company details', html: '<div class="info-box amber">Enter the company name exactly as currently registered.</div>' + buildCompanyDetailsFields(p) },
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this application for re-registration.</div>' + buildFilerFields(p) },
     { title: 'Which constitution will your company use?', html: `
-      ${buildConstitutionExplainer(true)}
       <div class="field">
         <div class="radio-group">
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="default" required onchange="co0ConstitutionChange()"><span>Default constitution under the Companies Act 2021</span></label>
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="own" onchange="co0ConstitutionChange()"><span>Own constitution or modified default constitution</span></label>
         </div><div class="error-text">Select an option</div></div>
+      ${buildConstitutionExplainer(true)}
       <div id="${p}_constInfo" class="info-box amber co-hidden">You must upload a copy of the constitution or modified default constitution.</div>
     `},
     { title: 'Is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -3055,11 +3076,6 @@ function buildCO0Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
     { title: 'Confirm existing director details', html: `
@@ -3095,20 +3111,20 @@ function buildCO0Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_totalShares" data-numeric data-min="1" required></div>
     `},
     { title: 'Is there more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
-    { title: 'Confirm existing shareholder details', html: `
+    { title: 'Confirm existing shareholder details', onShow: () => toggleShareClassFields('co0'), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
       <div id="co0_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="co0_shContainer">${buildShCard('co0', 1)}</div>
@@ -3241,6 +3257,7 @@ function addCO1Sh() {
   const div = document.createElement('div');
   div.innerHTML = buildShCard('co1', co1ShCounts.sh);
   container.appendChild(div.firstElementChild);
+  toggleShareClassFields('co1');
 }
 
 function removeCO1Sh(idx) {
@@ -3288,16 +3305,21 @@ function buildCO1Form(taskDef) {
     `},
     { title: 'Your details', html: '<div class="info-box amber">Name and address of the person filing this application for incorporation.</div>' + buildFilerFields(p) },
     { title: 'Which constitution will your company use?', html: `
-      ${buildConstitutionExplainer()}
       <div class="field">
         <div class="radio-group">
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="default" required onchange="co1ConstitutionChange()"><span>Default constitution under the Companies Act 2021</span></label>
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="own" onchange="co1ConstitutionChange()"><span>Own constitution or modified default constitution</span></label>
         </div><div class="error-text">Select an option</div></div>
+      ${buildConstitutionExplainer()}
       <div id="${p}_constInfo" class="info-box amber co-hidden">You must upload a copy of the constitution or modified default constitution.</div>
     `},
     { title: 'Will your company be a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -3307,11 +3329,6 @@ function buildCO1Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
     { title: 'Details of proposed directors', html: `
@@ -3347,20 +3364,20 @@ function buildCO1Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_totalShares" data-numeric data-min="1" required></div>
     `},
     { title: 'Will there be more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
-    { title: 'Details of shareholders', html: `
+    { title: 'Details of shareholders', onShow: () => toggleShareClassFields('co1'), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
       <div id="co1_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="co1_shContainer">${buildShCard('co1', 1)}</div>
@@ -3994,35 +4011,40 @@ function buildCO4Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_sharesAfter" data-numeric data-min="1" required></div>
     `},
     { title: 'Is there more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="co4ClassChange()"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="co4ClassChange()"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="co4ClassChange()"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="co4ClassChange()"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
     { title: 'Are there any share rights that are not included in the company\'s constitution?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_rights" value="Yes" required onchange="co4RightsChange()"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_rights" value="No" onchange="co4RightsChange()"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What are share rights? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Most of the time, the company constitution will include all the rules about company shares. If all the rules about shares are included in your constitution, select No. If there are share rights that are not in your constitution, select Yes.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_rights" value="Yes" required onchange="co4RightsChange()"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_rights" value="No" onchange="co4RightsChange()"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_rightsInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the rights attached to the shares.</div>
     `},
     { title: 'After this share issue, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -4032,14 +4054,9 @@ function buildCO4Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
-    { title: 'Shareholder details', html: `
+    { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
       <div id="${p}_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="${p}_shCardContainer">${buildShCard(p, 1)}</div>
@@ -4076,21 +4093,26 @@ function buildCO5Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_sharesAfter" data-numeric data-min="1" required></div>
     `},
     { title: 'Is there more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
     { title: 'After this acquisition, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -4100,14 +4122,9 @@ function buildCO5Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
-    { title: 'Shareholder details', html: `
+    { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list shareholders and their shareholdings <strong>after</strong> this acquisition.<br><br>You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
       <div id="${p}_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="${p}_shCardContainer">${buildShCard(p, 1)}</div>
@@ -4144,21 +4161,26 @@ function buildCO6Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_sharesAfter" data-numeric data-min="1" required></div>
     `},
     { title: 'Is there more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
     { title: 'After this redemption, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -4168,14 +4190,9 @@ function buildCO6Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
-    { title: 'Shareholder details', html: `
+    { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list shareholders and their shareholdings <strong>after</strong> this redemption.<br><br>You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
       <div id="${p}_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="${p}_shCardContainer">${buildShCard(p, 1)}</div>
@@ -4206,21 +4223,26 @@ function buildCO7Form(taskDef) {
         <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_totalShares" data-numeric data-min="1" required></div>
     `},
     { title: 'Is there more than one class of shares?', html: `
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 12px;">
         <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
     `},
     { title: 'After this transfer, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
+        </div><div class="error-text">Select an option</div></div>
       <details class="name-rules" style="margin: 0 0 16px;">
         <summary>Who is a foreign investor? <span class="toggle-label">Show</span></summary>
         <div class="name-rules-content">
@@ -4230,14 +4252,9 @@ function buildCO7Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div class="field">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="Yes" required onchange="toggleInfo('${p}_foreignInfo')"><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="${p}_foreign" value="No" onchange="toggleInfo('${p}_foreignInfo')"><span>No</span></label>
-        </div><div class="error-text">Select an option</div></div>
       <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
     `},
-    { title: 'Shareholder details', html: `
+    { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list all shareholders and their shareholdings <strong>after</strong> this transfer. This includes shareholders whose details have not changed.</div>
       <div id="${p}_shareMismatch" class="info-box red" role="alert" style="display:none"></div>
       <div id="${p}_shCardContainer">${buildShCard(p, 1)}</div>
@@ -6873,6 +6890,15 @@ async function generatePDF() {
       `${verb} <strong>Companies</strong>, then <strong>Register a company</strong>`,
       `Enter your proposed company name`,
       `Upload your saved PDF and any supporting documents`,
+      `${verb} <strong>SUBMIT</strong>, then choose how to pay and ${verb.toLowerCase()} <strong>PAY NOW</strong>`,
+    ];
+  } else if (formId === 'co16') {
+    // CO-16: Restoration — restore wording, no supporting docs
+    steps = [
+      `Go to the <strong>Online Business Registry</strong>`,
+      `${verb} <strong>My Entities</strong>, then the company you want to restore`,
+      `On the entity record, ${verb.toLowerCase()} the blue <strong>CHANGE FILINGS</strong> button`,
+      `Upload your saved PDF`,
       `${verb} <strong>SUBMIT</strong>, then choose how to pay and ${verb.toLowerCase()} <strong>PAY NOW</strong>`,
     ];
   } else {

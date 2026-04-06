@@ -1376,7 +1376,7 @@ function buildFilerFields(prefix) {
 function buildAddressFields(prefix, defaultKiribati) {
   const uid = prefix.replace(/[^a-zA-Z0-9]/g, '');
   return `
-    <div class="field"><label for="${uid}_addr1">Village, PO Box, or street address</label>
+    <div class="field"><label for="${uid}_addr1">Village or street address</label>
       <div class="error-text">Enter the address</div><input type="text" id="${uid}_addr1" required maxlength="200"></div>
     <div class="field"><label for="${uid}_addr2">Second line <span class="optional">(optional)</span></label>
       <input type="text" id="${uid}_addr2" maxlength="200"></div>
@@ -1571,7 +1571,7 @@ function shTypeChange(prefix) {
   if (addr1Label) {
     addr1Label.textContent = type === 'other_entity'
       ? 'P.O. Box / Postal Office / Street number and street name'
-      : 'Village, PO Box, or street address';
+      : 'Village or street address';
   }
   updateCardHeader(prefix);
 }
@@ -1696,6 +1696,19 @@ function toggleInfo(elId) {
   const radio = event.target;
   const el = document.getElementById(elId);
   if (el) el.style.display = radio.value === 'Yes' ? '' : 'none';
+}
+
+function toggleShareClassFields(formPrefix) {
+  const isMulti = document.querySelector(`input[name="${formPrefix}_multiClass"]:checked`)?.value === 'Yes';
+  const container = document.getElementById(formPrefix + '_shContainer');
+  if (!container) return;
+  container.querySelectorAll('.share-class-wrap').forEach(el => {
+    el.classList.toggle('co-hidden', !isMulti);
+    if (!isMulti) {
+      const inp = el.querySelector('input');
+      if (inp) inp.value = '';
+    }
+  });
 }
 
 // ============================================================
@@ -2272,7 +2285,7 @@ function buildOcShCard(formPrefix, idx) {
         <div class="field"><label>Number of shares</label>
           <div class="error-text">Enter the number of shares</div>
           <input type="text" inputmode="numeric" pattern="[0-9]*" id="${p}_shares" data-numeric data-min="1" ${req}></div>
-        <div class="field"><label>Class of shares <span class="optional">(if applicable)</span></label>
+        <div class="field share-class-wrap"><label>Class of shares <span class="optional">(if applicable)</span></label>
           <input type="text" id="${p}_shareClass" maxlength="50" placeholder="Leave blank if only one class"></div>
       </div>
 
@@ -2336,6 +2349,7 @@ function addOcSh(formPrefix) {
   const div = document.createElement('div');
   div.innerHTML = buildOcShCard(formPrefix, ocShCounts[formPrefix]);
   container.appendChild(div.firstElementChild);
+  toggleShareClassFields(formPrefix);
 }
 
 function removeOcSh(formPrefix, idx) {
@@ -2423,22 +2437,23 @@ function buildCO0aForm(taskDef) {
     {
       title: 'Is there more than one class of shares?',
       html: `
+        <div class="field">
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+          </div><div class="error-text">Select an option</div></div>
         <details class="name-rules" style="margin: 0 0 12px;">
           <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
           <div class="name-rules-content">
             <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
           </div>
         </details>
-        <div class="field">
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-          </div><div class="error-text">Select an option</div></div>
         <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
       `
     },
     {
       title: 'Confirm existing shareholder details',
+      onShow: () => toggleShareClassFields(p),
       html: `
         <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
         <div id="${p}_shContainer">${buildOcShCard(p, 1)}</div>
@@ -2574,22 +2589,23 @@ function buildCO20Form(taskDef) {
     {
       title: 'Is there more than one class of shares?',
       html: `
+        <div class="field">
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>Yes</span></label>
+            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo'); toggleShareClassFields('${p}')"><span>No</span></label>
+          </div><div class="error-text">Select an option</div></div>
         <details class="name-rules" style="margin: 0 0 12px;">
           <summary>What is a class of shares? <span class="toggle-label">Show</span></summary>
           <div class="name-rules-content">
             <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
           </div>
         </details>
-        <div class="field">
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="Yes" required onchange="toggleInfo('${p}_classInfo')"><span>Yes</span></label>
-            <label class="radio-option"><input type="radio" name="${p}_multiClass" value="No" onchange="toggleInfo('${p}_classInfo')"><span>No</span></label>
-          </div><div class="error-text">Select an option</div></div>
         <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
       `
     },
     {
       title: 'Details of shareholders',
+      onShow: () => toggleShareClassFields(p),
       html: `
         <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
         <div id="${p}_shContainer">${buildOcShCard(p, 1)}</div>
@@ -5360,8 +5376,8 @@ async function generatePDF() {
     steps = [
       `Go to the <strong>Online Business Registry</strong>`,
       `${verb} <strong>My Entities</strong>, then the overseas company you want to restore`,
-      `On the entity record, ${verb.toLowerCase()} the green <strong>RESTORE</strong> button`,
-      `Upload your saved PDF and any supporting documents`,
+      `On the entity record, ${verb.toLowerCase()} the blue <strong>CHANGE FILINGS</strong> button`,
+      `Upload your saved PDF`,
       `${verb} <strong>SUBMIT</strong>, then choose how to pay and ${verb.toLowerCase()} <strong>PAY NOW</strong>`,
     ];
   } else {
