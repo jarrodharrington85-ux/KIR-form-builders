@@ -2651,6 +2651,7 @@ function buildCO13Form(taskDef) {
         <div id="${p}_declNo" class="info-box blue" style="display:none">I certify that the information provided on this form is true and correct.</div>` +
         `<div class="field"><label for="${p}_sigName">Full legal name</label>
           <div class="error-text">Enter the name of the person signing</div><input type="text" id="${p}_sigName" required maxlength="200"></div>
+        <p style="font-size:0.85em;color:#555;margin:-4px 0 8px;">By typing your name here, you are signing this form.</p>
         <div class="field"><label>Signing authority</label>
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="${p}_sigCapacity" value="Director" required><span>Director</span></label>
@@ -2702,7 +2703,8 @@ function buildCO14Form(taskDef) {
       desc: '',
       html: `<div class="info-box blue">I certify that the information provided on this form is true and correct.</div>
         <div class="field"><label for="${p}_sigName">Full legal name</label>
-          <div class="error-text">Enter the name of the person signing</div><input type="text" id="${p}_sigName" required maxlength="200"></div>`
+          <div class="error-text">Enter the name of the person signing</div><input type="text" id="${p}_sigName" required maxlength="200"></div>
+        <p style="font-size:0.85em;color:#555;margin:-4px 0 8px;">By typing your name here, you are signing this form.</p>`
     }
   ];
   return { steps, taskDef };
@@ -3422,6 +3424,7 @@ function buildCO1Form(taskDef) {
       <div class="info-box blue">I certify that the information provided on this form and any document attached to this form are true and correct.</div>
       <div class="field"><label for="${p}_sigName">Full legal name</label>
         <div class="error-text">Enter the name of the person signing</div><input type="text" id="${p}_sigName" required maxlength="200"></div>
+      <p style="font-size:0.85em;color:#555;margin:-4px 0 8px;">By typing your name here, you are signing this form.</p>
     `}
   ];
   return { steps, taskDef };
