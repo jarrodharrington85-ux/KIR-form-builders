@@ -1064,7 +1064,7 @@ function loadPdfLibs() {
 // ║     [HEADER-BACK]       — Back button URL mapping                 ║
 // ║     [FEATURE-AUTOSAVE]  — Auto-save form progress                ║
 // ║     [FEATURE-OFFLINE]   — Offline detection                       ║
-// ║     [TEST-DATA]         — Test data (remove before production)    ║
+// ║                                                                    ║
 // ║                                                                    ║
 // ╚══════════════════════════════════════════════════════════════════════╝
 */
@@ -3543,31 +3543,9 @@ function startWizard(taskId) {
   </div>`;
 
   area.innerHTML = html;
-  prefillTestData(taskId);
   showStep(0);
 }
 
-// [TEST-DATA] — Test pre-fill data (remove before production)
-// === TEST DATA — REMOVE BEFORE PRODUCTION ===
-function prefillTestData(taskId) {
-  const p = taskId;
-  const uid = p + '_filer';
-  const addrUid = uid.replace(/[^a-zA-Z0-9]/g, '');
-  const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
-  // Page 1: Company details
-  setVal(p + '_companyName', 'Test Overseas Company Limited');
-  setVal(p + '_regNumber', 'OC-12345');
-  // Page 2: Filer
-  setVal(p + '_filerFirst', 'Jane');
-  setVal(p + '_filerMiddle', '');
-  setVal(p + '_filerLast', 'Tester');
-  setVal(addrUid + '_addr1', 'Bairiki Village');
-  setVal(addrUid + '_city', 'Tarawa');
-  setVal(addrUid + '_island', 'Tarawa');
-  setVal(p + '_filerPhone', '+686 12345');
-  setVal(p + '_filerEmail', 'jane@test.com');
-}
-// === END TEST DATA ===
 
 
 function getVisibleSteps() {
