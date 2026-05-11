@@ -578,7 +578,7 @@ body {
 .co-form-container .success-screen p:last-of-type { margin-bottom: 28px; }
 /* Step labels */
 .success-screen .step-label {
-  font-size: 0.8em; font-weight: 600; color: #888;
+  font-size: 0.8em; font-weight: 600; color: var(--text);
   text-transform: uppercase; letter-spacing: 0.3px; margin: 0 0 8px 0;
   text-align: left;
 }
@@ -605,7 +605,7 @@ body {
 /* Save section card */
 .success-screen .save-section {
   background: #f9fafb; border: 1.5px solid #ddd; border-radius: 8px;
-  padding: 16px; margin-bottom: 18px; text-align: left;
+  padding: 16px; margin-bottom: 10px; text-align: left;
 }
 .save-section .save-file-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .save-section .save-file-icon {
@@ -720,6 +720,342 @@ body {
   .success-screen .btn-save-pdf { width: 100%; }
   .success-screen .btn-registry { width: 100%; justify-content: center; }
   .co-form-container .sp-btn-start { width: 100%; justify-content: center; }
+}
+
+/* ── Screener step (BN-0, BN-1) — one question per step, soft gate ── */
+.screener-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+.screener-followup {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 0.95em;
+  line-height: 1.55;
+  display: none;
+}
+.screener-followup.show { display: block; }
+.screener-followup.no { background: #fff8e6; color: #6d5200; border-left: 3px solid #d4a017; }
+.screener-followup.unsure { background: #e6f1fb; color: #0c447c; border-left: 3px solid #185fa5; }
+
+/* ── Registration number help expander ── */
+.reg-number-help {
+  margin-top: 8px;
+  font-size: 0.9em;
+}
+.reg-number-help summary {
+  cursor: pointer;
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  list-style: none;
+}
+.reg-number-help summary::-webkit-details-marker { display: none; }
+.reg-number-help summary::before {
+  content: '›';
+  display: inline-block;
+  transition: transform 0.15s ease;
+  font-size: 1.3em;
+  line-height: 1;
+  width: 12px;
+}
+.reg-number-help[open] summary::before { transform: rotate(90deg); }
+.reg-number-help summary .help-trigger-text { text-decoration: underline; }
+.reg-number-help-content {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: #f7f8fa;
+  border-left: 3px solid #185fa5;
+  border-radius: 4px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.reg-number-help-content a { color: var(--blue); }
+
+/* ── Revised success screen — context panel (BN-0, BN-1) ── */
+/* Neutral container for flow chart + handoff; sits above Step 1/Step 2 boxes.
+   Visual: matches the un-saved .save-section idiom so the saved-state green and
+   the registry-guide amber retain their semantic weight. */
+.success-context-panel {
+  background: #f9fafb;
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  padding: 18px 18px 12px;
+  margin: 0 0 10px;
+}
+.success-flow-chart-horizontal {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-gray);
+}
+.success-flow-chart-horizontal::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: var(--line-margin, 10%);
+  right: var(--line-margin, 10%);
+  height: 2px;
+  background: var(--border-light);
+  z-index: 0;
+}
+.success-flow-chart-vertical {
+  display: none;
+}
+@media (max-width: 640px) {
+  .success-flow-chart-horizontal { display: none; }
+  .success-flow-chart-vertical {
+    display: block;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-gray);
+  }
+  .success-context-panel { padding: 14px 14px 10px; margin: 0 0 10px; }
+}
+.flow-step {
+  flex: 1;
+  text-align: center;
+  padding: 0 2px;
+  position: relative;
+  z-index: 1;
+}
+.flow-step-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  position: relative;
+  z-index: 2;
+}
+.flow-step-circle.done {
+  background: var(--green-light);
+  color: var(--green-dark);
+  border: 1.5px solid var(--green-dark);
+}
+.flow-step-circle.current {
+  background: var(--blue);
+  color: #fff;
+  border: 2px solid var(--blue);
+}
+.flow-step-circle.future {
+  background: #fff;
+  color: #888;
+  border: 1.5px solid #c5c5c5;
+}
+.flow-step-label {
+  font-size: 0.82em;
+  line-height: 1.3;
+  color: var(--text-mid);
+}
+.flow-step-label.current { color: var(--blue); font-weight: 700; }
+.flow-step-label.done { color: var(--text-mid); }
+.success-flow-chart-vertical .flow-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 2px 0;
+}
+.success-flow-chart-vertical .flow-step-circle { margin-bottom: 0; }
+.success-flow-chart-vertical .flow-step-label {
+  text-align: left;
+  font-size: 0.95em;
+}
+.success-flow-chart-vertical .flow-connector-vertical {
+  width: 2px;
+  height: 14px;
+  background: var(--border-light);
+  margin-left: 17px;
+}
+
+/* Handoff — section header inside the context panel */
+.success-handoff {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+}
+.success-handoff-icon {
+  color: var(--green-dark);
+  flex-shrink: 0;
+  margin-top: 2px;
+  line-height: 0;
+}
+.success-handoff-content { flex: 1; min-width: 0; }
+/* Specificity bump to beat .co-form-container .success-screen h3 / p rules above */
+.co-form-container .success-screen .success-handoff-title {
+  margin: 0 0 4px 0;
+  font-size: 1.12em;
+  font-weight: 700;
+  color: var(--green-dark);
+  font-family: inherit;
+  line-height: 1.35;
+}
+.co-form-container .success-screen p.success-handoff-subtitle {
+  margin: 0;
+  font-size: 0.92em;
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+
+/* ── Progressive emphasis (Step 1 → Step 2 reveal) ── */
+.success-step-block { transition: opacity 0.18s ease; }
+.success-step-block.muted { opacity: 0.5; }
+.success-step-block.muted-partial { opacity: 0.7; }
+.success-step-block.muted .registry-guide,
+.success-step-block.muted .btn-registry { pointer-events: none; }
+.success-step-block.muted .btn-registry {
+  background: #c9c9c9 !important;
+  border-color: #c9c9c9 !important;
+  color: #fff !important;
+  cursor: not-allowed;
+}
+.success-step-block.muted .not-submitted-warning .warn-icon {
+  background: #b9b9b9;
+}
+.success-step-block.muted .not-submitted-warning .warn-main {
+  color: #777;
+}
+.success-step-locked-hint {
+  display: none;
+  font-size: 0.78em;
+  color: #888;
+  font-style: italic;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 6px;
+}
+.success-step-block.muted .success-step-locked-hint { display: inline; }
+.success-step-block.muted .step-label::before {
+  content: '🔒 ';
+  font-size: 0.85em;
+}
+
+/* ── Business name autocomplete (BN-0 only) ── */
+.bn-ac-field { position: relative; }
+.bn-ac-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--white);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: var(--shadow);
+  display: none;
+}
+.bn-ac-dropdown.open { display: block; }
+.bn-ac-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92em;
+  border-bottom: 1px solid var(--border-gray);
+}
+.bn-ac-item:last-child { border-bottom: none; }
+.bn-ac-item:hover, .bn-ac-item.highlighted {
+  background: var(--blue-light);
+}
+.bn-ac-item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+.bn-ac-item-name mark {
+  background: var(--gold);
+  color: var(--text);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+.bn-ac-item-reg {
+  font-size: 0.82em;
+  color: var(--text-light);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  flex-shrink: 0;
+}
+.bn-ac-empty {
+  padding: 12px 14px;
+  font-size: 0.88em;
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+.bn-ac-empty a { color: var(--blue); }
+.bn-ac-matched {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  background: var(--green-light);
+  border: 1.5px solid var(--green-dark);
+  color: var(--green-dark);
+  border-radius: var(--radius);
+  font-size: 0.92em;
+  line-height: 1.45;
+}
+.bn-ac-matched.show { display: flex; }
+.bn-ac-matched-icon { flex-shrink: 0; margin-top: 1px; line-height: 0; }
+.bn-ac-matched-text { flex: 1; }
+.bn-ac-change-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--blue);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.bn-ac-change-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.bn-ac-loading {
+  padding: 12px 14px;
+  font-size: 0.88em;
+  color: var(--text-light);
+  font-style: italic;
+}
+/* Locked state — inputs are readonly after a match is selected */
+#co0a_companyName[readonly],
+#co0a_regNumber[readonly] {
+  background: #f5f5f5;
+  color: var(--text);
+  cursor: default;
+}
+#co0a_companyName[readonly]:focus,
+#co0a_regNumber[readonly]:focus {
+  border-color: var(--border-light);
+  box-shadow: none;
+  outline: none;
+}
+@media (max-width: 600px) {
+  .bn-ac-matched { flex-wrap: wrap; }
+  .bn-ac-change-btn { margin-left: 30px; margin-top: 4px; }
 }
 
 @media print { body { background: #fff; } .co-form-container { max-width: 100%; } }
@@ -1075,10 +1411,10 @@ function loadPdfLibs() {
 
 // [DATA-ISLANDS] — Add or remove islands in this list (keep alphabetical, single quotes, commas)
 const KIRIBATI_ISLANDS = [
-  'Tarawa','Abaiang','Abenama','Aranuka','Arorae','Beru','Butaritari',
+  'Abaiang','Abemama','Aranuka','Arorae','Banaba','Beru','Butaritari',
   'Kanton','Kiritimati','Kuria','Maiana','Makin','Marakei','Nikunau',
-  'Nonouti','Onotoa','Tabiteuea North','Tabiteuea South','Tamana',
-  'Tabuaeran','Teraina'
+  'Nonouti','North Tarawa','Onotoa','South Tarawa','Tabiteuea North',
+  'Tabiteuea South','Tabuaeran','Tamana','Teraina'
 ];
 
 // [DATA-COUNTRIES] — Sovereign states only. Used for nationality dropdowns.
@@ -1137,7 +1473,7 @@ const BUSINESS_ACTIVITIES = [
   'Accommodation services','Agriculture and livestock',
   'Communication, information and IT services','Construction',
   'Education and health','Finance and insurance','Fishing',
-  'Food and beverage services','Manufacturing','Services to businesses',
+  'Food and beverage services','Liquor business','Manufacturing','Services to businesses',
   'Services to households','Tourism (excluding accommodation)',
   'Transport and storage','Wholesale and retail trade','Other'
 ];
@@ -1173,14 +1509,18 @@ function countryOptions(defaultKiribati) {
   html += '<option value="China">China</option>';
   html += '<option value="Fiji">Fiji</option>';
   html += '<option value="New Zealand">New Zealand</option>';
-  html += '<option disabled aria-hidden="true">──────────</option>';
+  html += '<option disabled>──────────</option>';
   ALL_LOCATIONS.forEach(c => { if (!PINNED_COUNTRIES.includes(c)) html += `<option value="${c}">${c}</option>`; });
   return html;
 }
 
 function islandOptions() {
   let html = '<option value="">Select island</option>';
-  KIRIBATI_ISLANDS.forEach(i => { html += `<option value="${i}">${i}</option>`; });
+  html += '<option value="South Tarawa">South Tarawa</option>';
+  html += '<option disabled>──────────</option>';
+  KIRIBATI_ISLANDS.forEach(i => {
+    if (i !== 'South Tarawa') html += `<option value="${i}">${i}</option>`;
+  });
   return html;
 }
 
@@ -1192,7 +1532,7 @@ function nationalityOptions() {
   html += '<option value="China">China</option>';
   html += '<option value="Fiji">Fiji</option>';
   html += '<option value="New Zealand">New Zealand</option>';
-  html += '<option disabled aria-hidden="true">──────────</option>';
+  html += '<option disabled>──────────</option>';
   ALL_COUNTRIES.forEach(c => { if (!PINNED_COUNTRIES.includes(c)) html += `<option value="${c}">${c}</option>`; });
   return html;
 }
@@ -1335,19 +1675,43 @@ function updateCardHeader(prefix) {
 
 // [SHARED-CO-FIELDS] — Overseas company name + registration number fields
 function buildCompanyDetailsFields(prefix) {
+  const isReregistration = prefix === 'co0a';
+  const nameFieldClass = isReregistration ? 'field bn-ac-field' : 'field';
+  const autocompleteAttr = isReregistration ? 'autocomplete="off" data-bn-ac="1"' : '';
+  const dropdown = isReregistration ? '<div class="bn-ac-dropdown" id="bn-ac-dropdown" role="listbox" aria-label="Matching overseas company names"></div>' : '';
+  const helpId = isReregistration ? 'id="bn-reg-help"' : '';
+  const helpExpander = isReregistration ? `
+    <details class="reg-number-help" ${helpId}>
+      <summary><span class="help-trigger-text">What's my registration number?</span></summary>
+      <div class="reg-number-help-content">
+        Your overseas company has its own Kiribati registration number. Log on to your Online Business Registry account and it will be listed next to your company under &ldquo;My entities&rdquo;. If your company isn't listed, you must <a href="https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&amp;ctk=CompanyHowTo#reregister-company-steps" target="_blank" rel="noopener noreferrer">obtain authority</a>.
+      </div>
+    </details>` : '';
+  const matchedBar = isReregistration ? `
+    <div class="bn-ac-matched" id="bn-ac-matched" role="status">
+      <span class="bn-ac-matched-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12.5L11 15.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="bn-ac-matched-text">Match found. Registration number filled in for you.</span>
+      <button type="button" class="bn-ac-change-btn" onclick="clearAutocompleteMatch()">Wrong company? Change</button>
+    </div>
+  ` : '';
   return `
     <div class="field-row">
-      <div class="field" style="flex:2">
+      <div class="${nameFieldClass}" style="flex:2">
         <label for="${prefix}_companyName">Name of overseas company</label>
         <div class="error-text">Enter the company name</div>
-        <input type="text" id="${prefix}_companyName" required maxlength="200">
+        <input type="text" id="${prefix}_companyName" required maxlength="200" ${autocompleteAttr}>
+        ${dropdown}
       </div>
       <div class="field" style="flex:1">
         <label for="${prefix}_regNumber">Registration number in Kiribati</label>
         <div class="error-text">Enter the registration number</div>
         <input type="text" id="${prefix}_regNumber" required maxlength="50" placeholder="e.g. CO-12345">
+        ${helpExpander}
       </div>
     </div>
+    ${matchedBar}
   `;
 }
 
@@ -1373,10 +1737,13 @@ function buildFilerFields(prefix) {
 }
 
 // [SHARED-ADDRESS] — International address fields (village/street, city, country, state, postcode)
-function buildAddressFields(prefix, defaultKiribati) {
+function buildAddressFields(prefix, defaultKiribati, isPostal) {
   const uid = prefix.replace(/[^a-zA-Z0-9]/g, '');
+  const addr1Label = isPostal
+    ? 'P.O. Box / Postal Office / Street number and street name'
+    : 'Village or street address';
   return `
-    <div class="field"><label for="${uid}_addr1">Village or street address</label>
+    <div class="field"><label for="${uid}_addr1">${addr1Label}</label>
       <div class="error-text">Enter the address</div><input type="text" id="${uid}_addr1" required maxlength="200"></div>
     <div class="field"><label for="${uid}_addr2">Second line <span class="optional">(optional)</span></label>
       <input type="text" id="${uid}_addr2" maxlength="200"></div>
@@ -1398,6 +1765,315 @@ function buildAddressFields(prefix, defaultKiribati) {
         <div class="error-text">Enter a valid postcode</div><input type="text" id="${uid}_postcode" maxlength="10"></div>
     </div>
   `;
+}
+
+
+// ===========================================================================================================================
+// [BN-0 AUTOCOMPLETE] — Migration-file lookup of business name → registration number
+// Data source: pre-transition MTCIC migration file (Active entries only, malformed rows stripped).
+// Format: gzip-compressed JSON of [name, regNumber] pairs, base64 inline blob.
+// Same dataset is publicly searchable via the registry's /corp/search.aspx — embedding is compression, not encryption.
+// ===========================================================================================================================
+const MIGRATION_DATA_B64 = "H4sIAK6uAWoC/1WP3WrDMAxGX0XkqoVcrGPd1kvVURyBIwdbzigh7/8asxL6dyXwdz7peFkaLB0TTOi4ZwcknoUosXiYlCBo17SXtV0a5641ndnFGtz24HsLlN9qLEpJUDkKBnCx3dkfY3sW4TzUV8klqOE+xTIBZsbnwV9jR2eYUAjQxT8b1tJUnK3OcMCS9fhw+bLO/RucA0qXqxclf4Mp8Yy2nEdWqvCnwToQ9IHUDZQgJo9VbdOGw4xSUMvx2Th9bBUerxV+FYEcQ9mNHvB5Xf8B2dmc31oBAAA=";
+
+let _migrationData = null;
+let _migrationDataPromise = null;
+
+async function loadMigrationData() {
+  if (_migrationData) return _migrationData;
+  if (_migrationDataPromise) return _migrationDataPromise;
+  _migrationDataPromise = (async () => {
+    try {
+      if (typeof DecompressionStream === 'undefined') {
+        console.warn('BN-0 autocomplete: DecompressionStream not supported in this browser.');
+        _migrationData = [];
+        return _migrationData;
+      }
+      const binStr = atob(MIGRATION_DATA_B64);
+      const bytes = new Uint8Array(binStr.length);
+      for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+      const text = await new Response(stream).text();
+      _migrationData = JSON.parse(text);
+      return _migrationData;
+    } catch (e) {
+      console.warn('BN-0 autocomplete: data load failed', e);
+      _migrationData = [];
+      return _migrationData;
+    }
+  })();
+  return _migrationDataPromise;
+}
+
+// Autocomplete state — scoped to the active BN-0 wizard session
+const _bnAc = { highlighted: -1, filtered: [], active: false, loaded: false };
+
+function bnAcEscapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function bnAcEscapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function bnAcHighlight(name, query) {
+  if (!query) return bnAcEscapeHtml(name);
+  const re = new RegExp('(' + bnAcEscapeRegex(query) + ')', 'ig');
+  return bnAcEscapeHtml(name).replace(re, '<mark>$1</mark>');
+}
+
+function bnAcSearch(query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2 || !_migrationData) return [];
+  const matches = _migrationData.filter(([n]) => n.toLowerCase().includes(q));
+  return matches.sort((a, b) => {
+    const aP = a[0].toLowerCase().startsWith(q);
+    const bP = b[0].toLowerCase().startsWith(q);
+    if (aP && !bP) return -1;
+    if (!aP && bP) return 1;
+    return a[0].localeCompare(b[0]);
+  }).slice(0, 8);
+}
+
+function bnAcRenderDropdown(query) {
+  const dropdown = document.getElementById('bn-ac-dropdown');
+  if (!dropdown) return;
+  if (!_bnAc.loaded) {
+    if (query.trim().length >= 2) {
+      dropdown.innerHTML = '<div class="bn-ac-loading">Loading registry data…</div>';
+      dropdown.classList.add('open');
+    } else {
+      dropdown.classList.remove('open');
+    }
+    return;
+  }
+  _bnAc.filtered = bnAcSearch(query);
+  _bnAc.highlighted = -1;
+  if (query.trim().length < 2) {
+    dropdown.classList.remove('open');
+    return;
+  }
+  if (_bnAc.filtered.length === 0) {
+    dropdown.innerHTML = '<div class="bn-ac-empty">No match found. Check the spelling, or look it up via the <a href="https://ki.ua.paradigmapps.com/corp/search.aspx" target="_blank" rel="noopener noreferrer">registry public search</a>. You can still type the name and number directly.</div>';
+  } else {
+    dropdown.innerHTML = _bnAc.filtered.map(([n, r], i) =>
+      '<div class="bn-ac-item" data-i="' + i + '" role="option"><span class="bn-ac-item-name">' + bnAcHighlight(n, query) + '</span><span class="bn-ac-item-reg">' + r + '</span></div>'
+    ).join('');
+    dropdown.querySelectorAll('.bn-ac-item').forEach(el => {
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        bnAcSelectMatch(parseInt(el.dataset.i, 10));
+      });
+      el.addEventListener('mouseenter', () => {
+        _bnAc.highlighted = parseInt(el.dataset.i, 10);
+        dropdown.querySelectorAll('.bn-ac-item').forEach((it, i) => it.classList.toggle('highlighted', i === _bnAc.highlighted));
+      });
+    });
+  }
+  dropdown.classList.add('open');
+}
+
+function bnAcSelectMatch(i) {
+  if (!_bnAc.filtered[i]) return;
+  const [name, reg] = _bnAc.filtered[i];
+  const nameInput = document.getElementById('co0a_companyName');
+  const regInput = document.getElementById('co0a_regNumber');
+  const dropdown = document.getElementById('bn-ac-dropdown');
+  const matched = document.getElementById('bn-ac-matched');
+  const help = document.getElementById('bn-reg-help');
+  if (nameInput) {
+    nameInput.value = name;
+    nameInput.setAttribute('readonly', '');
+  }
+  if (regInput) {
+    regInput.value = reg;
+    regInput.setAttribute('readonly', '');
+    regInput.dispatchEvent(new Event('input', { bubbles: true }));
+    regInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (nameInput) nameInput.dispatchEvent(new Event('change', { bubbles: true }));
+  if (dropdown) dropdown.classList.remove('open');
+  if (matched) matched.classList.add('show');
+  if (help) { help.removeAttribute('open'); help.style.display = 'none'; }
+}
+
+function clearAutocompleteMatch() {
+  const nameInput = document.getElementById('co0a_companyName');
+  const regInput = document.getElementById('co0a_regNumber');
+  const matched = document.getElementById('bn-ac-matched');
+  const help = document.getElementById('bn-reg-help');
+  if (nameInput) {
+    nameInput.removeAttribute('readonly');
+    nameInput.value = '';
+    nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  if (regInput) {
+    regInput.removeAttribute('readonly');
+    regInput.value = '';
+    regInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  if (matched) matched.classList.remove('show');
+  if (help) help.style.display = '';
+  if (nameInput) nameInput.focus();
+}
+
+function wireCo0aAutocomplete() {
+  const nameInput = document.getElementById('co0a_companyName');
+  const dropdown = document.getElementById('bn-ac-dropdown');
+  if (!nameInput || !dropdown) return;
+  // Reset state for a fresh wizard session
+  _bnAc.active = true;
+  _bnAc.highlighted = -1;
+  _bnAc.filtered = [];
+
+  loadMigrationData().then(() => {
+    _bnAc.loaded = true;
+    if (dropdown.classList.contains('open') && document.activeElement === nameInput) {
+      bnAcRenderDropdown(nameInput.value);
+    }
+  });
+
+  nameInput.addEventListener('input', e => {
+    const matched = document.getElementById('bn-ac-matched');
+    if (matched && matched.classList.contains('show')) {
+      matched.classList.remove('show');
+      const regInput = document.getElementById('co0a_regNumber');
+      if (regInput) regInput.value = '';
+    }
+    bnAcRenderDropdown(e.target.value);
+  });
+
+  nameInput.addEventListener('focus', e => {
+    const matched = document.getElementById('bn-ac-matched');
+    if (e.target.value && (!matched || !matched.classList.contains('show'))) {
+      bnAcRenderDropdown(e.target.value);
+    }
+  });
+
+  nameInput.addEventListener('keydown', e => {
+    if (!dropdown.classList.contains('open') || _bnAc.filtered.length === 0) return;
+    const items = dropdown.querySelectorAll('.bn-ac-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _bnAc.highlighted = Math.min(_bnAc.highlighted + 1, _bnAc.filtered.length - 1);
+      items.forEach((it, i) => it.classList.toggle('highlighted', i === _bnAc.highlighted));
+      if (items[_bnAc.highlighted]) items[_bnAc.highlighted].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _bnAc.highlighted = Math.max(_bnAc.highlighted - 1, 0);
+      items.forEach((it, i) => it.classList.toggle('highlighted', i === _bnAc.highlighted));
+      if (items[_bnAc.highlighted]) items[_bnAc.highlighted].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && _bnAc.highlighted >= 0) {
+      e.preventDefault();
+      bnAcSelectMatch(_bnAc.highlighted);
+    } else if (e.key === 'Escape') {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // Click outside closes the dropdown
+  document.addEventListener('click', e => {
+    if (!nameInput.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+}
+
+
+function buildScreenerSteps(isRereg) {
+  const steps = [];
+
+  // Question 1: Account approval (both BN-0 and BN-1)
+  steps.push({
+    title: 'Has MTCIC approved your online user account?',
+    desc: '',
+    html: `
+      <div class="info-box amber">You'll need an approved account to submit this form. MTCIC sends an approval email when your account is ready.</div>
+      <div class="screener-options">
+        <label class="radio-option"><input type="radio" name="screener_accountApproved" value="Yes" required onchange="updateScreenerFollowup('accountApproved')"><span>Yes</span></label>
+        <label class="radio-option"><input type="radio" name="screener_accountApproved" value="No" required onchange="updateScreenerFollowup('accountApproved')"><span>No</span></label>
+        <label class="radio-option"><input type="radio" name="screener_accountApproved" value="Unsure" required onchange="updateScreenerFollowup('accountApproved')"><span>I'm not sure</span></label>
+      </div>
+      <div id="screener_accountApproved_followup_no" class="screener-followup no">You'll need to wait for MTCIC to approve your account before you can submit. You will receive an email when it's ready. You can still fill out this form now but you'll need to wait before you can submit.</div>
+      <div id="screener_accountApproved_followup_unsure" class="screener-followup unsure">Check your email, including your spam folder, for an approval message from MTCIC. You can still fill out this form now, but you'll need an approved account before you can submit.</div>
+    `,
+    isScreener: true
+  });
+
+  // Question 2: Authority (BN-0 only)
+  if (isRereg) {
+    steps.push({
+      title: 'Have you obtained authority for your business?',
+      desc: '',
+      html: `
+        <div class="info-box amber">MTCIC must link your account to your business before you can submit this form. Your business will appear under &ldquo;My entities&rdquo; in the Online Business Registry once authority is granted.</div>
+        <div class="screener-options">
+          <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="Yes" required onchange="updateScreenerFollowup('authorityObtained')"><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="No" required onchange="updateScreenerFollowup('authorityObtained')"><span>No</span></label>
+          <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="Unsure" required onchange="updateScreenerFollowup('authorityObtained')"><span>I'm not sure</span></label>
+        </div>
+        <div id="screener_authorityObtained_followup_no" class="screener-followup no">You must obtain authority before you can submit this form. You can still fill out the form now, but it can't be submitted until authority is granted.</div>
+        <div id="screener_authorityObtained_followup_unsure" class="screener-followup unsure">Log in to the Online Business Registry and check &ldquo;My entities&rdquo;. If your business isn't listed, you need to obtain authority before you can submit this form.</div>
+      `,
+      isScreener: true
+    });
+  }
+
+  return steps;
+}
+
+function updateScreenerFollowup(questionKey) {
+  const val = getRadio('screener_' + questionKey);
+  const noEl = document.getElementById('screener_' + questionKey + '_followup_no');
+  const unsureEl = document.getElementById('screener_' + questionKey + '_followup_unsure');
+  if (noEl) noEl.classList.toggle('show', val === 'No');
+  if (unsureEl) unsureEl.classList.toggle('show', val === 'Unsure');
+}
+
+function buildSuccessFlowChartHtml(taskId) {
+  const steps = taskId === 'co0a' ? [
+    { state: 'done',    label: 'Create user account' },
+    { state: 'done',    label: 'Obtain authority' },
+    { state: 'done',    label: 'Complete CO-0a' },
+    { state: 'current', label: 'Upload and submit to registry', number: 4 },
+    { state: 'future',  label: 'MTCIC review and re-registration', number: 5 }
+  ] : [
+    { state: 'done',    label: 'Create user account' },
+    { state: 'done',    label: 'Complete CO-20' },
+    { state: 'current', label: 'Upload and submit to registry', number: 3 },
+    { state: 'future',  label: 'MTCIC review and registration', number: 4 }
+  ];
+
+  // Circle content: check for done, number for current/future
+  const renderCircle = (step) => {
+    if (step.state === 'done') return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return step.number;
+  };
+
+  // Continuous timeline bar — line spans from center of first circle to center of last circle.
+  // With N equal-flex steps, each center is at (100/N/2)% from its edge of the container.
+  const lineMargin = (100 / steps.length / 2).toFixed(2) + '%';
+
+  // Horizontal layout (desktop) — line is drawn via ::before behind the circles
+  let horizontal = `<div class="success-flow-chart-horizontal" style="--line-margin: ${lineMargin}">`;
+  steps.forEach((step) => {
+    horizontal += `<div class="flow-step">
+      <div class="flow-step-circle ${step.state}">${renderCircle(step)}</div>
+      <div class="flow-step-label ${step.state}">${step.label}</div>
+    </div>`;
+  });
+  horizontal += '</div>';
+
+  // Vertical layout (mobile) — segmented connectors between rows
+  let vertical = '<div class="success-flow-chart-vertical">';
+  steps.forEach((step, i) => {
+    vertical += `<div class="flow-row">
+      <div class="flow-step-circle ${step.state}">${renderCircle(step)}</div>
+      <div class="flow-step-label ${step.state}">${step.label}</div>
+    </div>`;
+    if (i < steps.length - 1) vertical += '<div class="flow-connector-vertical" aria-hidden="true"></div>';
+  });
+  vertical += '</div>';
+
+  return horizontal + vertical;
 }
 
 // [SHARED-KI-ADDRESS] — Kiribati-only address fields (village, island — no country/city/postcode)
@@ -2235,7 +2911,7 @@ function buildOcDirCard(formPrefix, idx, showDate) {
         </div><div class="error-text">Select yes or no</div>
       </div>
       <div id="${p}_postalFields" class="co-hidden">
-        ${buildAddressFields(p + 'post', false)}
+        ${buildAddressFields(p + 'post', false, true)}
       </div>
     </div>
   `;
@@ -2386,6 +3062,7 @@ function buildCO0aForm(taskDef) {
   ocDirCounts[p] = 1;
   ocShCounts[p] = 1;
   const steps = [
+    ...buildScreenerSteps(true),
     {
       title: 'Company details',
       html: `
@@ -2404,12 +3081,28 @@ function buildCO0aForm(taskDef) {
         </div>
         <h3 class="section-subheading">Details of company in Kiribati</h3>
         <div class="field-row">
-          <div class="field" style="flex:2"><label for="${p}_companyName">Name of company in Kiribati</label>
+          <div class="field bn-ac-field" style="flex:2"><label for="${p}_companyName">Name of company in Kiribati</label>
             <div class="error-text">Enter the company name</div>
-            <input type="text" id="${p}_companyName" required maxlength="200"></div>
+            <input type="text" id="${p}_companyName" required maxlength="200" autocomplete="off" data-bn-ac="1">
+            <div class="bn-ac-dropdown" id="bn-ac-dropdown" role="listbox" aria-label="Matching overseas company names"></div>
+          </div>
           <div class="field" style="flex:1"><label for="${p}_regNumber">Registration number in Kiribati</label>
             <div class="error-text">Enter the registration number</div>
-            <input type="text" id="${p}_regNumber" required maxlength="50" placeholder="e.g. CO-12345"></div>
+            <input type="text" id="${p}_regNumber" required maxlength="50" placeholder="e.g. CO-12345">
+            <details class="reg-number-help" id="bn-reg-help">
+              <summary><span class="help-trigger-text">What's my registration number?</span></summary>
+              <div class="reg-number-help-content">
+                Your overseas company has its own Kiribati registration number. Log on to your Online Business Registry account and it will be listed next to your company under &ldquo;My entities&rdquo;. If your company isn't listed, you must <a href="https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&amp;ctk=CompanyHowTo#reregister-company-steps" target="_blank" rel="noopener noreferrer">obtain authority</a>.
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="bn-ac-matched" id="bn-ac-matched" role="status">
+          <span class="bn-ac-matched-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12.5L11 15.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="bn-ac-matched-text">Match found. Registration number filled in for you.</span>
+          <button type="button" class="bn-ac-change-btn" onclick="clearAutocompleteMatch()">Wrong company? Change</button>
         </div>
         <div class="field"><label for="${p}_companyEmail">Company email address <span class="optional">(optional)</span></label>
           <input type="email" id="${p}_companyEmail" maxlength="128" placeholder="e.g. info@company.com"></div>
@@ -2530,6 +3223,7 @@ function buildCO20Form(taskDef) {
   ocDirCounts[p] = 1;
   ocShCounts[p] = 1;
   const steps = [
+    ...buildScreenerSteps(false),
     {
       title: 'Overseas company details',
       html: `
@@ -2557,6 +3251,7 @@ function buildCO20Form(taskDef) {
       title: 'What name will the company use in Kiribati?',
       html: `
         <div class="info-box blue">Only required if the name of the overseas company is unavailable in Kiribati. If this is the case, then a different name must be provided for use in Kiribati.</div>
+        <div class="info-box amber">Check the <a href="https://ki.ua.paradigmapps.com/corp/search.aspx" target="_blank" rel="noopener noreferrer">public register</a> first to see if your proposed name is already in use. If it is, the registry will reject this form when you submit it.</div>
         <div class="field">
           <div class="error-text">Enter the company name</div>
           <input type="text" id="${p}_companyName" required maxlength="200"></div>
@@ -2686,6 +3381,7 @@ function buildCO21Form(taskDef) {
     {
       title: 'What is the new name of your overseas company?',
       html: `
+        <div class="info-box amber">Check the <a href="https://ki.ua.paradigmapps.com/corp/search.aspx" target="_blank" rel="noopener noreferrer">public register</a> first to see if your proposed name is already in use. If it is, the registry will reject this form when you submit it.</div>
         <div class="field"><label for="${p}_newName">New name of company in home jurisdiction</label>
           <div class="error-text">Enter the new company name</div>
           <input type="text" id="${p}_newName" required maxlength="200"></div>
@@ -2928,7 +3624,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
         </div><div class="error-text">Select yes or no</div>
       </div>
       <div id="${p}_postalFields" class="co-hidden">
-        ${buildAddressFields(p + 'post', false)}
+        ${buildAddressFields(p + 'post', false, true)}
       </div>` : ''}
     </div>
   `;
@@ -3077,7 +3773,7 @@ function buildOcDirChangeCard(prefix, idx, manifest) {
         </div><div class="error-text">Select yes or no</div>
       </div>
       <div id="${p}_postalFields" class="co-hidden">
-        ${buildAddressFields(p + 'post', false)}
+        ${buildAddressFields(p + 'post', false, true)}
       </div>
     </div>
   `;
@@ -3496,6 +4192,63 @@ function startWizard(taskId) {
       </div>
     </div>
     <div class="step" id="step_success" style="display:none">
+      ${(taskId === 'co0a' || taskId === 'co20') ? `
+      <div class="success-screen">
+        <div class="confirmation-body" style="text-align:left;max-width:none">
+
+          <!-- Context panel: flow chart + handoff (where you are + what's next) -->
+          <div class="success-context-panel">
+            ${buildSuccessFlowChartHtml(taskId)}
+            <div class="success-handoff">
+              <span class="success-handoff-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="display:block"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div class="success-handoff-content">
+                <h3 class="success-handoff-title">You've finished filling in your form</h3>
+                <p class="success-handoff-subtitle">Your next stop is the Online Business Registry to submit your form.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1: Save (becomes muted-partial after save) -->
+          <div class="success-step-block" id="successStep1Block">
+            <div class="step-label">Step 1 — Save</div>
+            <div class="save-section" id="saveSection">
+              <div class="save-file-row">
+                <div class="save-file-icon" aria-hidden="true">PDF</div>
+                <div>
+                  <div class="save-file-name" id="successFileName"></div>
+                  <div class="save-file-size" id="successFileSize"></div>
+                </div>
+              </div>
+              <div class="ios-hint" id="iosHint" style="display:none"></div>
+              <button class="btn-save-pdf" id="btnSavePdf">Save to your device</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Upload (starts muted; muted class removed after save) -->
+          <div class="success-step-block muted" id="successStep2Block">
+            <div class="step-label">Step 2 — Upload<span class="success-step-locked-hint">— available after you save</span></div>
+            <div class="registry-guide">
+              <div class="not-submitted-warning" role="alert">
+                <div class="warn-icon" aria-hidden="true">!</div>
+                <div class="warn-text">
+                  <div class="warn-main">Your form is not submitted yet</div>
+                  <div class="warn-bilingual" id="warningBilingual"></div>
+                </div>
+              </div>
+              <ol id="guideSteps"></ol>
+            </div>
+            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+          </div>
+
+          <!-- Start new form (guarded) -->
+          <div class="link-new-form">
+            <a href="#" onclick="guardedBackToLanding(); return false;"><span aria-hidden="true">←</span> <span class="link-text">Start a new form</span></a>
+          </div>
+        </div>
+      </div>
+      ` : `
       <div class="success-screen">
         <div class="confirmation-panel">
           <div class="icon" aria-hidden="true">
@@ -3539,11 +4292,17 @@ function startWizard(taskId) {
           </div>
         </div>
       </div>
+      `}
     </div>
   </div>`;
 
   area.innerHTML = html;
   showStep(0);
+
+  // Wire up CO-0a autocomplete on the Kiribati company name field (does nothing for other forms)
+  if (taskId === 'co0a') {
+    wireCo0aAutocomplete();
+  }
 }
 
 
@@ -4018,7 +4777,8 @@ function validateCurrentStep() {
     }
   }
 
-  // Postcode validation
+  // Postcode validation — Kiribati has no postcode system, so we don't validate Kiribati postcodes.
+  // Overseas postcodes get a loose sanity check (alphanumeric, spaces, hyphens, max 12 chars).
   stepEl.querySelectorAll('input[id$="_postcode"]').forEach(inp => {
     if (inp.closest('.co-hidden')) return;
     const val = inp.value.trim();
@@ -4026,11 +4786,11 @@ function validateCurrentStep() {
     const countryId = inp.id.replace('_postcode', '_country');
     const countrySel = document.getElementById(countryId);
     const isKiribati = countrySel && countrySel.value === 'Kiribati';
-    const pattern = isKiribati ? /^(KI|ki)\d{4}$/ : /^[a-zA-Z0-9\s\-]{0,12}$/;
-    const maxLen = isKiribati ? 6 : 12;
-    if (val.length > maxLen || !pattern.test(val)) {
+    if (isKiribati) return; // No format validation for Kiribati
+    const pattern = /^[a-zA-Z0-9\s\-]{0,12}$/;
+    if (val.length > 12 || !pattern.test(val)) {
       const field = inp.closest('.field');
-      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = isKiribati ? 'Enter a valid postcode (e.g. KI0101)' : 'Enter a valid postcode'; activateFieldError(field); }
+      if (field) { const e = field.querySelector('.error-text'); if (e) e.textContent = 'Enter a valid postcode'; activateFieldError(field); }
       valid = false;
     }
   });
@@ -5379,6 +6139,11 @@ async function generatePDF() {
     btn.style.display = 'none';
     const hint = document.getElementById('iosHint');
     if (hint) hint.style.display = 'none';
+    // Progressive emphasis: dim Step 1, reveal Step 2 (CO-0a / CO-20 only — these blocks don't exist on other forms)
+    const step1 = document.getElementById('successStep1Block');
+    const step2 = document.getElementById('successStep2Block');
+    if (step1) step1.classList.add('muted-partial');
+    if (step2) step2.classList.remove('muted');
   }
 
   // Download/save button behaviour
