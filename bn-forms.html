@@ -2957,13 +2957,12 @@ function buildScreenerSteps(isRereg) {
     title: 'Has MTCIC approved your online user account?',
     desc: '',
     html: `
-      <div class="info-box amber">You'll need an approved account to submit this form. MTCIC sends an approval email when your account is ready.</div>
       <div class="screener-options">
         <label class="radio-option"><input type="radio" name="screener_accountApproved" value="Yes" required onchange="updateScreenerFollowup('accountApproved')"><span>Yes</span></label>
         <label class="radio-option"><input type="radio" name="screener_accountApproved" value="No" required onchange="updateScreenerFollowup('accountApproved')"><span>No</span></label>
         <label class="radio-option"><input type="radio" name="screener_accountApproved" value="Unsure" required onchange="updateScreenerFollowup('accountApproved')"><span>I'm not sure</span></label>
       </div>
-      <div id="screener_accountApproved_followup_no" class="screener-followup no">You'll need to wait for MTCIC to approve your account before you can submit. You will receive an email when it's ready. You can still fill out this form now but you'll need to wait before you can submit.</div>
+      <div id="screener_accountApproved_followup_no" class="screener-followup no">You must <a href="https://ki.ua.paradigmapps.com/public/setupaccount.aspx" target="_blank">apply for an online user account</a> first. You will receive an email when it's ready.<br><br>You can still fill out this form now but you'll need to wait before you can submit.</div>
       <div id="screener_accountApproved_followup_unsure" class="screener-followup unsure">Check your email, including your spam folder, for an approval message from MTCIC. You can still fill out this form now, but you'll need an approved account before you can submit.</div>
     `,
     isScreener: true
