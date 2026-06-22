@@ -1234,6 +1234,21 @@ body {
 }
 .autosave-prompt .prompt-btn-yes { background: var(--blue); color: #fff; border-color: var(--blue); }
 .autosave-prompt .prompt-btn-no { background: #fff; color: var(--red); border-color: var(--red); }
+
+/* [EXT-LINK] — Visually-hidden helper + external-link icon spacing */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ext-link-icon {
+  margin-left: 0.25em;
+  vertical-align: -0.125em;
+}
 </style>
 </head>
 <body>
@@ -2010,7 +2025,7 @@ function buildScreenerSteps(isRereg) {
         <label class="radio-option"><input type="radio" name="screener_accountApproved" value="No" required onchange="updateScreenerFollowup('accountApproved')"><span>No</span></label>
         <label class="radio-option"><input type="radio" name="screener_accountApproved" value="Unsure" required onchange="updateScreenerFollowup('accountApproved')"><span>I'm not sure</span></label>
       </div>
-      <div id="screener_accountApproved_followup_no" class="screener-followup no">You must <a href="https://ki.ua.paradigmapps.com/public/setupaccount.aspx" target="_blank">apply for an online user account</a> first. You will receive an email when it's ready.<br><br>You can still fill out this form now but you'll need to wait before you can submit.</div>
+      <div id="screener_accountApproved_followup_no" class="screener-followup no">You must <a href="https://ki.ua.paradigmapps.com/public/setupaccount.aspx" target="_blank" rel="noopener noreferrer">apply for an online user account</a> first. You will receive an email when it's ready.<br><br>You can still fill out this form now but you'll need to wait before you can submit.</div>
       <div id="screener_accountApproved_followup_unsure" class="screener-followup unsure">Check your email, including your spam folder, for an approval message from MTCIC. You can still fill out this form now, but you'll need an approved account before you can submit.</div>
     `,
     isScreener: true
@@ -8037,27 +8052,48 @@ function renderTaskList() {
 // [DEEP-LINKING] URL PARAMETERS AND BACK LINKS
 // ============================================================
 
-// [HEADER-BACK] — Back button URL mapping
-const BACK_LINKS = {
-  'reregister-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=ReRegisterCompany&ctk=CompanyHowTo#reregister-company' },
-  'register-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RegisterCompany&ctk=CompanyHowTo#register-company' },
-  'update-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=UpdateEntityDetails&ctk=CompanyHowTo#update-company' },
-  'restore-company': { text: 'How To', url: 'https://ki.ua.paradigmapps.com/public/howto.aspx?cn=RestoreCompany&ctk=CompanyHowTo#restore-company' },
+// [HEADER-BACK] — "Back to How To" destination resolver.
+// On the how-to page, `cn` identifies the TASK-GROUP content node, NOT the
+// entity type, and PA's node names are inconsistent (the re-register page is
+// keyed *Company* while the restore page is keyed *BusinessName*). So the
+// content node is derived from the task prefix of `from` using the table
+// below as the single source of truth — never from the entity type.
+//
+// `from` is split on its FIRST hyphen, so "reregister-*" yields the key
+// "reregister" and can never be mistaken for "register". Keep HOWTO_CN_BY_TASK
+// and buildHowToBackUrl() identical across bn-/co-/overseas-co-forms.html.
+const HOWTO_BASE = 'https://ki.ua.paradigmapps.com/public/howto.aspx';
+const HOWTO_CTK = 'CompanyHowTo';
+const HOWTO_CN_BY_TASK = {
+  register:   'RegisterBusinessName',
+  reregister: 'ReRegisterCompany',
+  restore:    'RestoreBusinessName',
+  update:     'UpdateEntityDetails',
+  ar:         'FileAnnualReturn',
 };
+
+// Build the canonical how-to back URL for a `from` value, e.g.
+//   register-company -> .../howto.aspx?cn=RegisterBusinessName&ctk=CompanyHowTo#register-company
+// A missing or unrecognised `from` falls back to the RegisterBusinessName grid
+// with no anchor.
+function buildHowToBackUrl(from) {
+  if (from) {
+    const cn = HOWTO_CN_BY_TASK[String(from).split('-')[0]];
+    if (cn) return HOWTO_BASE + '?cn=' + cn + '&ctk=' + HOWTO_CTK + '#' + from;
+  }
+  return HOWTO_BASE + '?cn=RegisterBusinessName&ctk=' + HOWTO_CTK;
+}
 const TASK_BACK_MAP = { co0: 'reregister-company', co1: 'register-company', co16: 'restore-company' };
 const TASK_BACK_DEFAULT = 'update-company';
 
 function initHeaderFromUrl() {
   const params = new URLSearchParams(location.search);
-  const from = params.get('from');
   const formId = params.get('form');
 
-  if (from && BACK_LINKS[from]) {
-    const link = BACK_LINKS[from];
-    const textEl = document.getElementById('headerBackText');
-    if (textEl) textEl.textContent = link.text;
-  }
+  // The back button label is always "How To" (set in the header markup),
+  // so there is nothing to override from the `from` parameter here.
 
+  // Auto-navigate straight to the form when ?form= is present, skipping the picker.
   if (formId) {
     const matchedTask = TASKS.find(t => t.id.toLowerCase() === formId.toLowerCase());
     if (matchedTask) {
@@ -8230,6 +8266,7 @@ backToLanding = function() {
 
 function siteHeaderBack(e) {
   e.preventDefault();
+  // If a wizard is active and past the first step, guard against data loss.
   if (currentWizard && currentStepIndex > 0) {
     const confirmed = confirm(
       'Are you sure you want to leave?\n\n'
@@ -8237,26 +8274,22 @@ function siteHeaderBack(e) {
     );
     if (!confirmed) return;
   }
+  // Prefer the explicit ?from= parameter. A missing or unrecognised value
+  // falls back to the RegisterBusinessName grid inside buildHowToBackUrl().
   const params = new URLSearchParams(location.search);
   const from = params.get('from');
-  if (from && typeof BACK_LINKS !== 'undefined' && BACK_LINKS[from]) {
-    location.href = BACK_LINKS[from].url;
+  if (from) {
+    location.href = buildHowToBackUrl(from);
     return;
   }
-  // Infer back link from current task if no ?from= parameter
+  // No ?from= — infer the task group from the active wizard.
   if (currentWizard && currentWizard.taskDef) {
     const inferred = TASK_BACK_MAP[currentWizard.taskDef.id] || TASK_BACK_DEFAULT;
-    if (BACK_LINKS[inferred]) {
-      location.href = BACK_LINKS[inferred].url;
-      return;
-    }
+    location.href = buildHowToBackUrl(inferred);
+    return;
   }
-  const referrer = document.referrer;
-  if (referrer && referrer.includes(location.hostname)) {
-    location.href = referrer;
-  } else {
-    location.href = '/';
-  }
+  // No parameter and no active wizard — default to the how-to grid.
+  location.href = buildHowToBackUrl(null);
 }
 
 // ============================================================
@@ -8296,8 +8329,58 @@ document.addEventListener('toggle', function(e) {
 // ============================================================
 
 // [ENGINE-INIT] — Landing page initialisation and form card rendering
+// ============================================================
+// [EXT-LINK] — External-link icon + accessibility decoration
+// ============================================================
+// Every link that opens in a new tab (target="_blank") gets a decorative
+// external-link icon, a visually-hidden "(opens in new window)" hint, and
+// rel="noopener noreferrer". Runs on load and via a MutationObserver so
+// dynamically-inserted links are decorated too. Idempotent: never double-adds
+// the icon, the hint, or the rel tokens. Keep identical across all three files.
+const EXT_LINK_ICON_SVG = '<svg class="ext-link-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+function decorateExternalLink(a) {
+  // Idempotency: skip links already processed or already carrying the icon.
+  if (a.dataset.extDecorated === '1' || a.querySelector('.ext-link-icon')) {
+    a.dataset.extDecorated = '1';
+    return;
+  }
+  a.dataset.extDecorated = '1';
+
+  // Always enforce rel="noopener noreferrer" (dedupe any existing tokens).
+  const rel = (a.getAttribute('rel') || '').split(/\s+/).filter(Boolean);
+  if (rel.indexOf('noopener') === -1) rel.push('noopener');
+  if (rel.indexOf('noreferrer') === -1) rel.push('noreferrer');
+  a.setAttribute('rel', rel.join(' '));
+
+  // Skip image-only / textless anchors — nothing to append an icon after.
+  if (!a.textContent || !a.textContent.trim()) return;
+
+  // Append the decorative icon + a visually-hidden hint for screen readers.
+  a.insertAdjacentHTML('beforeend', EXT_LINK_ICON_SVG + '<span class="sr-only"> (opens in new window)</span>');
+}
+
+function decorateExternalLinks(root) {
+  const scope = (root && root.querySelectorAll) ? root : document;
+  if (scope.matches && scope.matches('a[target="_blank"]')) decorateExternalLink(scope);
+  scope.querySelectorAll('a[target="_blank"]').forEach(decorateExternalLink);
+}
+
+function initExternalLinkDecoration() {
+  decorateExternalLinks(document);
+  if (typeof MutationObserver === 'undefined' || !document.body) return;
+  new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(n) {
+        if (n.nodeType === 1) decorateExternalLinks(n);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
+}
+
 function initLanding() {
   initHeaderFromUrl();
+  initExternalLinkDecoration();
   renderTaskList();
   const skeleton = document.getElementById('pageSkeleton');
   if (skeleton) skeleton.remove();
