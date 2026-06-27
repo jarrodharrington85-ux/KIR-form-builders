@@ -2015,17 +2015,17 @@ function buildScreenerSteps(isRereg) {
   // Question 2: Authority (BN-0 only)
   if (isRereg) {
     steps.push({
-      title: 'Have you obtained authority for your business?',
+      title: 'Have you obtained authority for your company?',
       desc: '',
       html: `
-        <div class="info-box amber">MTCIC must link your account to your business before you can submit this form. Your business will appear under &ldquo;My entities&rdquo; in the Online Business Registry once authority is granted.</div>
+        <div class="info-box amber">MTCIC must link your account to your company before you can submit this form. Your company will appear under &ldquo;My entities&rdquo; in the Online Business Registry once authority is granted.</div>
         <div class="screener-options">
           <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="Yes" required onchange="updateScreenerFollowup('authorityObtained')"><span>Yes</span></label>
           <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="No" required onchange="updateScreenerFollowup('authorityObtained')"><span>No</span></label>
           <label class="radio-option"><input type="radio" name="screener_authorityObtained" value="Unsure" required onchange="updateScreenerFollowup('authorityObtained')"><span>I'm not sure</span></label>
         </div>
         <div id="screener_authorityObtained_followup_no" class="screener-followup no">You must obtain authority before you can submit this form. You can still fill out the form now, but it can't be submitted until authority is granted.</div>
-        <div id="screener_authorityObtained_followup_unsure" class="screener-followup unsure">Log in to the Online Business Registry and check &ldquo;My entities&rdquo;. If your business isn't listed, you need to obtain authority before you can submit this form.</div>
+        <div id="screener_authorityObtained_followup_unsure" class="screener-followup unsure">Log in to the Online Business Registry and check &ldquo;My entities&rdquo;. If your company isn't listed, you need to obtain authority before you can submit this form.</div>
       `,
       isScreener: true
     });
