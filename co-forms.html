@@ -1084,12 +1084,12 @@ body {
 }
 .site-header .header-logo {
   max-width: 65px; max-height: 65px;
-  margin-right: 15px; border-radius: 50%;
+  margin-right: 15px;
   display: block;
 }
 .site-header .header-title {
   margin: 0; color: var(--gold);
-  font-size: 24px; font-weight: 700; line-height: 1.1;
+  font-size: 22px; font-weight: 700; line-height: 1.1;
 }
 .site-header .header-subtitle {
   margin-top: 2px; color: #fff;
@@ -1098,10 +1098,10 @@ body {
 .site-header .header-back {
   margin-left: auto; margin-right: 15px;
   background-color: #fff; color: var(--green-dark);
-  padding: 10px 20px; text-decoration: none;
+  padding: 10px 18px; text-decoration: none;
   border-radius: 6px; border: 2px solid var(--green-dark);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  font-weight: 700; font-size: 16px;
+  font-weight: 700; font-size: 15px;
   white-space: nowrap;
   display: inline-flex; align-items: center; justify-content: center;
   gap: 8px;
@@ -1119,13 +1119,7 @@ body {
   display: none;
 }
 .site-header .header-mobile a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   text-decoration: none;
-  padding: 14px 16px;
-  min-height: 48px;
-  width: 100%;
   -webkit-tap-highlight-color: rgba(255,255,255,0.1);
 }
 .site-header .header-mobile a:active { background: rgba(0,0,0,0.15); }
@@ -1133,8 +1127,11 @@ body {
 .site-header .header-mobile .mh-brand {
   color: var(--gold);
   font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.01em;
+  font-size: 22px;
+  letter-spacing: normal;
+  white-space: nowrap;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 @media (max-width: 1230px) { .site-header .header-inner { padding: 15px; } }
 .site-header:focus-within { outline: 3px solid var(--focus); outline-offset: -3px; }
@@ -1174,14 +1171,16 @@ body {
 @media (max-width: 1000px) {
   .site-header .header-inner {
   box-sizing: border-box; display: none; }
-  .site-header .header-mobile { display: block; }
+  .site-header .header-mobile { display: flex; align-items: center; gap: 10px; height: 72px; padding: 0 14px; box-sizing: border-box; }
+  .site-header .header-mobile .mh-brand-link { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
+  .site-header .header-mobile .mh-crest { width: 42px; height: 42px; flex: 0 0 auto; }
+  .site-header .header-mobile .mh-home { margin-left: auto; background: #fff; color: var(--green-dark); font-weight: 700; font-size: 15px; border-radius: 6px; border: 2px solid var(--green-dark); padding: 10px 18px; white-space: nowrap; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; }
   .site-header { border-bottom-width: 3px; }
   .site-footer .footer-text-row { flex-direction: column; gap: 4px; }
   .site-footer .footer-logos-row { justify-content: flex-start; }
 }
 @media (max-width: 600px) {
-  .site-header .header-mobile a { padding: 12px 12px; min-height: 44px; }
-  .site-header .header-mobile .mh-brand { font-size: 16px; }
+  .site-header .header-mobile .mh-brand { font-size: 22px; }
   .site-footer { display: none; }
 }
 
@@ -1259,11 +1258,11 @@ body {
 <div class="site-header" id="siteHeader" role="banner">
   <div class="header-inner">
     <a href="#" class="header-brand" onclick="return false;">
-      <img src="mtcic-logo.png" alt="business.gov.ki logo" class="header-logo"
+      <img src="mtcic-logo.png" alt="" class="header-logo"
            onerror="this.style.display='none'">
       <div>
-        <div class="header-title">business.gov.ki</div>
-        <div class="header-subtitle">Ministry of Tourism, Commerce, Industry and Cooperatives</div>
+        <div class="header-title">Ministry of Tourism, Commerce, Industry and Cooperatives</div>
+        <div class="header-subtitle">Online Business Registry</div>
       </div>
     </a>
     <a href="#" id="headerBackDesktop" class="header-back" onclick="siteHeaderBack(event)">
@@ -1271,10 +1270,11 @@ body {
     </a>
   </div>
   <div class="header-mobile">
-    <a href="#" id="headerBackMobile" aria-label="Go back" onclick="siteHeaderBack(event)">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFE066" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      <span class="mh-brand">business.gov.ki</span>
-    </a>
+    <span class="mh-brand-link">
+      <img class="mh-crest" src="mtcic-logo.png" alt="" onerror="this.style.display='none'">
+      <span class="mh-brand">MTCIC</span>
+    </span>
+    <a href="#" id="headerBackMobile" class="mh-home" onclick="siteHeaderBack(event)"><span aria-hidden="true">&larr;</span> <span id="headerBackTextMobile">How To</span></a>
   </div>
 </div>
 
