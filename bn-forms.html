@@ -1248,6 +1248,58 @@ body {
   margin-left: 0.25em;
   vertical-align: -0.125em;
 }
+
+/* [HANDOFF-CLARITY] — success-screen lead + attach detail (change 3) */
+.registry-guide .rg-lead { margin: 0 0 10px; }
+.registry-guide .attach-note { margin: 4px 0 2px; font-size: 0.95em; font-weight: normal; }
+.registry-guide .attach-list { padding-left: 20px; margin: 2px 0 0; list-style: disc; }
+.registry-guide .attach-list li { margin-bottom: 2px; }
+
+/* [ROTATE-PROMPT] — mobile-portrait interstitial before the registry handoff (change 7) */
+.rotate-overlay {
+  position: fixed; inset: 0; background: rgba(20,30,26,.55); z-index: 3000;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.rotate-card {
+  max-width: 330px; width: 100%; background: #fff; border-radius: 10px;
+  padding: 26px 22px 14px; text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.rotate-phone {
+  width: 40px; height: 66px; border: 3px solid var(--green-dark); border-radius: 7px;
+  margin: 4px auto 14px; position: relative;
+  animation: kirRotate 2.8s ease-in-out infinite;
+}
+.rotate-phone::after {
+  content: ""; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 13px; height: 3px; border-radius: 2px; background: var(--green-dark);
+}
+@keyframes kirRotate {
+  0%, 22%  { transform: rotate(0deg); }
+  50%, 80% { transform: rotate(-90deg); }
+  100%     { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotate-phone { animation: none; transform: rotate(-90deg); margin: 14px auto 24px; }
+}
+.rotate-phone.rotated-ok { animation: none; transform: rotate(-90deg); border-color: #146151; }
+.rotate-phone.rotated-ok::before {
+  content: "\2713"; position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  color: #146151; font-weight: 800; font-size: 18px; transform: rotate(90deg);
+}
+.rotate-title { font-weight: 800; font-size: 1.12em; color: var(--text); margin-bottom: 4px; }
+.rotate-sub { font-size: .9em; color: var(--text-light); line-height: 1.5; margin-bottom: 16px; }
+.rotate-card .btn-registry {
+  display: block; text-align: center; width: 100%; padding: 14px 24px;
+  background: var(--blue); color: #fff; border: 2px solid var(--blue);
+  border-radius: 4px; font-size: 1.05em; font-weight: 700; text-decoration: none; margin: 0;
+}
+.rotate-dismiss {
+  margin-top: 8px; background: none; border: 0; color: var(--blue);
+  font-size: .95em; font-weight: 600; cursor: pointer; padding: 10px;
+  font-family: inherit; min-height: 44px;
+}
 </style>
 </head>
 <body>
@@ -1263,7 +1315,7 @@ body {
            onerror="this.style.display='none'">
       <div>
         <div class="header-title">Ministry of Tourism, Commerce,<br>Industry and Cooperatives</div>
-        <div class="header-subtitle">Online Business Registry</div>
+        <div class="header-subtitle">Complete business name forms</div>
       </div>
     </a>
     <a href="#" id="headerBackDesktop" class="header-back" onclick="siteHeaderBack(event)">
@@ -1276,7 +1328,7 @@ body {
       <img class="mh-crest" src="mtcic-logo.png" alt="" onerror="this.style.display='none'">
       <span class="mh-brand-text">
         <span class="mh-brand">MTCIC</span>
-        <span class="mh-sub">Business Registry</span>
+        <span class="mh-sub">Business name forms</span>
       </span>
     </a>
     <a href="#" id="headerBackMobile" class="mh-home" onclick="siteHeaderBack(event)"><span aria-hidden="true">&larr;</span> <span id="headerBackTextMobile">How To</span></a>
@@ -2108,8 +2160,8 @@ function buildOwnerFields(prefix, index, opts) {
           <label class="radio-option has-desc"><input type="radio" name="${p}_type" value="other_entity" required onchange="toggleOwnerType('${p}')"><div><strong>Other registered entity</strong><div class="radio-desc">Select this if the owner is a Cooperative Society, an Incorporated Society, a Trust, or a business registered in another country.</div></div></label>
         </div>
       </div>
-      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
-      <div id="${p}_otherEntityWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this owner.</div>
+      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this owner (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
+      <div id="${p}_otherEntityWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> evidence of registration for this owner. You will upload this to the Online Business Registry when you submit this form.</div>
       <div id="${p}_personFields" class="bn-hidden">
         <h3 class="section-subheading">Individual person details</h3>
         <div class="field-row cols-3">
@@ -2195,7 +2247,7 @@ function buildForeignInvestmentField(prefix, skipLabel) {
         </ul>
       </div>
     </details>
-    <div id="${prefix}_foreignInvWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a Foreign Investment Registration Certificate.</div>
+    <div id="${prefix}_foreignInvWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
   `;
 }
 
@@ -2788,7 +2840,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       ${buildDateField(p + '_date', '')}
 
       <h3 class="section-subheading">Owner details</h3>
-      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div id="${p}_personWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this owner (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
       <div class="field-row cols-3">
         <div class="field"><label>First name <span id="${p}_badge_first" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the first name</div><input type="text" id="${p}_first" required oninput="updateCardHeader('${p}')" maxlength="100"></div>
         <div class="field"><label>Middle name <span class="optional">(optional)</span></label><input type="text" id="${p}_middle" maxlength="100"></div>
@@ -2839,7 +2891,7 @@ function buildOwnerUpdateCard(prefix, index, manifest) {
       ${buildDateField(p + '_date', '')}
 
       <h3 class="section-subheading">Entity details</h3>
-      <div id="${p}_entityRegWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this owner.</div>
+      <div id="${p}_entityRegWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> evidence of registration for this owner. You will upload this to the Online Business Registry when you submit this form.</div>
       <div class="field"><label>Entity name <span id="${p}_badge_oeName" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the entity name</div><input type="text" id="${p}_oeName" required oninput="updateCardHeader('${p}')" maxlength="200"></div>
       <div class="field-row">
         <div class="field"><label>Entity type <span id="${p}_badge_oeType" class="badge-changing">UPDATING</span></label><div class="error-text">Enter the entity type</div><input type="text" id="${p}_oeType" required placeholder="e.g. cooperative, foreign company" maxlength="200"></div>
@@ -3388,7 +3440,7 @@ function buildBN6Form(taskDef) {
           <label class="radio-option"><input type="radio" name="${p}_filingBn3" value="No" required onchange="toggleBn6Bn3Warning()"><span>No</span></label>
         </div>
       </div>
-      <div id="${p}_bn3Warning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload BN-3 as a supporting document.</div>`
+      <div id="${p}_bn3Warning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> your completed BN-3 form. You will upload it to the Online Business Registry as a supporting document when you submit this form.</div>`
     },
     {
       title: 'Confirmations',
@@ -3440,7 +3492,7 @@ function buildBN7Form(taskDef) {
           <label class="radio-option"><input type="radio" name="${p}_hasDocs" value="No" required onchange="toggleBn7DocsWarning()"><span>No</span></label>
         </div>
       </div>
-      <div id="${p}_docsWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;">You must upload your supporting documents.</div>`
+      <div id="${p}_docsWarning" class="info-box amber bn-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> your supporting documents. You will upload them to the Online Business Registry when you submit this form.</div>`
     },
     { title: 'Declaration and signature', desc: '', html: buildSignatureFields(p, true) }
   ];
@@ -3463,7 +3515,7 @@ function buildBN8Form(taskDef) {
     {
       title: 'When was the court order made?',
       desc: '',
-      html: '<div class="info-box amber">You must upload a copy of the court order with this notice.</div>' +
+      html: '<div class="info-box amber"><strong>Have ready:</strong> a copy of the court order. You will upload it to the Online Business Registry with this notice.</div>' +
         buildDateField(p + '_courtDate', '')
     },
     { title: 'Declaration and signature', desc: '', html: buildSignatureFields(p, true) }
@@ -3586,18 +3638,19 @@ function startWizard(taskId) {
 
           <!-- Step 2: Upload (starts muted; muted class removed after save) -->
           <div class="success-step-block muted" id="successStep2Block">
-            <div class="step-label">Step 2 — Upload<span class="success-step-locked-hint">— available after you save</span></div>
+            <div class="step-label">Step 2 — Upload to the Online Business Registry<span class="success-step-locked-hint">— available after you save</span></div>
             <div class="registry-guide">
               <div class="not-submitted-warning" role="alert">
                 <div class="warn-icon" aria-hidden="true">!</div>
                 <div class="warn-text">
-                  <div class="warn-main">Your form is not submitted yet</div>
-                  <div class="warn-bilingual" id="warningBilingual"></div>
+                  <div class="warn-main">You're not done yet</div>
+                  <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
                 </div>
               </div>
+              <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
               <ol id="guideSteps"></ol>
             </div>
-            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
           </div>
 
           <!-- Start new form (guarded) -->
@@ -3631,18 +3684,19 @@ function startWizard(taskId) {
           </div>
 
           <!-- Step 2: Upload -->
-          <div class="step-label">Step 2 — Upload</div>
+          <div class="step-label">Step 2 — Upload to the Online Business Registry</div>
           <div class="registry-guide">
             <div class="not-submitted-warning" role="alert">
               <div class="warn-icon" aria-hidden="true">!</div>
               <div class="warn-text">
-                <div class="warn-main">Your form is not submitted yet</div>
-                <div class="warn-bilingual" id="warningBilingual"></div>
+                <div class="warn-main">You're not done yet</div>
+                <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
               </div>
             </div>
+            <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
             <ol id="guideSteps"></ol>
           </div>
-          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
 
           <!-- Start new form (guarded) -->
           <div class="link-new-form">
@@ -5550,6 +5604,32 @@ async function generatePDF() {
   finalizePdf(doc, data);
 }
 
+
+// [ATTACH-DETAIL] — Spell out what "supporting documents" means for THIS
+// filing. bn0/bn1 only; built from the collected form data with hard guards
+// so any unexpected shape degrades to the original plain step.
+function buildAttachDetailHtml(formId, data) {
+  try {
+    if (formId !== 'bn0' && formId !== 'bn1') return '';
+    const items = [];
+    const owners = (data && Array.isArray(data.owners)) ? data.owners : [];
+    if (owners.some(function(o){ return o && o.type === 'person'; })) {
+      items.push('a photo ID for each individual owner');
+    }
+    if (owners.some(function(o){ return o && o.type === 'other_entity'; })) {
+      items.push('evidence of registration for each other registered entity owner');
+    }
+    if (data && data.foreignInvestment === 'Yes') {
+      items.push('the Foreign Investment Registration Certificate');
+    }
+    if (!items.length) return '';
+    return '<div class="attach-note">For this filing, that means:'
+      + '<ul class="attach-list">'
+      + items.map(function(i){ return '<li>' + i + '</li>'; }).join('')
+      + '</ul></div>';
+  } catch (e) { return ''; }
+}
+
 // [ENGINE-FINALIZE] — Device-aware PDF save and success screen
 let _lastPdfGenerated = false; // Track whether PDF was generated in this session
 
@@ -5614,7 +5694,7 @@ function finalizePdf(doc, data) {
       `Go to the <strong>Online Business Registry</strong>`,
       `${verb} <strong>Business Names</strong>, then <strong>Register a business name</strong>`,
       `Enter your proposed business name`,
-      `Upload your saved PDF and any supporting documents`,
+      `Upload your saved PDF and any supporting documents${buildAttachDetailHtml(formId, data)}`,
       `${verb} <strong>SUBMIT</strong>, then choose how to pay and ${verb.toLowerCase()} <strong>PAY NOW</strong>`,
     ];
   } else if (formId === 'bn0') {
@@ -5623,7 +5703,7 @@ function finalizePdf(doc, data) {
       `Go to the <strong>Online Business Registry</strong>`,
       `${verb} <strong>My Entities</strong>, then the business name you want to re-register`,
       `On the entity record, ${verb.toLowerCase()} the green <strong>RE-REGISTER</strong> button`,
-      `Upload your saved PDF and any supporting documents`,
+      `Upload your saved PDF and any supporting documents${buildAttachDetailHtml(formId, data)}`,
       `${verb} <strong>SUBMIT</strong>, then ${verb.toLowerCase()} <strong>CHECKOUT</strong>. Re-registration is free.`,
     ];
   } else if (formId === 'bn6') {
@@ -5821,6 +5901,7 @@ const FORM_START_INFO = {
   bn0: {
     heading: 'Re-register your business name',
     needs: [
+      'An Online Business Registry account with authority over your business — your business is listed under My Entities when you log in',
       'Your current business name registration number',
       'Details of all owners including nationalities and dates of birth (you may need to contact other owners)',
       'A government-issued photo ID for each natural person owner',
@@ -5834,6 +5915,7 @@ const FORM_START_INFO = {
   bn1: {
     heading: 'Register a new business name',
     needs: [
+      'An Online Business Registry account',
       'Details of all proposed owners including nationalities and dates of birth',
       'A government-issued photo ID for each natural person owner',
       'Evidence of registration for each other registered entity owner',
@@ -5938,8 +6020,8 @@ function showStartPage(taskId) {
 
   // What happens next
   html += '<div class="sp-section last">';
-  html += '<h3>What happens next</h3>';
-  html += '<p class="sp-meta">You will complete the form here, download it as a PDF, then upload it to your <strong>Online Business Registry</strong> account.</p>';
+  html += '<h3>This page does not submit your application</h3>';
+  html += '<p class="sp-meta">It fills in the form and makes a PDF. You then <strong>upload that PDF</strong>, with your supporting documents, to your Online Business Registry account &mdash; that is where the application is filed.</p>';
   html += '</div>';
 
   html += `<button class="sp-btn-start" onclick="startWizard('${taskId}')">Start now<span aria-hidden="true"> →</span></button>`;
@@ -6226,6 +6308,77 @@ updateOfflineBanner();
 
 
 document.addEventListener('DOMContentLoaded', initLanding);
+
+// ============================================================
+// [ROTATE-PROMPT] — Mobile-portrait interstitial before the
+// registry handoff. Advisory only: the Continue link always
+// works (iOS portrait orientation lock means rotating the device
+// may do nothing on screen — never gate on orientation). The
+// card's link carries the original href + target="_blank", so the
+// new tab opens off a direct user gesture and the [EXT-LINK]
+// observer decorates it automatically. This whole block can be
+// removed without affecting core functionality.
+// ============================================================
+(function() {
+  function isPortraitPhone() {
+    return window.matchMedia
+      && window.matchMedia('(max-width: 700px)').matches
+      && window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  function closeRotateCard() {
+    var overlay = document.getElementById('rotateOverlay');
+    if (overlay) overlay.remove();
+  }
+
+  function showRotateCard(href) {
+    if (document.getElementById('rotateOverlay')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'rotateOverlay';
+    overlay.className = 'rotate-overlay';
+    overlay.innerHTML =
+      '<div class="rotate-card" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">' +
+        '<div class="rotate-phone" id="rotatePhone" aria-hidden="true"></div>' +
+        '<div class="rotate-title" id="rotateTitle">Tip: turn your phone sideways</div>' +
+        '<div class="rotate-sub">Log in first &mdash; then turn your phone on its side. The registry&rsquo;s lists and menus are much easier to use that way.</div>' +
+        '<a class="btn-registry" id="rotateGo" target="_blank" href="' + href + '">Go to the Online Business Registry</a>' +
+        '<button type="button" class="rotate-dismiss" id="rotateBack"><span aria-hidden="true">&larr; </span>Back</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // If they do rotate while the card is up, acknowledge with a tick —
+    // but never auto-navigate; the tap stays theirs.
+    var mq = window.matchMedia('(orientation: landscape)');
+    var onFlip = function(e) {
+      if (e.matches) {
+        var ph = document.getElementById('rotatePhone');
+        if (ph) ph.classList.add('rotated-ok');
+      }
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onFlip);
+    else if (mq.addListener) mq.addListener(onFlip);
+
+    document.getElementById('rotateBack').addEventListener('click', closeRotateCard);
+    // Let the navigation happen, then clear the card so the success
+    // screen is clean when they switch back to this tab.
+    document.getElementById('rotateGo').addEventListener('click', function() {
+      setTimeout(closeRotateCard, 400);
+    });
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeRotateCard();
+    });
+  }
+
+  // Delegated: #btnRegistry is re-created with each wizard render.
+  document.addEventListener('click', function(e) {
+    var a = e.target && e.target.closest ? e.target.closest('#btnRegistry') : null;
+    if (!a) return;
+    if (!isPortraitPhone()) return; // desktop / already-landscape: straight through
+    e.preventDefault();
+    showRotateCard(a.href);
+  }, true);
+})();
+
 
 </script>
 

@@ -1274,6 +1274,58 @@ body {
   margin-left: 0.25em;
   vertical-align: -0.125em;
 }
+
+/* [HANDOFF-CLARITY] — success-screen lead + attach detail (change 3) */
+.registry-guide .rg-lead { margin: 0 0 10px; }
+.registry-guide .attach-note { margin: 4px 0 2px; font-size: 0.95em; font-weight: normal; }
+.registry-guide .attach-list { padding-left: 20px; margin: 2px 0 0; list-style: disc; }
+.registry-guide .attach-list li { margin-bottom: 2px; }
+
+/* [ROTATE-PROMPT] — mobile-portrait interstitial before the registry handoff (change 7) */
+.rotate-overlay {
+  position: fixed; inset: 0; background: rgba(20,30,26,.55); z-index: 3000;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.rotate-card {
+  max-width: 330px; width: 100%; background: #fff; border-radius: 10px;
+  padding: 26px 22px 14px; text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.rotate-phone {
+  width: 40px; height: 66px; border: 3px solid var(--green-dark); border-radius: 7px;
+  margin: 4px auto 14px; position: relative;
+  animation: kirRotate 2.8s ease-in-out infinite;
+}
+.rotate-phone::after {
+  content: ""; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 13px; height: 3px; border-radius: 2px; background: var(--green-dark);
+}
+@keyframes kirRotate {
+  0%, 22%  { transform: rotate(0deg); }
+  50%, 80% { transform: rotate(-90deg); }
+  100%     { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotate-phone { animation: none; transform: rotate(-90deg); margin: 14px auto 24px; }
+}
+.rotate-phone.rotated-ok { animation: none; transform: rotate(-90deg); border-color: #146151; }
+.rotate-phone.rotated-ok::before {
+  content: "\2713"; position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  color: #146151; font-weight: 800; font-size: 18px; transform: rotate(90deg);
+}
+.rotate-title { font-weight: 800; font-size: 1.12em; color: var(--text); margin-bottom: 4px; }
+.rotate-sub { font-size: .9em; color: var(--text-light); line-height: 1.5; margin-bottom: 16px; }
+.rotate-card .btn-registry {
+  display: block; text-align: center; width: 100%; padding: 14px 24px;
+  background: var(--blue); color: #fff; border: 2px solid var(--blue);
+  border-radius: 4px; font-size: 1.05em; font-weight: 700; text-decoration: none; margin: 0;
+}
+.rotate-dismiss {
+  margin-top: 8px; background: none; border: 0; color: var(--blue);
+  font-size: .95em; font-weight: 600; cursor: pointer; padding: 10px;
+  font-family: inherit; min-height: 44px;
+}
 </style>
 </head>
 <body>
@@ -1288,7 +1340,7 @@ body {
            onerror="this.style.display='none'">
       <div>
         <div class="header-title">Ministry of Tourism, Commerce,<br>Industry and Cooperatives</div>
-        <div class="header-subtitle">Online Business Registry</div>
+        <div class="header-subtitle">Complete overseas company forms</div>
       </div>
     </a>
     <a href="#" id="headerBackDesktop" class="header-back" onclick="siteHeaderBack(event)">
@@ -1300,7 +1352,7 @@ body {
       <img class="mh-crest" src="mtcic-logo.png" alt="" onerror="this.style.display='none'">
       <span class="mh-brand-text">
         <span class="mh-brand">MTCIC</span>
-        <span class="mh-sub">Business Registry</span>
+        <span class="mh-sub">Overseas company forms</span>
       </span>
     </a>
     <a href="#" id="headerBackMobile" class="mh-home" onclick="siteHeaderBack(event)"><span aria-hidden="true">&larr;</span> <span id="headerBackTextMobile">How To</span></a>
@@ -2546,9 +2598,9 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
         </div>
       </div>` : ''}
 
-      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>` : ''}
+      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>` : ''}
 
-      ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this entity.</div>` : ''}
+      ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> evidence of registration for this entity. You will upload this to the Online Business Registry when you submit this form.</div>` : ''}
 
       <!-- Former name (conditional) -->
       <div id="${p}_formerNameBlock" class="co-hidden">
@@ -2910,7 +2962,7 @@ function buildOcDirCard(formPrefix, idx, showDate) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeOcDir('${formPrefix}', ${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div class="info-box amber"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
 
       ${showDate ? `<h3 class="section-subheading">Date of appointment</h3>
       ${buildDateField(p + '_date', '', 0, 1979)}` : ''}
@@ -3183,7 +3235,7 @@ function buildCO0aForm(taskDef) {
             <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
           </div>
         </details>
-        <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+        <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
       `
     },
     {
@@ -3337,7 +3389,7 @@ function buildCO20Form(taskDef) {
             <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
           </div>
         </details>
-        <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+        <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
       `
     },
     {
@@ -3583,7 +3635,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeOcDirector('${prefix}', ${idx}, '${actionType}')" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      ${isAppointed ? '<div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver&#39;s Licence).</div>' : ''}
+      ${isAppointed ? '<div class="info-box amber"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver&#39;s Licence). You will upload this to the Online Business Registry when you submit this form.</div>' : ''}
 
       ${isCessation ? `<h3 class="section-subheading">Reason for cessation</h3>
       <div class="field"><label class="question-label">The director has:</label>
@@ -3607,7 +3659,7 @@ function buildOcDirectorCard(prefix, idx, actionType) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -3762,7 +3814,7 @@ function buildOcDirChangeCard(prefix, idx, manifest) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -4164,6 +4216,16 @@ function buildCO27Form(taskDef) {
 
 let currentWizard = null;
 let currentStepIndex = 0;
+// [ATTACH-DETAIL] — In bn-forms this spells out which documents a filing needs,
+// built from a simple owners[].type / foreignInvestment data model. This file's
+// collected model is materially different (directors, shareholders, share
+// classes and evidence of overseas incorporation across 9 form types, with no
+// single unambiguous owner/type + foreignInvestment shape), so per the
+// change-set guidance this returns '' for all forms and the numbered guide
+// steps stay plain. Kept as a documented no-op hook so the analogous detail can
+// be wired in later if the data model is firmed up.
+function buildAttachDetailHtml(formId, data) { return ''; }
+
 // [ENGINE-FINALIZE] — Track PDF generation state
 let _lastPdfGenerated = false;
 
@@ -4270,18 +4332,19 @@ function startWizard(taskId) {
 
           <!-- Step 2: Upload (starts muted; muted class removed after save) -->
           <div class="success-step-block muted" id="successStep2Block">
-            <div class="step-label">Step 2 — Upload<span class="success-step-locked-hint">— available after you save</span></div>
+            <div class="step-label">Step 2 — Upload to the Online Business Registry<span class="success-step-locked-hint">— available after you save</span></div>
             <div class="registry-guide">
               <div class="not-submitted-warning" role="alert">
                 <div class="warn-icon" aria-hidden="true">!</div>
                 <div class="warn-text">
-                  <div class="warn-main">Your form is not submitted yet</div>
-                  <div class="warn-bilingual" id="warningBilingual"></div>
+                  <div class="warn-main">You're not done yet</div>
+                  <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
                 </div>
               </div>
-              <ol id="guideSteps"></ol>
+              <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
+            <ol id="guideSteps"></ol>
             </div>
-            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
           </div>
 
           <!-- Start new form (guarded) -->
@@ -4315,18 +4378,19 @@ function startWizard(taskId) {
           </div>
 
           <!-- Step 2: Upload -->
-          <div class="step-label">Step 2 — Upload</div>
+          <div class="step-label">Step 2 — Upload to the Online Business Registry</div>
           <div class="registry-guide">
             <div class="not-submitted-warning" role="alert">
               <div class="warn-icon" aria-hidden="true">!</div>
               <div class="warn-text">
-                <div class="warn-main">Your form is not submitted yet</div>
-                <div class="warn-bilingual" id="warningBilingual"></div>
+                <div class="warn-main">You're not done yet</div>
+                <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
               </div>
             </div>
+            <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
             <ol id="guideSteps"></ol>
           </div>
-          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
 
           <!-- Start new form (guarded) -->
           <div class="link-new-form">
@@ -6233,6 +6297,7 @@ const FORM_START_INFO = {
   co0a: {
     heading: 'Re-register your overseas company',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'Your company registration details from your home jurisdiction',
       'Details of all directors and shareholders',
@@ -6246,6 +6311,7 @@ const FORM_START_INFO = {
   co20: {
     heading: 'Register a new overseas company',
     needs: [
+      'An Online Business Registry account',
       'Your company registration details from your home jurisdiction',
       'The name your company will use in Kiribati',
       'Details of all directors and shareholders',
@@ -6259,6 +6325,7 @@ const FORM_START_INFO = {
   co21: {
     heading: 'Change your overseas company name',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'The new name of the company in its home jurisdiction',
       'The name to use in Kiribati (if different)',
@@ -6269,6 +6336,7 @@ const FORM_START_INFO = {
   co22: {
     heading: 'Restore your overseas company to the register',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'The date your company was removed from the register',
       'The reason for requesting restoration',
@@ -6279,6 +6347,7 @@ const FORM_START_INFO = {
   co23: {
     heading: 'Change directors or director details',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'Details of any newly appointed directors',
       'Details of any directors who have ceased',
@@ -6290,6 +6359,7 @@ const FORM_START_INFO = {
   co24: {
     heading: 'Notify ceasing to carry on business in Kiribati',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'The date the company intends to cease carrying on business in Kiribati',
     ],
@@ -6298,6 +6368,7 @@ const FORM_START_INFO = {
   co25: {
     heading: 'Change address or authorised person',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'The date of each change',
       'New address details (if changing an address)',
@@ -6308,6 +6379,7 @@ const FORM_START_INFO = {
   co26: {
     heading: 'Change shareholder details',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'Each shareholder\'s name exactly as it appears on the register',
       'The date of each change',
@@ -6318,6 +6390,7 @@ const FORM_START_INFO = {
   co27: {
     heading: 'Change business activity',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number in Kiribati',
       'The date the business activity changed',
       'All current business activities of the company',
@@ -6373,8 +6446,8 @@ function showStartPage(taskId) {
 
   // What happens next
   html += '<div class="sp-section last">';
-  html += '<h3>What happens next</h3>';
-  html += '<p class="sp-meta">You will complete the form here, download it as a PDF, then upload it to your <strong>Online Business Registry</strong> account.</p>';
+  html += '<h3>This page does not submit your application</h3>';
+  html += '<p class="sp-meta">It fills in the form and makes a PDF. You then <strong>upload that PDF</strong>, with your supporting documents, to your Online Business Registry account &mdash; that is where the application is filed.</p>';
   html += '</div>';
 
   html += `<button class="sp-btn-start" onclick="startWizard('${taskId}')">Start now<span aria-hidden="true"> →</span></button>`;
@@ -6817,6 +6890,76 @@ function initLanding() {
 }
 
 document.addEventListener('DOMContentLoaded', initLanding);
+
+// ============================================================
+// [ROTATE-PROMPT] — Mobile-portrait interstitial before the
+// registry handoff. Advisory only: the Continue link always
+// works (iOS portrait orientation lock means rotating the device
+// may do nothing on screen — never gate on orientation). The
+// card's link carries the original href + target="_blank", so the
+// new tab opens off a direct user gesture and the [EXT-LINK]
+// observer decorates it automatically. This whole block can be
+// removed without affecting core functionality.
+// ============================================================
+(function() {
+  function isPortraitPhone() {
+    return window.matchMedia
+      && window.matchMedia('(max-width: 700px)').matches
+      && window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  function closeRotateCard() {
+    var overlay = document.getElementById('rotateOverlay');
+    if (overlay) overlay.remove();
+  }
+
+  function showRotateCard(href) {
+    if (document.getElementById('rotateOverlay')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'rotateOverlay';
+    overlay.className = 'rotate-overlay';
+    overlay.innerHTML =
+      '<div class="rotate-card" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">' +
+        '<div class="rotate-phone" id="rotatePhone" aria-hidden="true"></div>' +
+        '<div class="rotate-title" id="rotateTitle">Tip: turn your phone sideways</div>' +
+        '<div class="rotate-sub">Log in first &mdash; then turn your phone on its side. The registry&rsquo;s lists and menus are much easier to use that way.</div>' +
+        '<a class="btn-registry" id="rotateGo" target="_blank" href="' + href + '">Go to the Online Business Registry</a>' +
+        '<button type="button" class="rotate-dismiss" id="rotateBack"><span aria-hidden="true">&larr; </span>Back</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // If they do rotate while the card is up, acknowledge with a tick —
+    // but never auto-navigate; the tap stays theirs.
+    var mq = window.matchMedia('(orientation: landscape)');
+    var onFlip = function(e) {
+      if (e.matches) {
+        var ph = document.getElementById('rotatePhone');
+        if (ph) ph.classList.add('rotated-ok');
+      }
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onFlip);
+    else if (mq.addListener) mq.addListener(onFlip);
+
+    document.getElementById('rotateBack').addEventListener('click', closeRotateCard);
+    // Let the navigation happen, then clear the card so the success
+    // screen is clean when they switch back to this tab.
+    document.getElementById('rotateGo').addEventListener('click', function() {
+      setTimeout(closeRotateCard, 400);
+    });
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeRotateCard();
+    });
+  }
+
+  // Delegated: #btnRegistry is re-created with each wizard render.
+  document.addEventListener('click', function(e) {
+    var a = e.target && e.target.closest ? e.target.closest('#btnRegistry') : null;
+    if (!a) return;
+    if (!isPortraitPhone()) return; // desktop / already-landscape: straight through
+    e.preventDefault();
+    showRotateCard(a.href);
+  }, true);
+})();
 
 </script>
 <!-- ============================================================
