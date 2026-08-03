@@ -1273,6 +1273,58 @@ body {
   margin-left: 0.25em;
   vertical-align: -0.125em;
 }
+
+/* [HANDOFF-CLARITY] — success-screen lead + attach detail (change 3) */
+.registry-guide .rg-lead { margin: 0 0 10px; }
+.registry-guide .attach-note { margin: 4px 0 2px; font-size: 0.95em; font-weight: normal; }
+.registry-guide .attach-list { padding-left: 20px; margin: 2px 0 0; list-style: disc; }
+.registry-guide .attach-list li { margin-bottom: 2px; }
+
+/* [ROTATE-PROMPT] — mobile-portrait interstitial before the registry handoff (change 7) */
+.rotate-overlay {
+  position: fixed; inset: 0; background: rgba(20,30,26,.55); z-index: 3000;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.rotate-card {
+  max-width: 330px; width: 100%; background: #fff; border-radius: 10px;
+  padding: 26px 22px 14px; text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.rotate-phone {
+  width: 40px; height: 66px; border: 3px solid var(--green-dark); border-radius: 7px;
+  margin: 4px auto 14px; position: relative;
+  animation: kirRotate 2.8s ease-in-out infinite;
+}
+.rotate-phone::after {
+  content: ""; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 13px; height: 3px; border-radius: 2px; background: var(--green-dark);
+}
+@keyframes kirRotate {
+  0%, 22%  { transform: rotate(0deg); }
+  50%, 80% { transform: rotate(-90deg); }
+  100%     { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotate-phone { animation: none; transform: rotate(-90deg); margin: 14px auto 24px; }
+}
+.rotate-phone.rotated-ok { animation: none; transform: rotate(-90deg); border-color: #146151; }
+.rotate-phone.rotated-ok::before {
+  content: "\2713"; position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  color: #146151; font-weight: 800; font-size: 18px; transform: rotate(90deg);
+}
+.rotate-title { font-weight: 800; font-size: 1.12em; color: var(--text); margin-bottom: 4px; }
+.rotate-sub { font-size: .9em; color: var(--text-light); line-height: 1.5; margin-bottom: 16px; }
+.rotate-card .btn-registry {
+  display: block; text-align: center; width: 100%; padding: 14px 24px;
+  background: var(--blue); color: #fff; border: 2px solid var(--blue);
+  border-radius: 4px; font-size: 1.05em; font-weight: 700; text-decoration: none; margin: 0;
+}
+.rotate-dismiss {
+  margin-top: 8px; background: none; border: 0; color: var(--blue);
+  font-size: .95em; font-weight: 600; cursor: pointer; padding: 10px;
+  font-family: inherit; min-height: 44px;
+}
 </style>
 </head>
 <body>
@@ -1287,7 +1339,7 @@ body {
            onerror="this.style.display='none'">
       <div>
         <div class="header-title">Ministry of Tourism, Commerce,<br>Industry and Cooperatives</div>
-        <div class="header-subtitle">Online Business Registry</div>
+        <div class="header-subtitle">Complete company forms</div>
       </div>
     </a>
     <a href="#" id="headerBackDesktop" class="header-back" onclick="siteHeaderBack(event)">
@@ -1299,7 +1351,7 @@ body {
       <img class="mh-crest" src="mtcic-logo.png" alt="" onerror="this.style.display='none'">
       <span class="mh-brand-text">
         <span class="mh-brand">MTCIC</span>
-        <span class="mh-sub">Business Registry</span>
+        <span class="mh-sub">Company forms</span>
       </span>
     </a>
     <a href="#" id="headerBackMobile" class="mh-home" onclick="siteHeaderBack(event)"><span aria-hidden="true">&larr;</span> <span id="headerBackTextMobile">How To</span></a>
@@ -2594,7 +2646,7 @@ function buildDirChangeCard(prefix, idx, manifest) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -2670,7 +2722,7 @@ function buildDirectorCard(prefix, idx, actionType) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeDirector('${prefix}', ${idx}, '${actionType}')" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      ${isAppointed ? '<div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver&#39;s Licence).</div>' : ''}
+      ${isAppointed ? '<div class="info-box amber"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver&#39;s Licence). You will upload this to the Online Business Registry when you submit this form.</div>' : ''}
 
       ${isCessation ? `<h3 class="section-subheading">Reason for cessation</h3>
       <div class="field"><label class="question-label">The director has:</label>
@@ -2694,7 +2746,7 @@ function buildDirectorCard(prefix, idx, actionType) {
         </div>
         <div class="error-text">Select at least one</div>
       </div>
-      <div id="${p}_chngIdWarning" class="info-box amber co-hidden">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div id="${p}_chngIdWarning" class="info-box amber co-hidden"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
       <div id="${p}_formerNameBlock" class="co-hidden">
         <h3 class="section-subheading">Former name of director</h3>
         <div class="field-row cols-3">
@@ -3061,8 +3113,8 @@ function buildCO9Form(taskDef) {
     {
       title: 'When was the court order made?',
       desc: '',
-      html: `<div class="info-box amber">You must upload a copy of the court order.</div>` +
-        `<div class="info-box amber">You must upload a copy of the constitution as altered or added to.</div>` +
+      html: `<div class="info-box amber"><strong>Have ready:</strong> a copy of the court order. You will upload it to the Online Business Registry when you submit this notice.</div>` +
+        `<div class="info-box amber"><strong>Have ready:</strong> a copy of the constitution as altered or added to. You will upload it to the Online Business Registry when you submit this notice.</div>` +
         buildDateField(p + '_courtDate', '', 0, 0)
     },
     {
@@ -3194,7 +3246,7 @@ function co3ConstChange() {
   const val = document.querySelector('input[name="co3_constType"]:checked')?.value;
   const infoEl = document.getElementById('co3_constInfo');
   if (val === 'own') {
-    if (infoEl) { infoEl.innerHTML = 'You must upload a copy of the constitution or modified default constitution.'; infoEl.style.display = ''; }
+    if (infoEl) { infoEl.innerHTML = '<strong>Have ready:</strong> a copy of the constitution or modified default constitution. You will upload it to the Online Business Registry when you submit this form.'; infoEl.style.display = ''; }
   } else {
     if (infoEl) { infoEl.style.display = 'none'; infoEl.innerHTML = ''; }
   }
@@ -3316,7 +3368,7 @@ function buildCO15Form(taskDef) {
     {
       title: 'When was the court order made?',
       desc: '',
-      html: `<div class="info-box amber">You must upload a copy of the court order.</div>` +
+      html: `<div class="info-box amber"><strong>Have ready:</strong> a copy of the court order. You will upload it to the Online Business Registry when you submit this notice.</div>` +
         buildDateField(p + '_courtDate', '', 0, 0)
     },
     {
@@ -3539,7 +3591,7 @@ function buildCO0DirCard(idx) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeCO0Dir(${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div class="info-box amber"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
 
       <h3 class="section-subheading">Date of appointment</h3>
       ${buildDateField(p + '_date', '', 0, 1979)}
@@ -3779,7 +3831,7 @@ function buildCO0Form(taskDef) {
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="own" onchange="co0ConstitutionChange()"><span>Own constitution or modified default constitution</span></label>
         </div><div class="error-text">Select an option</div></div>
       ${buildConstitutionExplainer(true)}
-      <div id="${p}_constInfo" class="info-box amber co-hidden">You must upload a copy of the constitution or modified default constitution.</div>
+      <div id="${p}_constInfo" class="info-box amber co-hidden"><strong>Have ready:</strong> a copy of the constitution or modified default constitution. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -3797,7 +3849,7 @@ function buildCO0Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Confirm existing director details', html: `
       <details class="name-rules">
@@ -3843,7 +3895,7 @@ function buildCO0Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Confirm existing shareholder details', onShow: () => toggleShareClassFields('co0'), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
@@ -3907,7 +3959,7 @@ function buildCO1DirCard(idx) {
         ${idx > 1 ? `<button type="button" class="btn-remove-dir" onclick="removeCO1Dir(${idx})" aria-label="Remove this entry">Remove</button>` : ''}
       </div>
 
-      <div class="info-box amber">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>
+      <div class="info-box amber"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>
 
       <h3 class="sh-subheading">Director details</h3>
       <div class="field-row cols-3">
@@ -4034,7 +4086,7 @@ function buildCO1Form(taskDef) {
           <label class="radio-option"><input type="radio" name="${p}_constitution" value="own" onchange="co1ConstitutionChange()"><span>Own constitution or modified default constitution</span></label>
         </div><div class="error-text">Select an option</div></div>
       ${buildConstitutionExplainer()}
-      <div id="${p}_constInfo" class="info-box amber co-hidden">You must upload a copy of the constitution or modified default constitution.</div>
+      <div id="${p}_constInfo" class="info-box amber co-hidden"><strong>Have ready:</strong> a copy of the constitution or modified default constitution. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Will your company be a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -4052,7 +4104,7 @@ function buildCO1Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Details of proposed directors', html: `
       <details class="name-rules">
@@ -4098,7 +4150,7 @@ function buildCO1Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Details of shareholders', onShow: () => toggleShareClassFields('co1'), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
@@ -4351,9 +4403,9 @@ function buildShareholderChangeCard(prefix, idx, manifest) {
         </div>
       </div>` : ''}
 
-      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload a valid photo ID (e.g. Kiribati National Identity Card, Passport, or Driver's Licence).</div>` : ''}
+      ${isPerson ? `<div id="${p}_chngIdWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> a valid photo ID for this person (Kiribati National Identity Card, Passport, or Driver's Licence). You will upload this to the Online Business Registry when you submit this form.</div>` : ''}
 
-      ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;">You must upload evidence of registration for this entity.</div>` : ''}
+      ${isEntity ? `<div id="${p}_chngEvWarning" class="info-box amber co-hidden" style="margin-bottom:12px;"><strong>Have ready:</strong> evidence of registration for this entity. You will upload this to the Online Business Registry when you submit this form.</div>` : ''}
 
       <!-- Former name (conditional) -->
       <div id="${p}_formerNameBlock" class="co-hidden">
@@ -4746,7 +4798,7 @@ function buildCO4Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Are there any share rights that are not included in the company\'s constitution?', html: `
       <div class="field">
@@ -4760,7 +4812,7 @@ function buildCO4Form(taskDef) {
           <p>Most of the time, the company constitution will include all the rules about company shares. If all the rules about shares are included in your constitution, select No. If there are share rights that are not in your constitution, select Yes.</p>
         </div>
       </details>
-      <div id="${p}_rightsInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the rights attached to the shares.</div>
+      <div id="${p}_rightsInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the rights attached to the shares. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'After this share issue, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -4778,7 +4830,7 @@ function buildCO4Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
@@ -4828,7 +4880,7 @@ function buildCO5Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'After this acquisition, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -4846,7 +4898,7 @@ function buildCO5Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list shareholders and their shareholdings <strong>after</strong> this acquisition.<br><br>You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
@@ -4896,7 +4948,7 @@ function buildCO6Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'After this redemption, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -4914,7 +4966,7 @@ function buildCO6Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list shareholders and their shareholdings <strong>after</strong> this redemption.<br><br>You are only required to provide details of the top 10 shareholders by shareholding.<br><br>Details of all shareholders must be kept by the company and provided to the Registrar on request.</div>
@@ -4958,7 +5010,7 @@ function buildCO7Form(taskDef) {
           <p>Companies can have different types of shares with different rights, privileges, limitations, and conditions. Most smaller companies will only have one class of shares (ordinary shares). If you are not sure, select No.</p>
         </div>
       </details>
-      <div id="${p}_classInfo" class="info-box amber" style="display:none">You must upload a separate sheet setting out the particulars of the different share classes.</div>
+      <div id="${p}_classInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a separate sheet setting out the particulars of the different share classes. You will upload it to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'After this transfer, is your company a foreign investor?', html: `
       <p style="font-weight:600;margin:8px 0;">If your company is not owned or controlled by a Kiribati citizen, select Yes.</p>
@@ -4976,7 +5028,7 @@ function buildCO7Form(taskDef) {
           </ul>
         </div>
       </details>
-      <div id="${p}_foreignInfo" class="info-box amber" style="display:none">You must upload a Foreign Investment Registration Certificate.</div>
+      <div id="${p}_foreignInfo" class="info-box amber" style="display:none"><strong>Have ready:</strong> a Foreign Investment Registration Certificate. You will upload this to the Online Business Registry when you submit this form.</div>
     `},
     { title: 'Shareholder details', onShow: () => toggleShareClassFields(p), html: `
       <div class="info-box blue">You must list all shareholders and their shareholdings <strong>after</strong> this transfer. This includes shareholders whose details have not changed.</div>
@@ -4996,6 +5048,16 @@ function buildCO7Form(taskDef) {
 
 let currentWizard = null;
 let currentStepIndex = 0;
+// [ATTACH-DETAIL] — In bn-forms this spells out which documents a filing needs,
+// built from a simple owners[].type / foreignInvestment data model. co-forms'
+// collected model is materially different (directors, shareholders, share
+// classes and constitutions across 20 form types, with no single unambiguous
+// owner/type + foreignInvestment shape), so per the change-set guidance this
+// returns '' for all forms and the numbered guide steps stay plain. Kept as a
+// documented no-op hook so the analogous detail can be wired in later if the
+// data model is firmed up.
+function buildAttachDetailHtml(formId, data) { return ''; }
+
 // [ENGINE-FINALIZE] — Track PDF generation state
 let _lastPdfGenerated = false;
 
@@ -5113,18 +5175,19 @@ function startWizard(taskId) {
 
           <!-- Step 2: Upload (starts muted; muted class removed after save) -->
           <div class="success-step-block muted" id="successStep2Block">
-            <div class="step-label">Step 2 — Upload<span class="success-step-locked-hint">— available after you save</span></div>
+            <div class="step-label">Step 2 — Upload to the Online Business Registry<span class="success-step-locked-hint">— available after you save</span></div>
             <div class="registry-guide">
               <div class="not-submitted-warning" role="alert">
                 <div class="warn-icon" aria-hidden="true">!</div>
                 <div class="warn-text">
-                  <div class="warn-main">Your form is not submitted yet</div>
-                  <div class="warn-bilingual" id="warningBilingual"></div>
+                  <div class="warn-main">You're not done yet</div>
+                  <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
                 </div>
               </div>
-              <ol id="guideSteps"></ol>
+              <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
+            <ol id="guideSteps"></ol>
             </div>
-            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+            <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
           </div>
 
           <!-- Start new form (guarded) -->
@@ -5158,18 +5221,19 @@ function startWizard(taskId) {
           </div>
 
           <!-- Step 2: Upload -->
-          <div class="step-label">Step 2 — Upload</div>
+          <div class="step-label">Step 2 — Upload to the Online Business Registry</div>
           <div class="registry-guide">
             <div class="not-submitted-warning" role="alert">
               <div class="warn-icon" aria-hidden="true">!</div>
               <div class="warn-text">
-                <div class="warn-main">Your form is not submitted yet</div>
-                <div class="warn-bilingual" id="warningBilingual"></div>
+                <div class="warn-main">You're not done yet</div>
+                <div class="warn-sub">Your form has not been sent to the Online Business Registry.</div>
               </div>
             </div>
+            <p class="rg-lead"><strong>This page only makes the PDF.</strong> Your application is filed on the Online Business Registry, where you upload the PDF and your documents together.</p>
             <ol id="guideSteps"></ol>
           </div>
-          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" class="btn-registry" id="btnRegistry">Go to the registry <span aria-hidden="true">→</span></a>
+          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry">Go to the Online Business Registry</a>
 
           <!-- Start new form (guarded) -->
           <div class="link-new-form">
@@ -7739,6 +7803,7 @@ const FORM_START_INFO = {
   co0: {
     heading: 'Re-register your company',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Details of all directors and shareholders',
       'Company addresses in Kiribati',
@@ -7750,6 +7815,7 @@ const FORM_START_INFO = {
   co1: {
     heading: 'Start a new company',
     needs: [
+      'An Online Business Registry account',
       'Your proposed company name',
       'Details of all proposed directors and shareholders',
       'Company addresses in Kiribati (registered office, postal, main place of business)',
@@ -7761,6 +7827,7 @@ const FORM_START_INFO = {
   co2: {
     heading: 'Change your company name',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Your preferred new company name',
       'A second name option in case your preferred name is not available (optional)',
@@ -7770,6 +7837,7 @@ const FORM_START_INFO = {
   co3: {
     heading: 'Update your company constitution',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The type of constitution change',
       'The date the change took effect',
@@ -7780,6 +7848,7 @@ const FORM_START_INFO = {
   co4: {
     heading: 'Notify an issue of shares',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Number of shares before and after the issue',
       'Details of each shareholder receiving shares',
@@ -7791,6 +7860,7 @@ const FORM_START_INFO = {
   co5: {
     heading: 'Notify an acquisition of own shares',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Number of shares before and after the acquisition',
       'Details of the shareholders whose shares were acquired',
@@ -7802,6 +7872,7 @@ const FORM_START_INFO = {
   co6: {
     heading: 'Notify a redemption of shares',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Number of shares before and after the redemption',
       'Details of the shareholders whose shares were redeemed',
@@ -7813,6 +7884,7 @@ const FORM_START_INFO = {
   co7: {
     heading: 'Notify a transfer of shares',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Total number of shares in the company',
       'Details of each shareholder involved in the transfer',
@@ -7824,6 +7896,7 @@ const FORM_START_INFO = {
   co8: {
     heading: 'Notify change of directors or director information',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The type of change for each director (new appointment, cessation, or change of details)',
       'Full details of each director (name, nationality, date of birth, address)',
@@ -7835,6 +7908,7 @@ const FORM_START_INFO = {
   co9: {
     heading: 'Notify a court order on your constitution',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date of the court order',
       'A copy of the court order',
@@ -7845,6 +7919,7 @@ const FORM_START_INFO = {
   co10: {
     heading: 'Change your company address',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The new address details (in Kiribati)',
       'The date of each address change',
@@ -7855,6 +7930,7 @@ const FORM_START_INFO = {
   co11: {
     heading: 'Notify location of company records',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The address in Kiribati where records are kept',
       'The date the new address takes effect',
@@ -7864,6 +7940,7 @@ const FORM_START_INFO = {
   co12: {
     heading: 'Notify removal or resignation of Registrar-appointed auditor',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date of the resignation or removal',
     ],
@@ -7872,6 +7949,7 @@ const FORM_START_INFO = {
   co13: {
     heading: 'Dissolve your company',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date of the dissolution resolution',
       'Whether public notice has been published and creditors notified',
@@ -7882,6 +7960,7 @@ const FORM_START_INFO = {
   co14: {
     heading: 'Remove your company from the register',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Your capacity (director, shareholder, or creditor)',
       'The grounds for requesting removal',
@@ -7891,6 +7970,7 @@ const FORM_START_INFO = {
   co15: {
     heading: 'Notify a court-approved amalgamation',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date of the court order',
       'A copy of the court order',
@@ -7900,6 +7980,7 @@ const FORM_START_INFO = {
   co16: {
     heading: 'Restore your company to the register',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date your company was removed from the register',
       'The reason for requesting restoration',
@@ -7910,6 +7991,7 @@ const FORM_START_INFO = {
   co17: {
     heading: 'Notify a change of company auditor',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The type of change (new appointment, cessation, or change of details)',
       'Full details of the auditor (name, address)',
@@ -7920,6 +8002,7 @@ const FORM_START_INFO = {
   co18: {
     heading: 'Update your business activities',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'The date of the change',
       'Your updated business activities',
@@ -7929,6 +8012,7 @@ const FORM_START_INFO = {
   co19: {
     heading: 'Update shareholder details',
     needs: [
+      'An Online Business Registry account with authority over your company — your company is listed under My Entities when you log in',
       'Your company registration number',
       'Details of each shareholder whose information is changing',
       'The date of each change',
@@ -7985,8 +8069,8 @@ function showStartPage(taskId) {
 
   // What happens next
   html += '<div class="sp-section last">';
-  html += '<h3>What happens next</h3>';
-  html += '<p class="sp-meta">You will complete the form here, download it as a PDF, then upload it to your <strong>Online Business Registry</strong> account.</p>';
+  html += '<h3>This page does not submit your application</h3>';
+  html += '<p class="sp-meta">It fills in the form and makes a PDF. You then <strong>upload that PDF</strong>, with your supporting documents, to your Online Business Registry account &mdash; that is where the application is filed.</p>';
   html += '</div>';
 
   html += `<button class="sp-btn-start" onclick="startWizard('${taskId}')">Start now<span aria-hidden="true"> →</span></button>`;
@@ -8432,6 +8516,76 @@ function initLanding() {
 }
 
 document.addEventListener('DOMContentLoaded', initLanding);
+
+// ============================================================
+// [ROTATE-PROMPT] — Mobile-portrait interstitial before the
+// registry handoff. Advisory only: the Continue link always
+// works (iOS portrait orientation lock means rotating the device
+// may do nothing on screen — never gate on orientation). The
+// card's link carries the original href + target="_blank", so the
+// new tab opens off a direct user gesture and the [EXT-LINK]
+// observer decorates it automatically. This whole block can be
+// removed without affecting core functionality.
+// ============================================================
+(function() {
+  function isPortraitPhone() {
+    return window.matchMedia
+      && window.matchMedia('(max-width: 700px)').matches
+      && window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  function closeRotateCard() {
+    var overlay = document.getElementById('rotateOverlay');
+    if (overlay) overlay.remove();
+  }
+
+  function showRotateCard(href) {
+    if (document.getElementById('rotateOverlay')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'rotateOverlay';
+    overlay.className = 'rotate-overlay';
+    overlay.innerHTML =
+      '<div class="rotate-card" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">' +
+        '<div class="rotate-phone" id="rotatePhone" aria-hidden="true"></div>' +
+        '<div class="rotate-title" id="rotateTitle">Tip: turn your phone sideways</div>' +
+        '<div class="rotate-sub">Log in first &mdash; then turn your phone on its side. The registry&rsquo;s lists and menus are much easier to use that way.</div>' +
+        '<a class="btn-registry" id="rotateGo" target="_blank" href="' + href + '">Go to the Online Business Registry</a>' +
+        '<button type="button" class="rotate-dismiss" id="rotateBack"><span aria-hidden="true">&larr; </span>Back</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // If they do rotate while the card is up, acknowledge with a tick —
+    // but never auto-navigate; the tap stays theirs.
+    var mq = window.matchMedia('(orientation: landscape)');
+    var onFlip = function(e) {
+      if (e.matches) {
+        var ph = document.getElementById('rotatePhone');
+        if (ph) ph.classList.add('rotated-ok');
+      }
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onFlip);
+    else if (mq.addListener) mq.addListener(onFlip);
+
+    document.getElementById('rotateBack').addEventListener('click', closeRotateCard);
+    // Let the navigation happen, then clear the card so the success
+    // screen is clean when they switch back to this tab.
+    document.getElementById('rotateGo').addEventListener('click', function() {
+      setTimeout(closeRotateCard, 400);
+    });
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeRotateCard();
+    });
+  }
+
+  // Delegated: #btnRegistry is re-created with each wizard render.
+  document.addEventListener('click', function(e) {
+    var a = e.target && e.target.closest ? e.target.closest('#btnRegistry') : null;
+    if (!a) return;
+    if (!isPortraitPhone()) return; // desktop / already-landscape: straight through
+    e.preventDefault();
+    showRotateCard(a.href);
+  }, true);
+})();
 
 </script>
 <!-- ============================================================
