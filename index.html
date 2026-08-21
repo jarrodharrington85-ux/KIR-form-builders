@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form builders — test site</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+main { max-width: 480px; width: 100%; }
+h1 {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 20px;
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+a {
+  display: block;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #0044CC;
+  font-weight: 600;
+  font-size: 1em;
+  transition: border-color 0.15s, background 0.15s;
+}
+a:hover { border-color: #0044CC; background: #f6f9ff; }
+a span { display: block; font-weight: 400; font-size: 0.82em; color: #888; margin-top: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Form builders</h1>
+  <div class="links">
+    <a href="bn-forms.html">Business name forms<span>Business Names Act 2021</span></a>
+    <a href="co-forms.html">Company forms<span>Companies Act 2021</span></a>
+    <a href="overseas-co-forms.html">Overseas company forms<span>Companies Act 2021, Part 12</span></a>
+  </div>
+</main>
+</body>
+</html>
