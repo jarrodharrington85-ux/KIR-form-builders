@@ -3,7 +3,7 @@
   =====================================================================
   COMPANIES FORM BUILDER - business.gov.ki
   Companies Act 2021
-  Source version v2.2 - built 2026-08-21
+  Source version v2.6 - built 2026-08-24
   =====================================================================
 
   MAINTAINING THIS FILE
@@ -534,12 +534,6 @@ body {
 .start-page .sp-back:hover { color: #003d99; text-decoration: underline; }
 .co-form-container .start-page h2 { font-size: 1.5em; color: #222; margin: 0 0 6px; line-height: 1.25; }
 
-.start-page .sp-lede {
-  font-size: 1em; line-height: 1.6; color: var(--text-mid);
-  border-left: 3px solid var(--blue-accessible);
-  padding-left: 14px; margin: 0 0 20px;
-}
-.sp-lede strong { color: var(--text); }
 .start-page .sp-form-name { font-size: 0.92em; color: #555; margin-bottom: 20px; }
 .start-page .sp-card {
   background: #fff; border: 2px solid #ccc; border-left: 5px solid var(--green-dark);
@@ -552,6 +546,34 @@ body {
 }
 .start-page .sp-pill-label { font-size: 0.85em; color: #555; font-weight: 500; }
 .start-page .sp-pill-value { font-size: 0.92em; color: #222; font-weight: 700; }
+
+.sp-journey { border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 18px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px; }
+.sp-journey-head { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--text-mid); text-transform: uppercase; }
+.sp-journey-track { display: grid; grid-template-columns: 1fr 24px 1fr 24px 1fr; align-items: stretch; }
+.sp-stage { border: 2px solid #d8dad9; border-radius: 4px; background: #fafafa; padding: 10px 6px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; text-align: center; }
+.sp-stage-arrow { display: flex; align-items: center; justify-content: center; font-size: 18px; color: #8c9190; font-weight: 700; }
+.sp-stage-label { font-size: 15px; font-weight: 700; color: #6f7775; line-height: 1.25; }
+.sp-stage-badge { background: var(--green-dark); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+.sp-stage-current { border-color: var(--green-dark); background: #eef6f3; }
+.sp-stage-current .sp-stage-label { color: #0b0c0c; }
+.sp-label-short { display: none; }
+
+.sp-ico { position: relative; display: block; box-sizing: content-box; width: 36px; height: 46px; background: #fff; border: 2px solid var(--grey-rule); border-radius: 2px; }
+.sp-stage-current .sp-ico { border-color: var(--green-dark); }
+.sp-ico-lines { position: absolute; inset: 6px 6px auto 6px; display: flex; flex-direction: column; gap: 3px; }
+.sp-ico-lines span { display: block; height: 2px; background: #c9d6d1; }
+.sp-ico-lines span:first-child { height: 3px; width: 70%; background: var(--green-dark); }
+
+.sp-ico-save { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; box-sizing: border-box; height: 50px; }
+.sp-ico-save .sp-ico-tab { width: 18px; height: 4px; background: var(--grey-rule); }
+.sp-ico-file { width: 42px; display: flex; flex-direction: column; }
+.sp-ico-file .sp-ico-bar { height: 9px; background: var(--grey-rule); flex: none; }
+.sp-ico-file .sp-ico-page { flex: 1; display: flex; align-items: center; justify-content: center; }
+.sp-ico-file .sp-ico-page span { display: block; width: 16px; height: 21px; border: 2px solid #8c9190; background: #fff; }
+
+.start-page .sp-privacy { margin: 14px 0 0; font-size: 0.92em; line-height: 1.6; color: #3d4443; }
+.start-page .privacy-note { margin-top: 2px; border-top: 0; padding-top: 0; }
+.start-page .privacy-note li { font-size: 0.92em; }
 .start-page .sp-warn { background: #fff8e6; border-left: 4px solid #d4a017; padding: 12px 14px; margin-bottom: 24px; font-size: 0.92em; line-height: 1.5; color: #222; border-radius: 0 4px 4px 0; }
 .start-page .sp-warn strong { color: #6d5200; }
 .start-page .sp-warn p { margin: 0 0 8px; }
@@ -694,31 +716,42 @@ body {
 .review-row .review-label { color: var(--text-light); flex-shrink: 0; width: 200px; }
 .review-row .review-value { color: var(--text); font-weight: 600; word-break: break-word; }
 
+.nowrap-date { white-space: nowrap; }
+
 .success-screen { padding: 0; margin: 0; }
-.task-panel { border: 3px solid var(--amber-strong); background: var(--amber-tint); margin: 0 0 20px; }
-.task-panel-head { background: var(--amber-fill); padding: 18px 20px; border-bottom: 3px solid var(--amber-strong); }
 
-.success-screen .task-panel-title { font-size: 1.4em; font-weight: 700; color: #0b0c0c; margin: 0; line-height: 1.25; }
-.success-screen .task-panel-count { font-size: 1em; color: #0b0c0c; margin: 6px 0 0; line-height: 1.4; }
-.success-screen .task-panel .task-row-hint { margin: 0; }
-.task-rows { list-style: none; margin: 0; padding: 0 20px; }
-.task-row {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 15px 0; border-bottom: 1px solid var(--amber-rule);
-}
-.task-row:last-child { border-bottom: 0; }
-.task-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.task-row-name { font-size: 1em; font-weight: 700; color: #0b0c0c; }
-.task-row-hint { font-size: 0.9em; color: var(--amber-ink); line-height: 1.5; }
+.success-banner { background: var(--amber-fill); border-left: 10px solid var(--amber-strong); padding: 22px 24px; margin: 0 0 22px; }
+.success-screen .success-eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .1em; color: var(--amber-ink); margin: 0 0 6px; }
+.success-screen .success-banner-title { font-size: 31px; font-weight: 800; color: #0b0c0c; margin: 0; line-height: 1.15; }
 
-.task-status {
-  flex-shrink: 0; font-size: 0.78em; font-weight: 700; white-space: nowrap;
-  padding: 3px 9px; letter-spacing: 0.02em;
-}
-.task-status-todo { background: #0b0c0c; color: #fff; }
-.task-status-elsewhere { background: none; border: 2px solid var(--amber-strong); color: var(--amber-ink); padding: 1px 7px; }
-.task-status-done { background: none; border: 0; color: var(--amber-ink); padding-left: 0; padding-right: 0; }
-.task-row.task-row-done .task-row-name { font-weight: 400; color: var(--amber-ink); }
+.doc-card { display: flex; gap: 14px; align-items: center; border: 2px solid var(--green-dark); border-radius: 4px; background: #eef6f3; padding: 14px 16px; margin: 0 0 22px; }
+.doc-card-icon { position: relative; display: block; width: 46px; height: 58px; flex: none; background: #fff; border: 2px solid var(--green-dark); }
+.doc-card-icon-lines { position: absolute; inset: 7px 7px auto 7px; display: flex; flex-direction: column; gap: 4px; }
+.doc-card-icon-lines span { display: block; height: 3px; background: #c9d6d1; }
+.doc-card-icon-lines span:first-child { height: 4px; width: 70%; background: var(--green-dark); }
+.doc-card-icon-lines span:last-child { width: 60%; }
+.doc-card-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.doc-card-title { font-size: 17px; font-weight: 800; color: #0b0c0c; overflow-wrap: anywhere; }
+.doc-card-meta { font-size: 15.5px; color: #3d4443; overflow-wrap: anywhere; }
+.doc-card-saved { display: none; align-items: center; gap: 6px; font-size: 15px; font-weight: 800; color: var(--green-dark); }
+.success-screen.is-saved .doc-card-saved { display: inline-flex; }
+
+.zero-fee-note { border: 1px dashed var(--grey-rule); border-radius: 4px; padding: 12px 14px; margin: 0 0 22px; font-size: 1em; line-height: 1.5; color: #0b0c0c; }
+
+.task-rows { list-style: none; margin: 0 0 22px; padding: 0; }
+.success-screen.is-saved .task-rows { display: none; }
+.success-screen.is-saved .zero-fee-note { display: none; }
+.task-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; padding: 10px 0; }
+.task-num { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--green-dark); color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+#taskRowFile .task-num { background: #f6f6f6; border: 2px solid var(--grey-rule); color: #6f7775; }
+.task-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-top: 8px; }
+.task-row-name { font-size: 19px; font-weight: 700; line-height: 1.35; color: #0b0c0c; }
+#taskRowFile .task-row-name { color: #6f7775; }
+.task-row-hint { font-size: 0.9em; color: var(--text-mid); line-height: 1.5; }
+
+.task-row-action { flex-basis: 100%; margin: 2px 0 6px 60px; }
+
+.task-status { display: none; }
 
 .task-row-docs { margin-top: 10px; }
 .success-screen .attach-note {
@@ -733,7 +766,8 @@ body {
   font-size: 0.85em; color: var(--amber-ink); margin-top: 7px; font-style: italic; line-height: 1.45;
 }
 
-.save-again-line { margin: 12px 0 0; font-size: 0.95em; }
+.save-again-line { margin: 20px 0 0; font-size: 0.95em; }
+.success-screen.is-saved .save-again-line { border-top: 1px solid #ddd; padding-top: 18px; }
 
 .success-screen .btn-save-pdf {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -744,23 +778,28 @@ body {
 .success-screen .btn-save-pdf:hover { background: #0d4a3e; border-color: #0d4a3e; }
 
 .registry-guide { text-align: left; margin: 26px 0 0; }
-.registry-guide-title { font-size: 1.15em; font-weight: 700; color: var(--text); margin: 0 0 12px; }
+.registry-guide-title { font-size: 19px; font-weight: 700; color: var(--text); margin: 0 0 10px; }
+.registry-guide ol { list-style: none; padding: 0; margin: 0; }
+.registry-guide li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; margin: 0; border-bottom: 1px solid #ddd; font-size: 17.5px; line-height: 1.55; color: #0b0c0c; }
+.registry-guide li:last-child { border-bottom: 0; }
+.guide-num { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--amber-strong); background: var(--amber-tint); color: #8a4207; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.guide-step-text { min-width: 0; padding-top: 5px; }
 
-.registry-guide ol { padding-left: 22px; margin: 0; font-size: 1em; line-height: 1.75; color: var(--text); }
-.registry-guide li { margin-bottom: 6px; }
-.registry-guide li:last-child { margin-bottom: 0; }
+.guide-step-text .step-callout { display: block; background: var(--gold); font-weight: 700; margin-top: 8px; padding: 8px 10px; border-radius: 3px; }
 .success-screen .btn-registry {
   display: inline-block; text-align: center;
-  background: var(--blue); color: #fff;
-  border: 2px solid var(--blue); border-radius: 4px;
+  
+  background: var(--green-dark); color: #fff;
+  border: 2px solid var(--green-dark); border-radius: 4px;
   font-weight: 700; cursor: pointer;
   font-family: inherit; text-decoration: none;
   margin: 20px auto 0;
 }
-.success-screen .btn-registry:hover { background: #003d99; border-color: #003d99; }
+.success-screen .btn-registry:hover { background: #0d4a3e; border-color: #0d4a3e; }
 .success-screen .btn-registry:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
-.success-screen .link-new-form { margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; text-align: center; }
+.success-screen .link-new-form { margin-top: 14px; padding-top: 16px; border-top: 1px solid #ddd; text-align: left; }
+.success-screen.is-saved .link-new-form { border-top: 0; padding-top: 0; }
 .success-screen .link-new-form a {
   color: var(--blue); font-size: 0.9em; font-weight: 600;
   text-decoration: none; cursor: pointer;
@@ -815,11 +854,34 @@ body {
   .review-section { padding: 14px; margin-bottom: 10px; }
   .review-row { flex-direction: column; gap: 2px; padding: 6px 0; }
   .review-row .review-label { width: auto; font-size: 0.85em; }
-  .task-row { flex-direction: column; gap: 8px; }
-  .task-status { align-self: flex-start; }
-  .task-panel-head { padding: 14px 16px; }
-  .task-rows { padding: 0 16px; }
+  .success-banner { padding: 16px 18px; }
+  .success-screen .success-banner-title { font-size: 22px; }
+  .task-num { width: 36px; height: 36px; font-size: 18px; }
+  .task-row-main { padding-top: 5px; }
+  .task-row-action { margin-left: 0; }
+  .task-row-name { font-size: 1.05em; }
+  .registry-guide li { font-size: 1em; }
+  .guide-num { width: 32px; height: 32px; font-size: 16px; }
+  .guide-step-text { padding-top: 4px; }
   .co-form-container .sp-btn-start { width: 100%; justify-content: center; }
+
+  
+  .sp-journey { padding: 12px 10px; }
+  .sp-journey-track { grid-template-columns: 1fr 16px 1fr 16px 1fr; }
+  .sp-stage { padding: 6px 3px; gap: 4px; }
+  .sp-stage-arrow { font-size: 14px; }
+  .sp-stage-label { font-size: 12px; }
+  .sp-label-full { display: none; }
+  .sp-label-short { display: inline; }
+  .sp-stage-badge { font-size: 8px; letter-spacing: .02em; padding: 2px 4px; }
+  .sp-ico { width: 26px; height: 33px; }
+  .sp-ico-lines { inset: 4px 4px auto 4px; gap: 2px; }
+  .sp-ico-lines span:first-child { height: 2px; }
+  .sp-ico-save { height: 37px; padding-bottom: 3px; }
+  .sp-ico-save .sp-ico-tab { width: 13px; height: 3px; }
+  .sp-ico-file { width: 30px; }
+  .sp-ico-file .sp-ico-bar { height: 6px; }
+  .sp-ico-file .sp-ico-page span { width: 11px; height: 15px; }
 }
 
 fieldset.screener-options { border: 0; padding: 0; margin: 0; min-width: 0; }
@@ -1403,7 +1465,7 @@ const TASKS = [ {
   section: "Section 245, Companies Act 2021",
   fee: 0,
   lateFee: null,
-  deadline: "31 March 2027",
+  deadline: "31 March 2027",
   phase: 3
 }, {
   id: "co1",
@@ -2155,6 +2217,14 @@ document.addEventListener("change", function(e) {
     const opt = e.target.closest(".checkbox-option");
     if (opt) opt.classList.toggle("selected", e.target.checked);
   }
+  if (currentWizard) {
+    const stepEl = document.getElementById("step_" + currentStepIndex);
+    if (stepEl && stepEl.contains(e.target)) {
+      const visible = getVisibleSteps();
+      setForwardButton(stepEl, visible, currentStepIndex);
+      updateProgress(visible, currentStepIndex);
+    }
+  }
 });
 
 document.addEventListener("keydown", function(e) {
@@ -2579,7 +2649,7 @@ function buildCO8Form(taskDef) {
     html: buildFilerFields(p)
   }, {
     title: "What director changes are you notifying?",
-    html: `\n      <div class="field">\n        <fieldset class="radio-group"><legend class="field-legend visually-hidden-legend">What director changes are you notifying?</legend>\n          <p class="field-hint">Select all that apply.</p>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="appointed" onchange="refreshWizardStep()"><span>New appointment of director(s)</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="ceased" onchange="refreshWizardStep()"><span>Cessation of director(s)</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="changed" onchange="refreshWizardStep()"><span>Change of director details</span></label>\n        </fieldset><div class="error-text">Select at least one</div></div>\n    `
+    html: `\n      <div class="field">\n        <fieldset class="radio-group"><legend class="field-legend visually-hidden-legend">What director changes are you notifying?</legend>\n          <p class="field-hint">Select all that apply.</p>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="appointed"><span>New appointment of director(s)</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="ceased"><span>Cessation of director(s)</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="changed"><span>Change of director details</span></label>\n        </fieldset><div class="error-text">Select at least one</div></div>\n    `
   }, {
     title: "New director details",
     conditional: () => getChecked("co8_changes").includes("appointed"),
@@ -3457,7 +3527,7 @@ function buildCO17Form(taskDef) {
     html: buildFilerFields(p)
   }, {
     title: "What auditor changes are you notifying?",
-    html: `\n      <div class="info-box blue">Use this form to notify the Registrar of the appointment or cessation of an auditor appointed by the company, or a change in the auditor's details.<br><br>If the auditor was appointed by the Registrar, use CO-12 instead.</div>\n      <div class="field">\n        <fieldset class="radio-group"><legend class="field-legend visually-hidden-legend">What auditor changes are you notifying?</legend>\n          <p class="field-hint">Select all that apply.</p>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="appointed" onchange="refreshWizardStep()"><span>New appointment of auditor</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="ceased" onchange="refreshWizardStep()"><span>Cessation of auditor</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="changed" onchange="refreshWizardStep()"><span>Change of auditor details</span></label>\n        </fieldset><div class="error-text">Select at least one</div></div>\n    `
+    html: `\n      <div class="info-box blue">Use this form to notify the Registrar of the appointment or cessation of an auditor appointed by the company, or a change in the auditor's details.<br><br>If the auditor was appointed by the Registrar, use CO-12 instead.</div>\n      <div class="field">\n        <fieldset class="radio-group"><legend class="field-legend visually-hidden-legend">What auditor changes are you notifying?</legend>\n          <p class="field-hint">Select all that apply.</p>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="appointed"><span>New appointment of auditor</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="ceased"><span>Cessation of auditor</span></label>\n          <label class="checkbox-option"><input type="checkbox" name="${p}_changes" value="changed"><span>Change of auditor details</span></label>\n        </fieldset><div class="error-text">Select at least one</div></div>\n    `
   }, {
     title: "New auditor details",
     conditional: () => getChecked("co17_changes").includes("appointed"),
@@ -3768,7 +3838,7 @@ function startWizard(taskId) {
   formDef.steps.forEach((step, i) => {
     html += `<div class="step" id="step_${i}" data-conditional="${step.conditional ? "true" : "false"}" data-section-key="${step.sectionKey || ""}">\n      <div class="step-nav-row">\n        <button type="button" class="step-back" onclick="stepBack()"><span aria-hidden="true">&larr;</span> Back</button>\n        <div class="step-caption"></div>\n      </div>\n      <div class="errorSummary"></div>\n      <p class="review-return-note">You came here from the check-answers screen. Select <strong>Continue</strong> to go straight back to it.</p>\n      <h2 class="step-title">${step.title}</h2>\n      ${step.desc ? `<div class="step-desc">${step.desc}</div>` : ""}\n      ${step.html}\n      <div class="btn-row btn-row-single">\n        ${i < formDef.steps.length - 1 ? '<button type="button" class="btn btn-primary" onclick="nextStep()">Continue<span aria-hidden="true"> →</span></button>' : '<button type="button" class="btn btn-primary" onclick="showReview()">Check your answers<span aria-hidden="true"> →</span></button>'}\n      </div>\n    </div>`;
   });
-  html += `</div>\n    <div class="step" id="step_review" style="display:none">\n      <button type="button" class="step-back" onclick="backFromReview()"><span aria-hidden="true">&larr;</span> Back</button>\n      \n      <div class="errorSummary"></div>\n      <h2 class="step-title">Check your answers</h2>\n      <div class="step-desc">Check that all information is correct before you create your form.</div>\n      <dl class="filing-facts" id="filingFacts"></dl>\n      <div id="reviewContent"></div>\n      <div class="review-declaration">\n        <h3 class="review-declaration-title">Declaration</h3>\n        <div id="reviewDeclaration"></div>\n      </div>\n      <div class="btn-row btn-row-single">\n        \n        <button type="button" class="btn btn-confirm" onclick="submitReview()">Confirm and create your form<span aria-hidden="true"> →</span></button>\n      </div>\n    </div>\n    <div class="step" id="step_success" style="display:none">\n      <div class="success-screen">\n\n          <div class="task-panel">\n            <div class="task-panel-head">\n              \n              <h2 class="task-panel-title" id="successTitle">Save your form, then file it on the registry</h2>\n              \n              <p class="task-panel-count" id="successCount">2 things left to do</p>\n            </div>\n            <ul class="task-rows">\n              <li class="task-row" id="taskRowSave">\n                <div class="task-row-main">\n                  <span class="task-row-name">1. Save your form to your device</span>\n                  <span class="task-row-hint"><span id="successFileName"></span> <span id="successFileSize"></span></span>\n                  <span class="task-row-hint" id="iosHint" style="display:none"></span>\n                </div>\n                <span class="task-status task-status-todo" id="taskStatusSave">DO NOW</span>\n              </li>\n              <li class="task-row" id="taskRowFile">\n                <div class="task-row-main">\n                  <span class="task-row-name">2. File it on the Online Business Registry</span>\n                  <span class="task-row-hint" id="taskRowFileHint"></span>\n                  <div class="task-row-docs" id="successDocsList"></div>\n                </div>\n                \n                <span class="task-status task-status-elsewhere" id="taskStatusFile">NOT HERE</span>\n              </li>\n            </ul>\n          </div>\n\n          <button class="btn-save-pdf" id="btnSavePdf">Save your form to your device</button>\n\n          \n          <div class="registry-guide" id="registryGuide" style="display:none">\n            <h2 class="registry-guide-title">What you need to do next</h2>\n            <ol id="guideSteps"></ol>\n          </div>\n          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry" style="display:none">Log in to the Online Business Registry</a>\n          \n          <p class="save-again-line" id="saveAgainLine" style="display:none"><a href="#" id="btnSaveAgain">Save your form again</a></p>\n\n          <div class="link-new-form">\n            <a href="#" onclick="guardedBackToLanding(); return false;"><span aria-hidden="true">&larr;</span> <span class="link-text">Start a new form</span></a>\n          </div>\n      </div>\n    </div>\n    </div>\n  </div>`;
+  html += `</div>\n    <div class="step" id="step_review" style="display:none">\n      <button type="button" class="step-back" onclick="backFromReview()"><span aria-hidden="true">&larr;</span> Back</button>\n      \n      <div class="errorSummary"></div>\n      <h2 class="step-title">Check your answers</h2>\n      <div class="step-desc">Check that all information is correct before you create your form.</div>\n      <dl class="filing-facts" id="filingFacts"></dl>\n      <div id="reviewContent"></div>\n      <div class="review-declaration">\n        <h3 class="review-declaration-title">Declaration</h3>\n        <div id="reviewDeclaration"></div>\n      </div>\n      <div class="btn-row btn-row-single">\n        \n        <button type="button" class="btn btn-confirm" onclick="submitReview()">Confirm and create your form<span aria-hidden="true"> →</span></button>\n      </div>\n    </div>\n    <div class="step" id="step_success" style="display:none">\n      <div class="success-screen">\n\n          \n          <div class="success-banner">\n            <p class="success-eyebrow" id="successCount">2 STEPS LEFT</p>\n            <h2 class="success-banner-title" id="successTitle">Save your form.</h2>\n          </div>\n\n          <div class="doc-card">\n            <span class="doc-card-icon" aria-hidden="true"><span class="doc-card-icon-lines"><span></span><span></span><span></span></span></span>\n            <div class="doc-card-body">\n              <span class="doc-card-title" id="successDocTitle"></span>\n              \n              <span class="doc-card-meta"><span id="successFileName"></span><span id="successFileSize" hidden></span></span>\n              <span class="doc-card-meta" id="successDocPages"></span>\n              <span class="doc-card-saved"><span aria-hidden="true">✓</span> Saved on this device</span>\n            </div>\n          </div>\n\n          <ul class="task-rows">\n            <li class="task-row" id="taskRowSave">\n              <span class="task-num" aria-hidden="true">1</span>\n              <div class="task-row-main">\n                <span class="task-row-name">Save your form to your device</span>\n                <span class="task-row-hint" id="iosHint" style="display:none"></span>\n                <span class="task-status task-status-todo" id="taskStatusSave">DO NOW</span>\n              </div>\n              <div class="task-row-action">\n                <button class="btn-save-pdf" id="btnSavePdf">Save your form</button>\n              </div>\n            </li>\n            <li class="task-row" id="taskRowFile">\n              <span class="task-num" aria-hidden="true">2</span>\n              <div class="task-row-main">\n                <span class="task-row-name">File it on the Online Business Registry</span>\n                <span class="task-row-hint" id="taskRowFileHint"></span>\n                <div class="task-row-docs" id="successDocsList"></div>\n                <span class="task-status task-status-elsewhere" id="taskStatusFile">NOT HERE</span>\n              </div>\n            </li>\n          </ul>\n\n          ${taskDef.fee === 0 ? '<div class="zero-fee-note">You are not re-registered until you finish checkout on the Online Business Registry — there is nothing to pay.</div>' : ""}\n\n          \n          <div class="registry-guide" id="registryGuide" style="display:none">\n            <h2 class="registry-guide-title">What you need to do next</h2>\n            <ol id="guideSteps"></ol>\n          </div>\n          <a href="https://ki.ua.paradigmapps.com/public/login.aspx" target="_blank" class="btn-registry" id="btnRegistry" style="display:none">Log in to the Online Business Registry</a>\n          \n          <p class="save-again-line" id="saveAgainLine" style="display:none"><a href="#" id="btnSaveAgain">Save your form again</a></p>\n\n          <div class="link-new-form">\n            <a href="#" onclick="guardedBackToLanding(); return false;"><span aria-hidden="true">&larr;</span> <span class="link-text">Start a new form</span></a>\n          </div>\n      </div>\n    </div>\n    </div>\n  </div>`;
   area.innerHTML = html;
   showStep(0);
   if (taskId === "co0") {
@@ -4486,7 +4556,7 @@ function validateCurrentStep(scopeEl) {
     const maxDay = new Date(yyyy, mm, 0).getDate();
     if (dd > maxDay) {
       const field = dr.closest(".field");
-      if (field) activateFieldError(field, `${MONTHS_LIST[mm - 1]} ${yyyy} has only ${maxDay} days`);
+      if (field) activateFieldError(field, `${MONTHS_LIST[mm - 1]} ${yyyy} has only ${maxDay} days`);
       valid = false;
     }
   });
@@ -5315,7 +5385,7 @@ function buildFilingFacts(t) {
   if (!t) return "";
   let html = `<div class="filing-fact"><dt>Fee</dt><dd>${t.fee === 0 ? "No fee" : "$" + t.fee.toLocaleString()}</dd></div>`;
   if (t.lateFee) html += `<div class="filing-fact"><dt>Late fee</dt><dd>$${t.lateFee}</dd></div>`;
-  if (t.deadline) html += `<div class="filing-fact"><dt>Filing deadline</dt><dd>${escHtml(t.deadline)}</dd></div>`;
+  if (t.deadline) html += `<div class="filing-fact"><dt>Filing deadline</dt><dd>${nowrapDates(escHtml(t.deadline))}</dd></div>`;
   return html;
 }
 
@@ -5353,10 +5423,16 @@ function clearReturnMarkers() {
   document.querySelectorAll(".step.returning-to-review").forEach(s => s.classList.remove("returning-to-review"));
 }
 
+const DATE_SHAPES = new RegExp("\\b(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{1,2}/\\d{4}|(?:\\d{1,2} )?(?:" + MONTHS_LIST.join("|") + ") \\d{4})\\b", "g");
+
+function nowrapDates(escaped) {
+  return escaped.replace(DATE_SHAPES, m => `<span class="nowrap-date">${m}</span>`);
+}
+
 function reviewSection(title, rows, anchor) {
   let html = `<div class="review-section"><div class="review-section-head"><h4>${escHtml(title)}</h4>${reviewChangeLink(anchor, title)}</div><dl class="review-list">`;
   rows.forEach(([label, value]) => {
-    html += `<div class="review-row"><dt class="review-label">${escHtml(label)}</dt><dd class="review-value">${escHtml(value || "—")}</dd></div>`;
+    html += `<div class="review-row"><dt class="review-label">${escHtml(label)}</dt><dd class="review-value">${nowrapDates(escHtml(value || "—"))}</dd></div>`;
   });
   html += "</dl></div>";
   return html;
@@ -6403,6 +6479,10 @@ async function generatePDF() {
   pushHistory(false);
   document.getElementById("successFileName").textContent = filename;
   document.getElementById("successFileSize").textContent = fileSizeKB + " KB";
+  const cardTitle = document.getElementById("successDocTitle");
+  if (cardTitle) cardTitle.textContent = "Form " + t.form + " · " + (data.companyName || "Company");
+  const cardPages = document.getElementById("successDocPages");
+  if (cardPages) cardPages.textContent = totalPages === 1 ? "1 page" : totalPages + " pages";
   const file = new File([ blob ], filename, {
     type: "application/pdf"
   });
@@ -6429,7 +6509,7 @@ async function generatePDF() {
   } else {
     steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your company`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, uploadStep, checkoutStep ];
   }
-  guideOl.innerHTML = steps.map(s => `<li>${s}</li>`).join("\n");
+  guideOl.innerHTML = steps.map((s, i) => `<li><span class="guide-num" aria-hidden="true">${i + 1}</span><span class="guide-step-text">${s.replace(/((?:There is nothing to pay, but y|Y)our filing is not lodged until you finish it\.)/, '<span class="step-callout">$1</span>')}</span></li>`).join("\n");
   const fileHint = document.getElementById("taskRowFileHint");
   if (fileHint) {
     fileHint.textContent = docs.length ? "Two upload sections: your form, then your supporting documents" : "One upload: your form. This filing needs no supporting documents.";
@@ -6443,6 +6523,8 @@ async function generatePDF() {
     }
   }
   function showSavedState() {
+    const scr = document.querySelector("#step_success .success-screen");
+    if (scr) scr.classList.add("is-saved");
     const rowSave = document.getElementById("taskRowSave");
     if (rowSave) rowSave.classList.add("task-row-done");
     const statusSave = document.getElementById("taskStatusSave");
@@ -6458,9 +6540,9 @@ async function generatePDF() {
     const size = document.getElementById("successFileSize");
     if (size) size.textContent = "· saved to your device";
     const title = document.getElementById("successTitle");
-    if (title) title.textContent = "Now file your form on the registry";
+    if (title) title.textContent = "File on the Online Business Registry.";
     const count = document.getElementById("successCount");
-    if (count) count.textContent = "1 thing left to do";
+    if (count) count.textContent = "1 STEP LEFT";
     const hint = document.getElementById("iosHint");
     if (hint) hint.style.display = "none";
     const guide = document.getElementById("registryGuide");
@@ -6617,7 +6699,7 @@ function showStartPage(taskId) {
   document.getElementById("landing").style.display = "none";
   setHeaderContext(null);
   let html = '<div class="start-page">';
-  html += '<a class="sp-back" onclick="hideStartPage()"><span aria-hidden="true">← </span>All overseas company forms</a>';
+  html += '<a class="sp-back" onclick="hideStartPage()"><span aria-hidden="true">← </span>All company forms</a>';
   html += '<div class="sp-card">';
   html += `<h2>${info.heading}</h2>`;
   html += `<div class="sp-form-name">${t.form} | ${t.formName}</div>`;
@@ -6627,15 +6709,23 @@ function showStartPage(taskId) {
     html += `<div class="sp-pill"><span class="sp-pill-label">Late fee:</span><span class="sp-pill-value">$${t.lateFee}</span></div>`;
   }
   html += "</div>";
-  html += "<p class=\"sp-lede\">We'll ask you for information about your company. After you're done, log on to the <strong>Online Business Registry</strong> and file this form.</p>";
+  html += '<div class="sp-journey">';
+  html += '<span class="sp-journey-head">What to do</span>';
+  html += '<div class="sp-journey-track">';
+  html += '<div class="sp-stage sp-stage-current">' + '<span class="sp-ico sp-ico-fill" aria-hidden="true"><span class="sp-ico-lines"><span></span><span></span></span></span>' + '<span class="sp-stage-label"><span class="sp-label-full">Fill in the form</span><span class="sp-label-short">Fill in</span></span>' + '<span class="sp-stage-badge">You are here</span></div>';
+  html += '<div class="sp-stage-arrow" aria-hidden="true">→</div>';
+  html += '<div class="sp-stage">' + '<span class="sp-ico sp-ico-save" aria-hidden="true"><span class="sp-ico-tab"></span></span>' + '<span class="sp-stage-label"><span class="sp-label-full">Save it to your device</span><span class="sp-label-short">Save</span></span></div>';
+  html += '<div class="sp-stage-arrow" aria-hidden="true">→</div>';
+  html += '<div class="sp-stage">' + '<span class="sp-ico sp-ico-file" aria-hidden="true"><span class="sp-ico-bar"></span><span class="sp-ico-page"><span></span></span></span>' + '<span class="sp-stage-label"><span class="sp-label-full">File it on the registry</span><span class="sp-label-short">File on the registry</span></span></div>';
+  html += "</div></div>";
   if (t.deadline) {
     html += '<div class="sp-warn">';
     if (t.id === "co0") {
-      html += `<strong>⚠ Deadline:</strong> All companies must re-register by <strong>${t.deadline}</strong>.`;
+      html += `<strong>⚠ Deadline:</strong> All companies must re-register by <strong>${nowrapDates(escHtml(t.deadline))}</strong>.`;
     } else if (t.id === "co16") {
-      html += `<strong>⚠ Deadline:</strong> This application must be filed within <strong>${t.deadline}</strong>.`;
+      html += `<strong>⚠ Deadline:</strong> This application must be filed within <strong>${nowrapDates(escHtml(t.deadline))}</strong>.`;
     } else {
-      html += `<strong>⚠ Filing deadline:</strong> This notice must be filed within <strong>${t.deadline}</strong>.`;
+      html += `<strong>⚠ Filing deadline:</strong> This notice must be filed within <strong>${nowrapDates(escHtml(t.deadline))}</strong>.`;
     }
     html += "</div>";
   }
@@ -6660,6 +6750,8 @@ function showStartPage(taskId) {
   }
   html += "</div>";
   html += `<button class="sp-btn-start" onclick="startWizard('${taskId}')">Fill in your form<span aria-hidden="true"> →</span></button>`;
+  html += '<p class="sp-privacy">Your answers stay on this device and work offline.</p>';
+  html += '<details class="privacy-note"><summary>How your information is protected</summary><ul>' + "<li>Everything you type stays on this device. This page does not send your answers to MTCIC or anyone else — it even works without an internet connection.</li>" + "<li>While you work, your answers are saved on this device so nothing is lost if the page closes. That saved copy is deleted when you create your form, and in any case after 24 hours.</li>" + "<li>Your finished form is created on this device as a PDF. It reaches MTCIC only when you upload it to the Online Business Registry yourself.</li>" + "<li>This page does not use accounts, cookies or tracking.</li>" + "<li>If you use a shared computer, remember that saved answers stay on that device until they are deleted or expire.</li>" + "</ul></details>";
   html += `<p class="sp-meta" style="margin-top:14px;">Need help with this form? <a href="https://ki.ua.paradigmapps.com/public/help.aspx?cn=Aboutus#contact-us">Contact MTCIC</a>.</p>`;
   html += "</div></div>";
   const area = document.getElementById("startPageArea");
