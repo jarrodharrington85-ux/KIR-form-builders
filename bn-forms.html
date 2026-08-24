@@ -3,7 +3,7 @@
   =====================================================================
   BUSINESS NAME FORM BUILDER - business.gov.ki
   Business Names Act 2021
-  Source version v4.12 - built 2026-08-24
+  Source version v4.13 - built 2026-08-24
   =====================================================================
 
   MAINTAINING THIS FILE
@@ -5212,15 +5212,15 @@ function finalizePdf(doc, data) {
   }
   let steps = [];
   if (formId === "bn1") {
-    steps = [ `Open <strong>Start a new business name</strong> in the left menu, then <strong>Register a business name</strong>`, `Enter your <strong>Proposed entity name</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your filing is not lodged until you finish it.` ];
+    steps = [ `Open <strong>Start a new business name</strong> in the left menu, then <strong>Register a business name</strong>`, `Enter your <strong>Proposed entity name</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your form is not filed until you finish checkout.` ];
   } else if (formId === "bn0") {
-    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Re-register</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. There is nothing to pay, but your filing is not lodged until you finish it.` ];
+    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Re-register</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. There is nothing to pay, but your form is not filed until you finish checkout.` ];
   } else if (formId === "bn6") {
-    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your filing is not lodged until you finish it.` ];
+    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your form is not filed until you finish checkout.` ];
   } else {
-    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your filing is not lodged until you finish it.` ];
+    steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your business`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, ...uploadSteps, `${verb} <strong>Submit</strong>, then complete the checkout screen. Your form is not filed until you finish checkout.` ];
   }
-  guideOl.innerHTML = steps.map((s, i) => `<li><span class="guide-num" aria-hidden="true">${i + 1}</span><span class="guide-step-text">${s.replace(/((?:There is nothing to pay, but y|Y)our filing is not lodged until you finish it\.)/, '<span class="step-callout">$1</span>')}</span></li>`).join("\n");
+  guideOl.innerHTML = steps.map((s, i) => `<li><span class="guide-num" aria-hidden="true">${i + 1}</span><span class="guide-step-text">${s.replace(/((?:There is nothing to pay, but y|Y)our form is not filed until you finish checkout\.)/, '<span class="step-callout">$1</span>')}</span></li>`).join("\n");
   const docsSlot = document.getElementById("successDocsList");
   if (docsSlot) docsSlot.innerHTML = buildAttachDetailHtml(formId, data);
   function showSavedState() {

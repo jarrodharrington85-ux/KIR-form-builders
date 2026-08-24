@@ -3,7 +3,7 @@
   =====================================================================
   COMPANIES FORM BUILDER - business.gov.ki
   Companies Act 2021
-  Source version v2.6 - built 2026-08-24
+  Source version v2.7 - built 2026-08-24
   =====================================================================
 
   MAINTAINING THIS FILE
@@ -6500,7 +6500,7 @@ async function generatePDF() {
   const guideOl = document.getElementById("guideSteps");
   const docs = buildSupportingDocs(currentWizard.taskDef, data);
   const uploadStep = docs.length ? `Upload your form, then your supporting documents &mdash; two separate upload sections, one beneath the other` : `Upload your form. This filing needs no supporting documents`;
-  const checkoutStep = currentWizard.taskDef.fee === 0 ? `${verb} <strong>Submit</strong>, then complete the checkout screen. There is nothing to pay, but your filing is not lodged until you finish it.` : `${verb} <strong>Submit</strong>, then complete the checkout screen. Your filing is not lodged until you finish it.`;
+  const checkoutStep = currentWizard.taskDef.fee === 0 ? `${verb} <strong>Submit</strong>, then complete the checkout screen. There is nothing to pay, but your form is not filed until you finish checkout.` : `${verb} <strong>Submit</strong>, then complete the checkout screen. Your form is not filed until you finish checkout.`;
   let steps = [];
   if (formId === "co1") {
     steps = [ `Open <strong>Start a new company</strong> in the left menu, then <strong>Incorporate a local company</strong>`, `Enter your <strong>Proposed entity name</strong>`, uploadStep, checkoutStep ];
@@ -6509,7 +6509,7 @@ async function generatePDF() {
   } else {
     steps = [ `Open the <strong>My businesses</strong> tab, then ${verb.toLowerCase()} the <strong>registration number</strong> next to your company`, `On the <strong>Entity Profile</strong> page, ${verb.toLowerCase()} <strong>Change Filings</strong>`, uploadStep, checkoutStep ];
   }
-  guideOl.innerHTML = steps.map((s, i) => `<li><span class="guide-num" aria-hidden="true">${i + 1}</span><span class="guide-step-text">${s.replace(/((?:There is nothing to pay, but y|Y)our filing is not lodged until you finish it\.)/, '<span class="step-callout">$1</span>')}</span></li>`).join("\n");
+  guideOl.innerHTML = steps.map((s, i) => `<li><span class="guide-num" aria-hidden="true">${i + 1}</span><span class="guide-step-text">${s.replace(/((?:There is nothing to pay, but y|Y)our form is not filed until you finish checkout\.)/, '<span class="step-callout">$1</span>')}</span></li>`).join("\n");
   const fileHint = document.getElementById("taskRowFileHint");
   if (fileHint) {
     fileHint.textContent = docs.length ? "Two upload sections: your form, then your supporting documents" : "One upload: your form. This filing needs no supporting documents.";
