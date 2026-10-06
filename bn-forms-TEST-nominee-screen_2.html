@@ -5412,7 +5412,10 @@ function finalizePdf(doc, data) {
   const saveForm = () => {
     if (canDownload) {
       const a = document.createElement("a");
-      a.href = url;
+      const iosSafari = isIOS && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent);
+      a.href = iosSafari ? URL.createObjectURL(new Blob([ blob ], {
+        type: "application/octet-stream"
+      })) : url;
       a.download = filename;
       document.body.appendChild(a);
       a.click();
